@@ -18,6 +18,9 @@ devDependencies:
   postcss:
     specifier: ^8.4.23
     version: registry.npmmirror.com/postcss@8.4.23
+  sass:
+    specifier: ^1.62.1
+    version: registry.npmmirror.com/sass@1.62.1
   tailwindcss:
     specifier: ^3.3.2
     version: registry.npmmirror.com/tailwindcss@3.3.2
@@ -26,7 +29,7 @@ devDependencies:
     version: registry.npmmirror.com/typescript@5.0.2
   vite:
     specifier: ^4.3.2
-    version: registry.npmmirror.com/vite@4.3.2(@types/node@20.2.3)
+    version: registry.npmmirror.com/vite@4.3.2(@types/node@20.2.3)(sass@1.62.1)
   vue-router:
     specifier: ^4.2.1
     version: registry.npmmirror.com/vue-router@4.2.1(vue@3.2.47)
@@ -405,7 +408,7 @@ packages:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: registry.npmmirror.com/vite@4.3.2(@types/node@20.2.3)
+      vite: registry.npmmirror.com/vite@4.3.2(@types/node@20.2.3)(sass@1.62.1)
       vue: registry.npmmirror.com/vue@3.2.47
     dev: true
 
@@ -959,6 +962,12 @@ packages:
     hasBin: true
     dev: true
 
+  registry.npmmirror.com/immutable@4.3.0:
+    resolution: {integrity: sha512-0AOCmOip+xgJwEVTQj1EfiDDOkPmuyllDuTuEX+DDXUgapLAsBIfkg3sxCYyCEA8mQqZrrxPUGjcOQ2JS3WLkg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/immutable/-/immutable-4.3.0.tgz}
+    name: immutable
+    version: 4.3.0
+    dev: true
+
   registry.npmmirror.com/inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/inflight/-/inflight-1.0.6.tgz}
     name: inflight
@@ -1343,6 +1352,18 @@ packages:
       queue-microtask: registry.npmmirror.com/queue-microtask@1.2.3
     dev: true
 
+  registry.npmmirror.com/sass@1.62.1:
+    resolution: {integrity: sha512-NHpxIzN29MXvWiuswfc1W3I0N8SXBd8UR26WntmDlRYf0bSADnwnOjsyMZ3lMezSlArD33Vs3YFhp7dWvL770A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/sass/-/sass-1.62.1.tgz}
+    name: sass
+    version: 1.62.1
+    engines: {node: '>=14.0.0'}
+    hasBin: true
+    dependencies:
+      chokidar: registry.npmmirror.com/chokidar@3.5.3
+      immutable: registry.npmmirror.com/immutable@4.3.0
+      source-map-js: registry.npmmirror.com/source-map-js@1.0.2
+    dev: true
+
   registry.npmmirror.com/semver@7.5.1:
     resolution: {integrity: sha512-Wvss5ivl8TMRZXXESstBA4uR5iXgEN/VC5/sOcuXdVLzcdkz4HWetIoRfG5gb5X+ij/G9rw9YoGn3QoQ8OCSpw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/semver/-/semver-7.5.1.tgz}
     name: semver
@@ -1494,7 +1515,7 @@ packages:
     version: 1.0.2
     dev: true
 
-  registry.npmmirror.com/vite@4.3.2(@types/node@20.2.3):
+  registry.npmmirror.com/vite@4.3.2(@types/node@20.2.3)(sass@1.62.1):
     resolution: {integrity: sha512-9R53Mf+TBoXCYejcL+qFbZde+eZveQLDYd9XgULILLC1a5ZwPaqgmdVpL8/uvw2BM/1TzetWjglwm+3RO+xTyw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vite/-/vite-4.3.2.tgz}
     id: registry.npmmirror.com/vite/4.3.2
     name: vite
@@ -1526,6 +1547,7 @@ packages:
       esbuild: registry.npmmirror.com/esbuild@0.17.19
       postcss: registry.npmmirror.com/postcss@8.4.23
       rollup: registry.npmmirror.com/rollup@3.22.1
+      sass: registry.npmmirror.com/sass@1.62.1
     optionalDependencies:
       fsevents: registry.npmmirror.com/fsevents@2.3.2
     dev: true
