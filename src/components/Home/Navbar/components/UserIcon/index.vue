@@ -4,8 +4,8 @@
   </div>
 
   <template v-if="showTransform">
-    <TransformZoomIn @hide="hidedTransformZoomIn">
-      <div class="log-in-btn">
+    <TransformZoomIn @hide="hidedTransformZoomIn" :randomID="randomID">
+      <div :id="randomID" class="log-in-btn">
         Log In
       </div>
     </TransformZoomIn>
@@ -18,6 +18,7 @@ import TransformZoomIn from '@/components/Common/TransformZoomIn.vue';
 
 const showTransform: Ref<boolean> = ref(false)
 const logInBtnRef = ref()
+const randomID = Math.random().toString();
 
 function showLogAndSign(): void {
   showTransform.value = true
@@ -33,6 +34,6 @@ function hidedTransformZoomIn(): void {
   
 <style lang="scss" scoped>
 .log-in-btn {
-  @apply flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-full hover:cursor-pointer
+  @apply flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-full cursor-pointer transition-all duration-200 ease-in-out
 }
 </style>

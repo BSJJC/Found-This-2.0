@@ -7,10 +7,25 @@
 </template>
   
 <script setup lang='ts'>
+import { onMounted, ref, Ref } from "vue"
+
+const props = defineProps({
+  randomID: String
+})
 const emits = defineEmits(['hide']);
+const divRef: Ref = ref();
 
 function hide(): void {
   emits('hide');
 };
+
+onMounted(() => {
+  divRef.value = document.getElementById(props.randomID!)
+
+
+  setTimeout(() => {
+    divRef.value.style.width = "200px"
+  }, 1000);
+})
 </script>
   
