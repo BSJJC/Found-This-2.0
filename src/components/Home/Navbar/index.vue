@@ -9,7 +9,7 @@
     </div>
 
     <div class="col-span-1 flex justify-end items-center">
-      <!-- <user-icon></user-icon> -->
+      <user-icon></user-icon>
     </div>
   </div>
 </template>
@@ -17,8 +17,5 @@
 <script lang="ts" setup>
 import Logo from "@/components/Common/Logo.vue";
 import Search from "./components/Search/index.vue";
-
-// const UserIcon = defineAsyncComponent(
-//   () => import("@/components/Navbar/UserIcon.vue")
-// );
+import UserIcon from "./components/UserIcon/index.vue"
 </script>
