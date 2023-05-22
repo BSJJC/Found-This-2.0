@@ -4,7 +4,7 @@
   </div>
 
   <template v-if="showTransform">
-    <TransformZoomIn @hide="hidedTransformZoomIn" :randomID="randomID">
+    <TransformZoomIn @hide="hidedTransformZoomIn" :randomID="randomID" :states="states">
       <div :id="randomID" class="log-in-btn">
         Log In
       </div>
@@ -19,8 +19,24 @@ import TransformZoomIn from '@/components/Common/TransformZoomIn.vue';
 const showTransform: Ref<boolean> = ref(false)
 const logInBtnRef = ref()
 const randomID = Math.random().toString();
+const states = ref({
+  startWidth: 0,
+  startHeight: 0,
+  startTop: 0,
+  startLeft: 0,
+  endWidth: 0,
+  endHeight: 0
+})
 
 function showLogAndSign(): void {
+  const rect = logInBtnRef.value.getBoundingClientRect();
+  const { width, height, top, left } = rect;
+
+  states.value.startWidth = width
+  states.value.startHeight = height
+  states.value.startTop = top
+  states.value.startLeft = left
+
   showTransform.value = true
 }
 
@@ -32,8 +48,7 @@ function hidedTransformZoomIn(): void {
 };
 </script>
   
-<style lang="scss" scoped>
-.log-in-btn {
-  @apply flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-full cursor-pointer transition-all duration-200 ease-in-out
-}
+<style lang="sass" scoped>
+.log-in-btn 
+  @apply flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-full cursor-pointer transition-all duration-500 ease-in-out
 </style>
