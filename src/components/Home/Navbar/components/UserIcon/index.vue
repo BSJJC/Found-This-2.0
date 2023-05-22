@@ -1,12 +1,14 @@
 <template>
-  <div v-if="!showTransform" ref="logInBtnRef"
-    class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-full hover:cursor-pointer"
-    @click="showLogAndSign">
+  <div v-if="!showTransform" ref="logInBtnRef" class="log-in-btn" @click="showLogAndSign">
     Log In
   </div>
 
   <template v-if="showTransform">
-    <TransformZoomIn @hide="hidedTransformZoomIn"></TransformZoomIn>
+    <TransformZoomIn @hide="hidedTransformZoomIn">
+      <div class="log-in-btn">
+        Log In
+      </div>
+    </TransformZoomIn>
   </template>
 </template>
   
@@ -29,3 +31,8 @@ function hidedTransformZoomIn(): void {
 };
 </script>
   
+<style lang="scss" scoped>
+.log-in-btn {
+  @apply flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-full hover:cursor-pointer
+}
+</style>
