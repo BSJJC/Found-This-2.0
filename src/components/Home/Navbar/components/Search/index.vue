@@ -14,7 +14,7 @@
 
     <!-- search buttton -->
     <div
-      class="w-[50px] h-[40px] rounded-3xl bg-[#7E56DA] shadow shadow-[#9375da] fle x justify-center items-center cursor-pointer"
+      class="w-[50px] h-[40px] rounded-3xl bg-[#7E56DA] shadow shadow-[#9375da] flex justify-center items-center cursor-pointer"
     >
       <IconSearch class="w-1/2"></IconSearch>
     </div>
