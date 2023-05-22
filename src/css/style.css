@@ -1,0 +1,12 @@
+#app {
+  height: 100vh;
+}
+
+* {
+  font-family: "得意黑";
+  -webkit-user-drag: none;
+}
+
+body {
+  overflow: hidden;
+}
