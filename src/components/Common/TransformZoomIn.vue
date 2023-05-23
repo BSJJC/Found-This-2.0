@@ -1,18 +1,17 @@
 <template>
   <Teleport to="body">
     <div ref="containerRef" class="w-screen h-screen flex justify-center items-center absolute top-0 left-0">
-
-
-
-      <TransitionGroup>
-        <template v-if="!showTarget">
+      <Transition>
+        <template v-if="!showTargetRef">
           <slot name="origin"></slot>
         </template>
+      </Transition>
 
-        <template v-else>
+      <Transition>
+        <template v-if="showTargetRef">
           <slot name="target"></slot>
         </template>
-      </TransitionGroup>
+      </Transition>
     </div>
 
     <!-- dark background -->
@@ -56,8 +55,42 @@ const targetRef: Ref<HTMLElement | undefined | null> = ref()
 const containerRef: Ref<HTMLElement | undefined> = ref();
 
 const showDarkBackground: Ref<boolean> = ref(false)
-const showTarget: Ref<boolean> = ref(false)
+const showTargetRef: Ref<boolean> = ref(false)
+const animationOver: Ref<boolean> = ref(false)
 const detailChanges: { prop: string; targetVal: string; }[] = props.detailChanges || []; //细节变化可以没有，在获取不到细节变化的时候，变为空数组
+
+/**
+ * 将originRef赋值为初始状态
+ */
+function assignInitialValue(): void {
+  originRef.value = document.getElementById(props.randomIDs[0]!)
+
+  originRef.value!.style.position = "absolute"
+  originRef.value!.style.width = `${startWidth}px`
+  originRef.value!.style.height = `${startHeight}px`
+  originRef.value!.style.top = `${startTop}px`
+  originRef.value!.style.left = `${startLeft}px`
+}
+
+/**
+ * 根据父元素，也就是铺满整个屏幕的背景
+ * 和originRef本身的width
+ * 计算出可以将originRef水平垂直居中的top和left
+ */
+function assignTargetValue(): void {
+  originRef.value = document.getElementById(props.randomIDs[0]!)
+
+  const rect: DOMRect = containerRef.value!.getBoundingClientRect();
+  const top: number = (rect.height / 2) - (rect.height * endHeight * 0.01 / 2)
+  const left: number = (rect.width / 2) - (rect.width * endWidth * 0.01 / 2)
+
+  originRef.value!.style.top = `${top}px`
+  originRef.value!.style.left = `${left}px`
+  originRef.value!.style.width = `${endWidth}vw`
+  originRef.value!.style.height = `${endHeight}vh`
+
+  activeDetailChanges();
+}
 
 /**
  * 在完成挂载后
@@ -85,18 +118,28 @@ function resetDetailChanges(): void {
  * 并在完成后调用父组件传入的隐藏方法
  */
 function hide(): void {
-  originRef.value!.style.width = `${startWidth}px`
-  originRef.value!.style.height = `${startHeight}px`
-  originRef.value!.style.top = `${startTop}px`
-  originRef.value!.style.left = `${startLeft}px`
+  if (!animationOver.value) return
+  animationOver.value = false
 
-  showDarkBackground.value = false
+  showTargetRef.value = false
 
-  resetDetailChanges();
+  setTimeout(() => {
+    assignTargetValue()
+  }, 0);
+
+  setTimeout(() => {
+    assignInitialValue();
+  }, 600);
+
+  setTimeout(() => {
+    resetDetailChanges();
+
+    showDarkBackground.value = false
+  }, 600);
 
   setTimeout(() => {
     emits('hide');
-  }, 600);
+  }, 1300);
 };
 
 /**
@@ -105,41 +148,20 @@ function hide(): void {
  * 展示darkBackground
  */
 onMounted(() => {
-  originRef.value = document.getElementById(props.randomIDs[0]!)
-
-  originRef.value!.style.position = "absolute"
-  originRef.value!.style.zIndex = "10"
-
-  originRef.value!.style.width = `${startWidth}px`
-  originRef.value!.style.height = `${startHeight}px`
-  originRef.value!.style.top = `${startTop}px`
-  originRef.value!.style.left = `${startLeft}px`
+  assignInitialValue();
 
   showDarkBackground.value = true
 
   setTimeout(() => {
-    const rect: DOMRect = containerRef.value!.getBoundingClientRect();
-
-    /**
-     * 根据父元素，也就是铺满整个屏幕的背景
-     * 和originRef本身的width
-     * 计算出可以将originRef水平垂直居中的top和left
-     */
-    const top: number = (rect.height / 2) - (rect.height * endHeight * 0.01 / 2)
-    const left: number = (rect.width / 2) - (rect.width * endWidth * 0.01 / 2)
-
-    originRef.value!.style.top = `${top}px`
-    originRef.value!.style.left = `${left}px`
-
-    originRef.value!.style.width = `${endWidth}vw`
-    originRef.value!.style.height = `${endHeight}vh`
+    assignTargetValue();
 
     activeDetailChanges()
   }, 0);
 
   setTimeout(() => {
-    showTarget.value = true
+    showTargetRef.value = true
     targetRef.value = document.getElementById(props.randomIDs[1])
+    animationOver.value = true
   }, 600);
 })
 </script>
