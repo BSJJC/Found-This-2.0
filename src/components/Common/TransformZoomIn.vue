@@ -4,10 +4,13 @@
       <slot></slot>
     </div>
 
-    <div id="mask"
-      class=" flex justify-center items-center w-screen h-screen bg-gray-500 opacity-0 absolute top-0 left-0 text-white z-5"
-      @click.self="hide">
-    </div>
+    <!-- dark background -->
+    <Transition>
+      <div v-show="showDarkBackground"
+        class=" flex justify-center items-center w-screen h-screen bg-gray-500 opacity-70 absolute top-0 left-0 text-white z-5"
+        @click.self="hide">
+      </div>
+    </Transition>
   </Teleport>
 </template>
   
@@ -34,11 +37,32 @@ const emits = defineEmits(['hide']);
 
 const divRef: Ref<HTMLElement | undefined | null> = ref();
 const containerRef: Ref<HTMLElement | undefined> = ref();
+const showDarkBackground = ref(false)
 
+
+
+/**
+ * 将divRef归位
+ * 并在完成后调用父组件传入的隐藏方法
+ */
 function hide(): void {
-  emits('hide');
+  divRef.value!.style.width = `${props.states.startWidth}px`
+  divRef.value!.style.height = `${props.states.startHeight}px`
+  divRef.value!.style.top = `${props.states.startTop}px`
+  divRef.value!.style.left = `${props.states.startLeft}px`
+
+  showDarkBackground.value = false
+
+  setTimeout(() => {
+    emits('hide');
+  }, 600);
 };
 
+/**
+ * 在完成挂载后，设置初始定位、宽高
+ * 并在完成后设置目标定位、宽高
+ * 展示darkBackground
+ */
 onMounted(() => {
   divRef.value = document.getElementById(props.randomID!)
 
@@ -50,7 +74,7 @@ onMounted(() => {
   divRef.value!.style.top = `${props.states.startTop}px`
   divRef.value!.style.left = `${props.states.startLeft}px`
 
-  divRef.value!.style.borderRadius = "1rem"
+  showDarkBackground.value = true
 
   setTimeout(() => {
     const rect: DOMRect = containerRef.value!.getBoundingClientRect();
@@ -63,25 +87,18 @@ onMounted(() => {
 
     divRef.value!.style.width = `${props.states.endWidth}vw`
     divRef.value!.style.height = `${props.states.endHeight}vh`
-
-    divRef.value!.style.fontSize = `100px`
   }, 0);
 })
 </script>
-  
+
 <style lang="scss" scoped>
-* {
-  user-select: none;
-  -webkit-user-select: none;
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
 }
 
-@keyframes mask-in {
-  to {
-    opacity: 0.8;
-  }
-}
-
-#mask {
-  animation: mask-in .5s ease-in-out forwards;
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

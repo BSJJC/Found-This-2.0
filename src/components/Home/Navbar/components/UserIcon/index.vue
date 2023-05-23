@@ -6,7 +6,7 @@
   </div>
 
   <template v-if="showTransform">
-    <TransformZoomIn @hide="hidedTransformZoomIn" :randomID="randomID" :states="states">
+    <TransformZoomIn @hide="hidedTransformZoomIn" :randomID="randomID" :states="states" test="fontSize">
       <div :id="randomID"
         class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-full cursor-pointer transition-all duration-500 ">
         Log In
