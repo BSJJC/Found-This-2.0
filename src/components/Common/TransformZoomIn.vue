@@ -17,7 +17,7 @@
 <script setup lang='ts'>
 import { ref, Ref, onMounted } from "vue"
 
-interface states {
+interface States {
   startWidth: number;
   startHeight: number;
   startTop: number;
@@ -27,19 +27,43 @@ interface states {
   endHeight: number;
 }
 
-interface config {
+interface Config {
   randomID: string;
-  states: states
+  states: States;
+  detailChanges?: Array<{
+    prop: string;
+    targetVal: string;
+  }>
 }
 
-const props = defineProps<config>()
+const props = defineProps<Config>()
 const emits = defineEmits(['hide']);
 
 const divRef: Ref<HTMLElement | undefined | null> = ref();
 const containerRef: Ref<HTMLElement | undefined> = ref();
-const showDarkBackground = ref(false)
+const showDarkBackground: Ref<boolean> = ref(false)
+const detailChanges: { prop: string; targetVal: string; }[] = props.detailChanges || []; //细节变化可以没有，在获取不到细节变化的时候，变为空数组
 
+/**
+ * 在完成挂载后
+ * 遍历传入的所有细节变化，并应用
+ */
+function activeDetailChanges(): void {
+  detailChanges.forEach(change => {
+    (divRef.value!.style as any)[change.prop] = change.targetVal
+  });
+}
 
+/**
+ * 遍历所有修改过的细节变化
+ * 并还原
+ * #因为这里将其清空后，原本的样式会自动覆盖，所以无需手动指定#
+ */
+function resetDetailChanges(): void {
+  detailChanges.forEach(change => {
+    (divRef.value!.style as any)[change.prop] = ""
+  });
+}
 
 /**
  * 将divRef归位
@@ -52,6 +76,8 @@ function hide(): void {
   divRef.value!.style.left = `${props.states.startLeft}px`
 
   showDarkBackground.value = false
+
+  resetDetailChanges();
 
   setTimeout(() => {
     emits('hide');
@@ -79,6 +105,11 @@ onMounted(() => {
   setTimeout(() => {
     const rect: DOMRect = containerRef.value!.getBoundingClientRect();
 
+    /**
+     * 根据父元素，也就是铺满整个屏幕的背景
+     * 和divRef本身的width
+     * 计算出可以将divRef水平垂直居中的top和left
+     */
     const top: number = (rect.height / 2) - (rect.height * props.states.endHeight * 0.01 / 2)
     const left: number = (rect.width / 2) - (rect.width * props.states.endWidth * 0.01 / 2)
 
@@ -87,6 +118,8 @@ onMounted(() => {
 
     divRef.value!.style.width = `${props.states.endWidth}vw`
     divRef.value!.style.height = `${props.states.endHeight}vh`
+
+    activeDetailChanges()
   }, 0);
 })
 </script>

@@ -1,14 +1,14 @@
 <template>
   <div v-if="!showTransform" ref="logInBtnRef"
-    class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-full cursor-pointer transition-all duration-500 ease-in-out"
+    class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-3xl cursor-pointer transition-all duration-500 ease-in-out"
     @click="showLogAndSign">
     Log In
   </div>
 
   <template v-if="showTransform">
-    <TransformZoomIn @hide="hidedTransformZoomIn" :randomID="randomID" :states="states" test="fontSize">
+    <TransformZoomIn @hide="hidedTransformZoomIn" :randomID="randomID" :states="states" :detailChanges="detailChanges">
       <div :id="randomID"
-        class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-full cursor-pointer transition-all duration-500 ">
+        class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-3xl cursor-pointer transition-all duration-500 overflow-hidden">
         Log In
       </div>
     </TransformZoomIn>
@@ -30,6 +30,16 @@ const states = ref({
   endWidth: 0,
   endHeight: 0
 })
+const detailChanges = [
+  {
+    prop: "borderRadius",
+    targetVal: "1rem"
+  },
+  {
+    prop: "fontSize",
+    targetVal: "100px"
+  }
+]
 
 function showLogAndSign(): void {
   const rect: DOMRect = logInBtnRef.value!.getBoundingClientRect();
