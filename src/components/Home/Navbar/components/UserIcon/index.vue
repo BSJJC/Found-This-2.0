@@ -29,7 +29,7 @@ const LogAndSign = defineAsyncComponent(() => import("../LogAndSign/index.vue"))
 
 const showTransform: Ref<boolean> = ref(false)
 const logInBtnRef: Ref<HTMLElement | undefined> = ref()
-const randomIDs: string[] = ["aaaaa", "bbbbb"]
+const randomIDs: string[] = [Math.random().toString(), Math.random().toString()]
 const states = ref({
   startWidth: 0,
   startHeight: 0,

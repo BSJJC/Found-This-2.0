@@ -154,6 +154,7 @@ onMounted(() => {
     activeDetailChanges()
   }, 0);
 
+
   setTimeout(() => {
     showTargetRef.value = true
     targetRef.value = document.getElementById(props.randomIDs[1])
