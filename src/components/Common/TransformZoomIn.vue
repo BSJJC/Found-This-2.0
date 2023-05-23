@@ -120,7 +120,6 @@ function resetDetailChanges(): void {
 function hide(): void {
   if (!animationOver.value) return
   animationOver.value = false
-
   showTargetRef.value = false
 
   setTimeout(() => {
@@ -133,7 +132,6 @@ function hide(): void {
 
   setTimeout(() => {
     resetDetailChanges();
-
     showDarkBackground.value = false
   }, 600);
 
@@ -149,12 +147,10 @@ function hide(): void {
  */
 onMounted(() => {
   assignInitialValue();
-
   showDarkBackground.value = true
 
   setTimeout(() => {
     assignTargetValue();
-
     activeDetailChanges()
   }, 0);
 
