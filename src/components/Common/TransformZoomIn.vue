@@ -55,8 +55,8 @@ onMounted(() => {
   setTimeout(() => {
     const rect: DOMRect = containerRef.value!.getBoundingClientRect();
 
-    const top: number = (rect.height / 2) - (rect.height * 0.7 / 2)
-    const left: number = (rect.width / 2) - (rect.width * 0.8 / 2)
+    const top: number = (rect.height / 2) - (rect.height * props.states.endHeight * 0.01 / 2)
+    const left: number = (rect.width / 2) - (rect.width * props.states.endWidth * 0.01 / 2)
 
     divRef.value!.style.top = `${top}px`
     divRef.value!.style.left = `${left}px`

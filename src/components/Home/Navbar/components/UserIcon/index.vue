@@ -41,7 +41,7 @@ function showLogAndSign(): void {
   states.value.startLeft = left
 
   states.value.endWidth = 80
-  states.value.endHeight = 70
+  states.value.endHeight = 80
 
   showTransform.value = true
 }
