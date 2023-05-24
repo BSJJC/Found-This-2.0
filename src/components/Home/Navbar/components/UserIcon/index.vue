@@ -23,7 +23,7 @@
   
 <script setup lang='ts'>
 import { ref, Ref, defineAsyncComponent } from "vue"
-import TransformZoomIn from '@/components/Common/TransformZoomIn.vue';
+import TransformZoomIn from '@/components/Common/Transform.vue';
 
 const LogAndSign = defineAsyncComponent(() => import("../LogAndSign/index.vue"))
 

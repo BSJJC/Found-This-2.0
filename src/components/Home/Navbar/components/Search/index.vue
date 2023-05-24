@@ -52,7 +52,7 @@
 <script lang="ts" setup>
 import { ref, Ref } from "vue";
 import IconSearch from "@/assets/icons/IconSearch.vue";
-import TransformZoomIn from "@/components/Common/TransformZoomIn.vue";
+import TransformZoomIn from "@/components/Common/Transform.vue";
 
 const op: Ref<HTMLElement | undefined> = ref();
 const showTransform = ref(false)

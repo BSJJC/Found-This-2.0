@@ -64,7 +64,7 @@ const detailChanges: { prop: string; targetVal: string; }[] = props.detailChange
  */
 function assignInitialValue(): void {
   originRef.value = document.getElementById(props.randomIDs[0]!)
-
+  
   originRef.value!.style.position = "absolute"
   originRef.value!.style.width = `${startWidth}px`
   originRef.value!.style.height = `${startHeight}px`
