@@ -51,7 +51,6 @@
 import { ref, reactive } from 'vue';
 //@ts-ignore
 import type { FormInstance, FormRules } from "element-plus";
-
 import disableInputSpace from '@/utils/disableInputSpace';
 
 const emits = defineEmits(['toSignUpPage']);
