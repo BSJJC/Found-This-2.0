@@ -23,6 +23,10 @@ async function fetchSignUpAnimationData(): Promise<void> {
   animationData.value = (await import("@/assets/lottie/SignUpLottie.json")).default
 }
 
+/**
+ * 将state在LogIn和SignUp之间切换
+ * 从而改变页面
+ */
 function switchState(): void {
   state.value === 'signUp'
     ? fetchLogInAnimationData()
@@ -42,7 +46,9 @@ onBeforeMount(() => {
       class="w-1/2 h-full flex justify-center items-center relative bg-white overflow-hidden transition-all duration-1000 ease-in-out z-50"
       :style="{ transform: `${state === 'logIn' ? 'translateX(0%)' : 'translateX(100%)'}` }">
       <Transition name="fade">
-        <component :is="state == 'logIn' ? LogIn : SignUp" @switchState="switchState" class="absolute"></component>
+        <KeepAlive>
+          <component :is="state == 'logIn' ? LogIn : SignUp" @switchState="switchState" class="absolute"></component>
+        </KeepAlive>
       </Transition>
     </div>
 
@@ -60,10 +66,6 @@ onBeforeMount(() => {
 </template>
 
 <style lang="scss" scoped>
-.fade-active {
-  position: absolute;
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: all 1s ease;
