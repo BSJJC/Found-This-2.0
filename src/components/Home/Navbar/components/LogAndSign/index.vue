@@ -23,6 +23,12 @@ async function fetchSignUpAnimationData(): Promise<void> {
   animationData.value = (await import("@/assets/lottie/SignUpLottie.json")).default
 }
 
+function switchState(): void {
+  state.value === 'signUp'
+    ? fetchLogInAnimationData()
+    : fetchSignUpAnimationData();
+}
+
 onBeforeMount(() => {
   fetchLogInAnimationData()
 })
@@ -32,15 +38,18 @@ onBeforeMount(() => {
   <div class=" flex justify-center items-center w-[80vw] h-[80vh] z-10 absolute rounded-2xl overflow-hidden">
 
     <!-- forms -->
-    <div class="w-1/2 h-full flex justify-center items-center relative bg-white overflow-hidden">
-      <TransitionGroup name="fade">
-        <log-in v-if="state === 'logIn'" @to-sign-up-page="fetchSignUpAnimationData" class="absolute"></log-in>
-        <sign-up v-if="state === 'signUp'" @to-log-in-page="fetchLogInAnimationData" class="absolute"></sign-up>
-      </TransitionGroup>
+    <div
+      class="w-1/2 h-full flex justify-center items-center relative bg-white overflow-hidden transition-all duration-1000 ease-in-out z-50"
+      :style="{ transform: `${state === 'logIn' ? 'translateX(0%)' : 'translateX(100%)'}` }">
+      <Transition name="fade">
+        <component :is="state == 'logIn' ? LogIn : SignUp" @switchState="switchState" class="absolute"></component>
+      </Transition>
     </div>
 
     <!-- lottie animation -->
-    <div class="w-1/2 h-full flex justify-center items-center bg-[#ffffff80] relative">
+    <div
+      class="w-1/2 h-full flex justify-center items-center bg-[#ffffff80] relative transition-all duration-1000 ease-in-out z-10"
+      :style="{ transform: `${state === 'logIn' ? 'translateX(0%)' : 'translateX(-100%)'}` }">
       <TransitionGroup name="fade">
         <lottie-animation v-if="state === 'logIn'" :off-line="animationData" class="w-[90%] absolute"></lottie-animation>
         <lottie-animation v-if="state === 'signUp'" :off-line="animationData" class="w-[90%] absolute"></lottie-animation>

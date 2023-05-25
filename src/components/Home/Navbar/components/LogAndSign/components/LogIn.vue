@@ -53,7 +53,7 @@ import { ref, reactive } from 'vue';
 import type { FormInstance, FormRules } from "element-plus";
 import disableInputSpace from '@/utils/disableInputSpace';
 
-const emits = defineEmits(['toSignUpPage']);
+const emits = defineEmits(['switchState']);
 
 const ruleFormRef = ref<FormInstance>();
 
@@ -100,7 +100,7 @@ const rules = reactive<FormRules>({
  * 转到注册页面
  */
 function toSignUpPage() {
-  emits("toSignUpPage")
+  emits("switchState")
 }
 </script>
   
