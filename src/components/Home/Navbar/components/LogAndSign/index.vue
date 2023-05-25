@@ -63,7 +63,7 @@ onBeforeMount(() => {
     </div>
 
     <!-- middel animation -->
-    <!-- <middel-animation class="w-full h-full z-[0] absolute"></middel-animation> -->
+    <middel-animation class="w-full h-full z-[100] absolute"></middel-animation>
   </div>
 </template>
 
