@@ -2,7 +2,7 @@
   <div class="text-3xl text-red-300">
     <NavBar></NavBar>
 
-    <template>123</template>
+    <el-button>123</el-button>
 
     <BgVideo :video-source="defaulBgLight" @onhideMiddelTransform="hideMiddelTransform"></BgVideo>
   </div>
