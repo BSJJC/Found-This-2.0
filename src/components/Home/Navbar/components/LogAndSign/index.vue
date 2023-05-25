@@ -63,7 +63,7 @@ onBeforeMount(() => {
     </div>
 
     <!-- middel animation -->
-    <middel-animation class="w-full h-full z-[100] absolute"></middel-animation>
+    <!-- <middel-animation class="w-full h-full z-[0] absolute"></middel-animation> -->
   </div>
 </template>
 
@@ -73,7 +73,15 @@ onBeforeMount(() => {
   transition: all 1s ease;
 }
 
-.fade-enter-from,
+.fade-enter-active {
+  transition-delay: 0.3s;
+}
+
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
 .fade-leave-to {
   opacity: 0;
   transform: translateY(-50px);

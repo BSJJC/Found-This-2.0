@@ -13,7 +13,6 @@
       <IconSearch class="w-1/2" color="white"></IconSearch>
     </div>
 
-
     <template v-if="showTransform">
       <Transform @hide="hidedTransformZoomIn" :randomIDs="randomIDs" :states="states" :detailChanges="[]">
         <template #origin>
