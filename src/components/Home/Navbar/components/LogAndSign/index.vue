@@ -37,10 +37,23 @@ onBeforeMount(() => {
 
     <!-- lottie animation -->
     <div class="w-1/2 h-full flex justify-center items-center bg-[#ffffff80]">
-      <Transition>
+      <Transition name="fade" mode="out-in">
         <lottie-animation v-if="animationData" :off-line="animationData" class="w-[90%]"></lottie-animation>
+        <lottie-animation v-else :off-line="animationData" class="w-[90%]"></lottie-animation>
       </Transition>
     </div>
 
   </div>
 </template>
+
+<style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

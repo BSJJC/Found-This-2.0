@@ -97,10 +97,10 @@ const rules = reactive<FormRules>({
   password: [{ validator: passwordCheck, trigger: "blur" }],
 });
 
-
+/**
+ * 转到注册页面
+ */
 function toSignUpPage() {
-  console.log(1);
-
   emits("toSignUpPage")
 }
 </script>
