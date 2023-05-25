@@ -66,7 +66,7 @@ const ruleForm = reactive({
 });
 
 //@ts-ignore
-const emailCheck = (rule: any, value: any, callback: any) => {
+function emailCheck(rule: any, value: any, callback: any): void {
   if (value === "") {
     callback(new Error("Please input the email"));
   }
@@ -83,7 +83,7 @@ const emailCheck = (rule: any, value: any, callback: any) => {
   callback();
 };
 //@ts-ignore
-const passwordCheck = (rule: any, value: any, callback: any) => {
+function passwordCheck(rule: any, value: any, callback: any): void {
   if (value === "") {
     callback(new Error("Please input the password"));
   } else {
