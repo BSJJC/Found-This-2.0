@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
     LogIn: typeof import('./../components/Home/Navbar/components/LogAndSign/components/LogIn.vue')['default']
     Logo: typeof import('./../components/Common/Logo.vue')['default']
     LottieAnimation: typeof import('./../components/Common/LottieAnimation.vue')['default']
+    MiddelAnimation: typeof import('./../components/Home/Navbar/components/LogAndSign/components/MiddelAnimation.vue')['default']
     Navbar: typeof import('./../components/Home/Navbar/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

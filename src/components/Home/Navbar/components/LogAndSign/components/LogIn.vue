@@ -118,7 +118,6 @@ async function submitLogIn(formEl: FormInstance | undefined) {
     console.log(user);
 
 
-
   } catch (error) {
 
   }

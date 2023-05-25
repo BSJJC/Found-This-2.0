@@ -1,6 +1,6 @@
 <template>
   <div v-if="!showTransform" ref="logInBtnRef"
-    class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-red-300 text-white rounded-3xl cursor-pointer transition-all duration-500 ease-in-out"
+    class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-[#7E56DA] text-white rounded-3xl cursor-pointer transition-all duration-500 ease-in-out"
     @click="showLogAndSign">
     Log In
   </div>
@@ -9,7 +9,7 @@
     <Transform @hide="hidedTransformZoomIn" :randomIDs="randomIDs" :states="states" :detailChanges="detailChanges">
       <template #origin>
         <div :id="randomIDs[0]"
-          class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-blue-300 text-white rounded-3xl cursor-pointer transition-all duration-500 overflow-hidden z-[100]">
+          class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-[#7E56DA] text-white rounded-3xl cursor-pointer transition-all duration-500 overflow-hidden z-[100]">
           Log In
         </div>
       </template>
@@ -71,3 +71,10 @@ function hidedTransformZoomIn(): void {
   showTransform.value = false
 };
 </script>
+
+<style lang="scss" scoped>
+* {
+  user-select: none;
+  -webkit-user-select: none;
+}
+</style>

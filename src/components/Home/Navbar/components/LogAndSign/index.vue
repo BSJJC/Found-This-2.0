@@ -4,6 +4,7 @@ import LottieAnimation from '@/components/Common/LottieAnimation.vue';
 
 import LogIn from "./components/LogIn.vue";
 const SignUp = defineAsyncComponent(() => import("./components/SignUp.vue"))
+const MiddelAnimation = defineAsyncComponent(() => import("./components/MiddelAnimation.vue"))
 
 const animationData = ref<object>();
 const state = ref<"logIn" | "signUp">("logIn");
@@ -40,7 +41,6 @@ onBeforeMount(() => {
 
 <template>
   <div class=" flex justify-center items-center w-[80vw] h-[80vh] z-10 absolute rounded-2xl overflow-hidden">
-
     <!-- forms -->
     <div
       class="w-1/2 h-full flex justify-center items-center relative bg-white overflow-hidden transition-all duration-1000 ease-in-out z-50"
@@ -62,6 +62,8 @@ onBeforeMount(() => {
       </TransitionGroup>
     </div>
 
+    <!-- middel animation -->
+    <middel-animation class="w-full h-full z-[100] absolute"></middel-animation>
   </div>
 </template>
 
