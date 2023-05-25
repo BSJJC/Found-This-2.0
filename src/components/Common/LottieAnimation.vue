@@ -11,8 +11,8 @@ const props = defineProps<config>()
 const lottieContainer = ref();
 
 onMounted(() => {
-  // 优先使用本地文件
   if (props.offLine) {
+    // 优先使用本地文件
     lottie.loadAnimation({
       container: lottieContainer.value!,
       renderer: "svg",
@@ -32,6 +32,8 @@ onMounted(() => {
       autoplay: true,
       path: props.onLine
     });
+
+    return
   }
 });
 </script>

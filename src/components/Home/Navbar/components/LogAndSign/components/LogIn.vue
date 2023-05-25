@@ -1,5 +1,5 @@
 <template>
-  <div class=" flex justify-center items-center flex-col  w-1/2 h-full bg-white">
+  <div class=" flex justify-center items-center flex-col  w-full h-full bg-white">
     <div class="text-3xl w-[400px] h-[40px] text-[#7E56DA]">Welcome back!</div>
 
     <!-- log in info input  -->
@@ -34,15 +34,14 @@
 
     <!-- log in button -->
     <button
-      class="w-[400px] h-[45px] bg-[#7E56DA] text-white text-xl rounded-lg transition duration-200 hover:bg-[#a07bf7]"
-      @click="logIn(ruleFormRef)">
+      class="w-[400px] h-[45px] bg-[#7E56DA] text-white text-xl rounded-lg transition duration-200 hover:bg-[#a07bf7]">
       Log in!
     </button>
 
     <!-- to sign up area -->
-    <div class="w-1/2 h-[45px] flex justify-center items-center opacity-50">
+    <div class=" w-1/2 h-[45px] flex justify-center items-center opacity-50">
       Don't have an account?
-      <a class="text-[#7E56DA] hover:text-[#a07bf7]" @click="toSignUpForm">Sign up!</a>
+      <a class="text-[#7E56DA] hover:text-[#a07bf7]">Sign up!</a>
     </div>
 
   </div>
