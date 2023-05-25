@@ -11,6 +11,10 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BgVideo: typeof import('./../components/Effects/BgVideo.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
+    ElForm: typeof import('element-plus/es')['ElForm']
+    ElFormItem: typeof import('element-plus/es')['ElFormItem']
+    ElInput: typeof import('element-plus/es')['ElInput']
     LogAndSign: typeof import('./../components/Home/Navbar/components/LogAndSign/index.vue')['default']
     LogIn: typeof import('./../components/Home/Navbar/components/LogAndSign/components/LogIn.vue')['default']
     Logo: typeof import('./../components/Common/Logo.vue')['default']

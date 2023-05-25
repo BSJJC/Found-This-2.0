@@ -33,7 +33,6 @@ export default defineConfig({
 
       dts: path.resolve(pathSrc, 'typings', 'components.d.ts'),
     }),
-
   ],
 
   resolve: {

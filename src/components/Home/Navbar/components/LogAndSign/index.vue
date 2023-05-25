@@ -1,16 +1,14 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import LogIn from './components/LogIn.vue';
+import SignUp from "./components/SignUp.vue"
+</script>
 
 <template>
-  <div class="w-[80vw] h-[80vh] bg-pink-300 z-10 absolute rounded-2xl">
-
+  <div class=" flex justify-center items-center w-[80vw] h-[80vh] bg-pink-300 z-10 absolute rounded-2xl overflow-hidden">
     <!-- Log in form -->
-    <div class="">
-      <el-button>123</el-button>
-    </div>
+    <log-in></log-in>
 
     <!-- sign up form -->
-
-
-
+    <sign-up></sign-up>
   </div>
 </template>

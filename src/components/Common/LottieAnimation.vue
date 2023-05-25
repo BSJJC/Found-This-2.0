@@ -2,23 +2,40 @@
 import { ref, onMounted } from "vue";
 import lottie from "lottie-web";
 
-const props = defineProps<{
-  animationUrl: string;
-}>();
+interface config {
+  onLine?: string;
+  offLine?: object
+}
 
-const lottieContainer = ref(null);
+const props = defineProps<config>()
+const lottieContainer = ref();
 
 onMounted(() => {
-  lottie.loadAnimation({
-    container: lottieContainer.value as unknown as Element,
-    renderer: "svg",
-    loop: true,
-    autoplay: true,
-    path: props.animationUrl,
-  });
+  // 优先使用本地文件
+  if (props.offLine) {
+    lottie.loadAnimation({
+      container: lottieContainer.value!,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      animationData: props.offLine
+    });
+
+    return
+  }
+  else {
+    //没有传入本地文件再使用在线文件
+    lottie.loadAnimation({
+      container: lottieContainer.value!,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      path: props.onLine
+    });
+  }
 });
 </script>
 
 <template>
-  <div ref="lottieContainer" class="scale-125"></div>
+  <div ref="lottieContainer"></div>
 </template>
