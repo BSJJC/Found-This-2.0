@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
-import lottie from "lottie-web";
+import { ref, Ref, onMounted, watch } from "vue";
+import lottie, { AnimationItem } from "lottie-web";
 
 interface config {
   onLine?: string;
@@ -8,33 +8,48 @@ interface config {
 }
 
 const props = defineProps<config>()
-const lottieContainer = ref();
+const lottieContainer: Ref<HTMLElement | undefined> = ref();
+const animationInstance: Ref<AnimationItem | undefined | null> = ref<AnimationItem>()
 
-onMounted(() => {
+function load(): void {
   if (props.offLine) {
     // 优先使用本地文件
-    lottie.loadAnimation({
+    animationInstance.value = lottie.loadAnimation({
       container: lottieContainer.value!,
       renderer: "svg",
       loop: true,
       autoplay: true,
       animationData: props.offLine
     });
-
-    return
   }
   else {
     //没有传入本地文件再使用在线文件
-    lottie.loadAnimation({
+    animationInstance.value = lottie.loadAnimation({
       container: lottieContainer.value!,
       renderer: "svg",
       loop: true,
       autoplay: true,
       path: props.onLine
     });
-
-    return
   }
+}
+
+// 监听传入的props改变
+// 如有改变，删除旧动画，加载新动画
+watch(
+  () => { props.offLine, props.onLine },
+  () => {
+    animationInstance.value!.destroy()
+    animationInstance.value = null
+    load();
+  },
+  {
+    deep: true
+  }
+)
+
+onMounted(() => {
+  load();
 });
 </script>
 

@@ -2,7 +2,7 @@
 import { ref, onBeforeMount, defineAsyncComponent } from "vue"
 import LottieAnimation from '@/components/Common/LottieAnimation.vue';
 
-const LogIn = defineAsyncComponent(() => import("./components/LogIn.vue"))
+import LogIn from "./components/LogIn.vue";
 const SignUp = defineAsyncComponent(() => import("./components/SignUp.vue"))
 
 const animationData = ref<object>();
@@ -31,13 +31,15 @@ onBeforeMount(() => {
     <!-- forms -->
     <div class="w-1/2 h-full">
       <!-- Log in form -->
-      <log-in></log-in>
+      <log-in @to-sign-up-page="fetchSignUpAnimationData"></log-in>
       <!-- sign up form -->
     </div>
 
     <!-- lottie animation -->
     <div class="w-1/2 h-full flex justify-center items-center bg-[#ffffff80]">
-      <lottie-animation v-if="animationData" :off-line="animationData" class="w-[90%]"></lottie-animation>
+      <Transition>
+        <lottie-animation v-if="animationData" :off-line="animationData" class="w-[90%]"></lottie-animation>
+      </Transition>
     </div>
 
   </div>

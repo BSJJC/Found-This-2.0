@@ -41,7 +41,7 @@
     <!-- to sign up area -->
     <div class=" w-1/2 h-[45px] flex justify-center items-center opacity-50">
       Don't have an account?
-      <a class="text-[#7E56DA] hover:text-[#a07bf7]">Sign up!</a>
+      <a class="text-[#7E56DA] hover:text-[#a07bf7] cursor-pointer" @click="toSignUpPage">Sign up!</a>
     </div>
 
   </div>
@@ -53,6 +53,8 @@ import { ref, reactive } from 'vue';
 import type { FormInstance, FormRules } from "element-plus";
 
 import disableInputSpace from '@/utils/disableInputSpace';
+
+const emits = defineEmits(['toSignUpPage']);
 
 const ruleFormRef = ref<FormInstance>();
 
@@ -94,6 +96,13 @@ const rules = reactive<FormRules>({
   email: [{ validator: emailCheck, trigger: "blur" }],
   password: [{ validator: passwordCheck, trigger: "blur" }],
 });
+
+
+function toSignUpPage() {
+  console.log(1);
+
+  emits("toSignUpPage")
+}
 </script>
   
 <style lang="scss" scoped>

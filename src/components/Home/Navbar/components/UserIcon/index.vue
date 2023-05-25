@@ -6,7 +6,7 @@
   </div>
 
   <template v-if="showTransform">
-    <TransformZoomIn @hide="hidedTransformZoomIn" :randomIDs="randomIDs" :states="states" :detailChanges="detailChanges">
+    <Transform @hide="hidedTransformZoomIn" :randomIDs="randomIDs" :states="states" :detailChanges="detailChanges">
       <template #origin>
         <div :id="randomIDs[0]"
           class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-blue-300 text-white rounded-3xl cursor-pointer transition-all duration-500 overflow-hidden z-[100]">
@@ -17,13 +17,13 @@
       <template #target>
         <log-and-sign :id="randomIDs[1]"></log-and-sign>
       </template>
-    </TransformZoomIn>
+    </Transform>
   </template>
 </template>
   
 <script setup lang='ts'>
 import { ref, Ref, defineAsyncComponent } from "vue"
-import TransformZoomIn from '@/components/Common/Transform.vue';
+import Transform from '@/components/Common/Transform.vue';
 
 const LogAndSign = defineAsyncComponent(() => import("../LogAndSign/index.vue"))
 

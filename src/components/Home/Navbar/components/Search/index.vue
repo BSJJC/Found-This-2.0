@@ -15,7 +15,7 @@
 
 
     <template v-if="showTransform">
-      <TransformZoomIn @hide="hidedTransformZoomIn" :randomIDs="randomIDs" :states="states" :detailChanges="[]">
+      <Transform @hide="hidedTransformZoomIn" :randomIDs="randomIDs" :states="states" :detailChanges="[]">
         <template #origin>
           <div :id="randomIDs[0]"
             class="flex justify-center items-center flex-row w-[700px] h-[50px] rounded-3xl border shadow-md bg-white z-[100] transition-all duration-500 ease-in-out absolute">
@@ -44,7 +44,7 @@
           </div>
         </template>
 
-      </TransformZoomIn>
+      </Transform>
     </template>
   </div>
 </template>
@@ -52,7 +52,7 @@
 <script lang="ts" setup>
 import { ref, Ref } from "vue";
 import IconSearch from "@/assets/icons/IconSearch.vue";
-import TransformZoomIn from "@/components/Common/Transform.vue";
+import Transform from "@/components/Common/Transform.vue";
 
 const op: Ref<HTMLElement | undefined> = ref();
 const showTransform = ref(false)
