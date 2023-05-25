@@ -32,9 +32,10 @@
       </el-form-item>
     </el-form>
 
-    <!-- log in button -->
+    <!-- submit  button -->
     <button
-      class="w-[400px] h-[45px] bg-[#7E56DA] text-white text-xl rounded-lg transition duration-200 hover:bg-[#a07bf7]">
+      class="w-[400px] h-[45px] bg-[#7E56DA] text-white text-xl rounded-lg transition duration-200 hover:bg-[#a07bf7]"
+      @click="submitLogIn(ruleFormRef)">
       Log in!
     </button>
 
@@ -52,6 +53,8 @@ import { ref, reactive } from 'vue';
 //@ts-ignore
 import type { FormInstance, FormRules } from "element-plus";
 import disableInputSpace from '@/utils/disableInputSpace';
+
+import userLogIn from "@/api/User/userLogIn.js"
 
 const emits = defineEmits(['switchState']);
 
@@ -95,6 +98,32 @@ const rules = reactive<FormRules>({
   email: [{ validator: emailCheck, trigger: "blur" }],
   password: [{ validator: passwordCheck, trigger: "blur" }],
 });
+
+async function submitLogIn(formEl: FormInstance | undefined) {
+  if (!formEl) return;
+
+  await formEl.validate(async (valid: any) => {
+    if (!valid) {
+      console.log("error submit!");
+      return false;
+    }
+  });
+
+  try {
+    const user = await userLogIn({
+      email: ruleForm.email,
+      password: ruleForm.password,
+    });
+
+    console.log(user);
+
+
+
+  } catch (error) {
+
+  }
+
+}
 
 /**
  * 转到注册页面
