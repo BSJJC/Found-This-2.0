@@ -23,8 +23,8 @@
   
 <script setup lang='ts'>
 import { ref, Ref, defineAsyncComponent } from "vue"
-import Transform from '@/components/Common/Transform.vue';
 
+import Transform from '@/components/Common/Transform.vue';
 const LogAndSign = defineAsyncComponent(() => import("../LogAndSign/index.vue"))
 
 const showTransform: Ref<boolean> = ref(false)
@@ -49,9 +49,14 @@ const detailChanges = [
   }
 ]
 
+/**
+ * 展示登录、注册页面
+ */
 function showLogAndSign(): void {
   const rect: DOMRect = logInBtnRef.value!.getBoundingClientRect();
-  const { width, height, top, left } = rect;
+  const { width, height, top, left } = rect as {
+    width: number, height: number, top: number, left: number
+  }
 
   states.value.startWidth = width
   states.value.startHeight = height
@@ -65,7 +70,7 @@ function showLogAndSign(): void {
 }
 
 /**
- * @description        hide transform zoom in
+ * 隐藏Transform
  */
 function hidedTransform(): void {
   showTransform.value = false

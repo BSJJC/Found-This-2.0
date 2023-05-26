@@ -7,7 +7,6 @@ export const userLogAndSign = defineStore({
     state: States.LogIn,
     middleAnimationState: MiddleAnimationStates.Pending
   }),
-
 });
 
 export default userLogAndSign;

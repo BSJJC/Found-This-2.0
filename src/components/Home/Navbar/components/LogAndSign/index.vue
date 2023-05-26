@@ -6,8 +6,7 @@
       :style="{ transform: `${state === States.LogIn ? 'translateX(0%)' : 'translateX(100%)'}` }">
       <Transition name="fade-up">
         <KeepAlive>
-          <component :is="state == States.LogIn ? LogIn : SignUp" @switchState="switchState" @hide="hide"
-            class="absolute"></component>
+          <component :is="state == States.LogIn ? LogIn : SignUp" @switchState="switchState" class="absolute"></component>
         </KeepAlive>
       </Transition>
     </div>
@@ -41,8 +40,6 @@ import LogIn from "./components/LogIn.vue";
 const SignUp = defineAsyncComponent(() => import("./components/SignUp.vue"))
 const MiddelAnimation = defineAsyncComponent(() => import("./components/MiddelAnimation.vue"))
 
-const emits = defineEmits(["hide"])
-
 const animationData: Ref<object | undefined> = ref<object>();
 const { state } = storeToRefs(userLogAndSign()) as { state: Ref<States> }
 const { middleAnimationState } = storeToRefs(userLogAndSign()) as { middleAnimationState: Ref<MiddleAnimationStates> }
@@ -54,6 +51,7 @@ async function fetchLogInAnimationData(): Promise<void> {
   state.value = States.LogIn
   animationData.value = (await import("@/assets/lottie/LogInLottie.json")).default
 }
+
 /**
  * 加载本地注册页面Lottie动画
  */
@@ -76,12 +74,7 @@ function switchState(): void {
 onBeforeMount(() => {
   fetchLogInAnimationData()
 })
-
-function hide(): void {
-  emits("hide")
-}
 </script>
-
 
 <style lang="scss" scoped>
 @use "@/css/transformAnimations.scss"

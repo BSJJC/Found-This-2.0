@@ -47,22 +47,27 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, reactive } from 'vue';
+import { ref, Ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import { AxiosResponse } from 'axios';
 //@ts-ignore
 import type { FormInstance, FormRules } from "element-plus";
 import disableInputSpace from '@/utils/disableInputSpace';
+
 import userLogAndSign from '@/stores/useLogAndSign';
 import { MiddleAnimationStates } from "@/types/LogAndSign"
+import useTrasnform from '@/stores/useTrasnform';
+import { TransformStates } from "@/types/Transform"
+
 import userLogIn from "@/api/User/userLogIn.js"
 
 const emits = defineEmits(["switchState"]);
 
-const { middleAnimationState } = storeToRefs(userLogAndSign())
+const { middleAnimationState } = storeToRefs(userLogAndSign()) as { middleAnimationState: Ref<MiddleAnimationStates> }
 
-const ruleFormRef = ref<FormInstance>();
+const ruleFormRef: Ref<FormInstance> = ref<FormInstance>()
 
-const ruleForm = reactive({
+const ruleForm: Ref<{ email: string; password: string; }> = ref({
   email: "123@123.com",
   password: "123",
 });
@@ -74,11 +79,11 @@ function emailCheck(rule: any, value: any, callback: any): void {
   }
 
   const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-  if (!reg.test(ruleForm.email)) {
+  if (!reg.test(ruleForm.value.email)) {
     callback(new Error("Please input the right email"));
   }
 
-  if (ruleForm.email !== "") {
+  if (ruleForm.value.email !== "") {
     if (!ruleFormRef.value) return;
   }
 
@@ -89,20 +94,33 @@ function passwordCheck(rule: any, value: any, callback: any): void {
   if (value === "") {
     callback(new Error("Please input the password"));
   } else {
-    if (ruleForm.password !== "") {
+    if (ruleForm.value.password !== "") {
       if (!ruleFormRef.value) return;
     }
     callback();
   }
 };
 
-const rules = reactive<FormRules>({
+const rules: Ref<FormRules> = ref<FormRules>({
   email: [{ validator: emailCheck, trigger: "blur" }],
   password: [{ validator: passwordCheck, trigger: "blur" }],
 });
 
-async function submitLogIn(formEl: FormInstance | undefined) {
-  if (!formEl) return;
+/**
+ * 主动阻塞执行
+ * 播放动画
+ * @param time 需要阻塞的时间，单位为ms
+ */
+function block(time: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
+/**
+ * 提交表单
+ * @param formEl 表单div
+ */
+async function submitLogIn(formEl: FormInstance | undefined): Promise<boolean> {
+  if (!formEl) return false;
 
   // 验证表单
   await formEl.validate(async (valid: any) => {
@@ -116,17 +134,29 @@ async function submitLogIn(formEl: FormInstance | undefined) {
   try {
     middleAnimationState.value = MiddleAnimationStates.Fulfilled
 
-    const user = await userLogIn({
-      email: ruleForm.email,
-      password: ruleForm.password,
+    await block(1000);
+
+    const user: AxiosResponse<any, any> = await userLogIn({
+      email: ruleForm.value.email,
+      password: ruleForm.value.password,
     });
 
     if (user) {
       middleAnimationState.value = MiddleAnimationStates.Success
     }
+
+    await block(1500);
+
+    const { transformSwitch } = storeToRefs(useTrasnform())
+    transformSwitch.value = TransformStates.off
+    middleAnimationState.value = MiddleAnimationStates.Pending
+
+    return true;
   } catch (error) {
     console.log(error);
     middleAnimationState.value = MiddleAnimationStates.Failed
+
+    return false
   }
 }
 
@@ -136,8 +166,6 @@ async function submitLogIn(formEl: FormInstance | undefined) {
 function toSignUpPage() {
   emits("switchState")
 }
-
-
 </script>
   
 <style lang="scss" scoped>

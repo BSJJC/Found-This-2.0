@@ -52,11 +52,20 @@ const { middleAnimationState } = storeToRefs(userLogAndSign()) as { middleAnimat
 const sentence: Ref<MiddleAnimationSentences> = ref<MiddleAnimationSentences>(MiddleAnimationSentences["please wait..."])
 const sentenceID: Ref<"loading" | "success" | "failed"> = ref<"loading" | "success" | "failed">("loading")
 
+/**
+ * 隐藏MiddleAnimation
+ * 重置相关数据
+ */
 function reset(): void {
   middleAnimationState.value = MiddleAnimationStates.Pending
   sentence.value = MiddleAnimationSentences["please wait..."]
 }
 
+/**
+ * 监视middleAnimationState
+ * 当改变时
+ * 将播放的lottie动画以及语句修改为对应的
+ */
 watch(
   () => middleAnimationState.value,
   (newVal) => {
@@ -76,7 +85,6 @@ watch(
 <style lang="scss" scoped>
 @use"@/css/transformAnimations.scss";
 
-
 #loading {
   animation: loading 1s ease-in-out infinite;
 }
@@ -95,7 +103,6 @@ watch(
   }
 }
 
-
 #success {
   animation: success 0.3s ease-in-out forwards;
 }
@@ -105,7 +112,6 @@ watch(
     transform: translateY(-20px);
   }
 }
-
 
 #failed {
   animation: failed 1.5s ease-in-out forwards;
