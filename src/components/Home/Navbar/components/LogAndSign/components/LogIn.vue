@@ -1,7 +1,6 @@
 <template>
   <div class=" flex justify-center items-center flex-col  w-full h-full bg-white">
     <div class="text-3xl w-[400px] h-[40px] text-[#7E56DA]">Welcome back!</div>
-
     <!-- log in info input  -->
     <el-form class="w-[400px] mt-5" ref="ruleFormRef" :model="ruleForm" :rules="rules">
       <div>Email:</div>
@@ -44,7 +43,6 @@
       Don't have an account?
       <a class="text-[#7E56DA] hover:text-[#a07bf7] cursor-pointer" @click="toSignUpPage">Sign up!</a>
     </div>
-
   </div>
 </template>
   
@@ -58,7 +56,7 @@ import userLogAndSign from '@/stores/useLogAndSign';
 import { MiddleAnimationStates } from "@/types/LogAndSign"
 import userLogIn from "@/api/User/userLogIn.js"
 
-const emits = defineEmits(["switchState", "logInError"]);
+const emits = defineEmits(["switchState"]);
 
 const { middleAnimationState } = storeToRefs(userLogAndSign())
 
@@ -123,11 +121,9 @@ async function submitLogIn(formEl: FormInstance | undefined) {
       password: ruleForm.password,
     });
 
-    setTimeout(() => {
-      if (user) {
-        middleAnimationState.value = MiddleAnimationStates.Success
-      }
-    }, 1000);
+    if (user) {
+      middleAnimationState.value = MiddleAnimationStates.Success
+    }
   } catch (error) {
     console.log(error);
     middleAnimationState.value = MiddleAnimationStates.Failed

@@ -6,7 +6,8 @@
       :style="{ transform: `${state === States.LogIn ? 'translateX(0%)' : 'translateX(100%)'}` }">
       <Transition name="fade-up">
         <KeepAlive>
-          <component :is="state == States.LogIn ? LogIn : SignUp" @switchState="switchState" class="absolute"></component>
+          <component :is="state == States.LogIn ? LogIn : SignUp" @switchState="switchState" @hide="hide"
+            class="absolute"></component>
         </KeepAlive>
       </Transition>
     </div>
@@ -29,7 +30,6 @@
   </div>
 </template>
 
-
 <script lang="ts" setup>
 import { ref, Ref, onBeforeMount, defineAsyncComponent } from "vue"
 import LottieAnimation from '@/components/Common/LottieAnimation.vue';
@@ -40,6 +40,8 @@ import { States, MiddleAnimationStates } from "@/types/LogAndSign.ts"
 import LogIn from "./components/LogIn.vue";
 const SignUp = defineAsyncComponent(() => import("./components/SignUp.vue"))
 const MiddelAnimation = defineAsyncComponent(() => import("./components/MiddelAnimation.vue"))
+
+const emits = defineEmits(["hide"])
 
 const animationData: Ref<object | undefined> = ref<object>();
 const { state } = storeToRefs(userLogAndSign()) as { state: Ref<States> }
@@ -74,6 +76,10 @@ function switchState(): void {
 onBeforeMount(() => {
   fetchLogInAnimationData()
 })
+
+function hide(): void {
+  emits("hide")
+}
 </script>
 
 
