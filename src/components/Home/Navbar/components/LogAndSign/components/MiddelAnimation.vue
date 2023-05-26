@@ -1,12 +1,14 @@
 <template>
   <div class="flex justify-center items-center flex-col">
     <div class="w-full h-1/2 bg-white flex justify-center items-center">
-      <lottie-animation v-if="state === 0" :off-line="loading"></lottie-animation>
+      <lottie-animation v-if="middleAnimationState === MiddleAnimationStates.Fulfilled"
+        :off-line="loading"></lottie-animation>
+
     </div>
 
     <div class="w-full h-1/2 bg-[#7e56da] flex justify-center items-center ">
       <div v-for="(i, index) in Sentences[sentence]" :key="index" :id="sentenceID"
-        class="text-[5rem] text-white mr-[10px] uppercase" :style="{ animationDelay: `${index * 0.1}s` }">
+        class="text-[3rem] text-white mr-[10px] uppercase" :style="{ animationDelay: `${index * 0.1}s` }">
         {{ i }}
       </div>
     </div>
@@ -15,14 +17,14 @@
   
 <script setup lang='ts'>
 import { ref, Ref } from "vue"
+import { storeToRefs } from "pinia";
+import userLogAndSign from "@/stores/useLogAndSign";
+import { MiddleAnimationStates } from "@/types/LogAndSign"
 import LottieAnimation from '@/components/Common/LottieAnimation.vue';
-import loading from "@/assets/lottie/LoadingLottie.json"
 
-enum States {
-  "loading",
-  "success",
-  "failed"
-}
+import loading from "@/assets/lottie/LoadingLottie.json"
+import success from "@/assets/lottie/SuccessLottie.json"
+import failed from "@/assets/lottie/FailedLottie.json"
 
 enum Sentences {
   "please   wait...",
@@ -30,7 +32,7 @@ enum Sentences {
   "login   failed..."
 }
 
-const state: Ref<States> = ref<States>(States.loading)
+const { middleAnimationState } = storeToRefs(userLogAndSign())
 const sentence: Ref<Sentences> = ref<Sentences>(Sentences["please   wait..."])
 const sentenceID: Ref<"loading" | "success" | "failed"> = ref<"loading" | "success" | "failed">("loading")
 </script>

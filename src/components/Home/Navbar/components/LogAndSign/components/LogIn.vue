@@ -50,13 +50,17 @@
   
 <script setup lang='ts'>
 import { ref, reactive } from 'vue';
+import { storeToRefs } from 'pinia';
 //@ts-ignore
 import type { FormInstance, FormRules } from "element-plus";
 import disableInputSpace from '@/utils/disableInputSpace';
-
+import userLogAndSign from '@/stores/useLogAndSign';
+import { MiddleAnimationStates } from "@/types/LogAndSign"
 import userLogIn from "@/api/User/userLogIn.js"
 
-const emits = defineEmits(['switchState']);
+const emits = defineEmits(["switchState", "logInError"]);
+
+const { middleAnimationState } = storeToRefs(userLogAndSign())
 
 const ruleFormRef = ref<FormInstance>();
 
@@ -102,6 +106,7 @@ const rules = reactive<FormRules>({
 async function submitLogIn(formEl: FormInstance | undefined) {
   if (!formEl) return;
 
+  // 验证表单
   await formEl.validate(async (valid: any) => {
     if (!valid) {
       console.log("error submit!");
@@ -109,16 +114,23 @@ async function submitLogIn(formEl: FormInstance | undefined) {
     }
   });
 
+  // 尝试登录
   try {
+    middleAnimationState.value = MiddleAnimationStates.Fulfilled
+
     const user = await userLogIn({
       email: ruleForm.email,
       password: ruleForm.password,
     });
 
-    console.log(user);
+    if (user) {
+      middleAnimationState.value = MiddleAnimationStates.Success
+    }
 
 
   } catch (error) {
+    console.error(error)
+
 
   }
 
@@ -130,6 +142,8 @@ async function submitLogIn(formEl: FormInstance | undefined) {
 function toSignUpPage() {
   emits("switchState")
 }
+
+
 </script>
   
 <style lang="scss" scoped>
