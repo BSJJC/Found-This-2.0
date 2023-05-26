@@ -1,6 +1,6 @@
 <template>
   <div class=" flex justify-center items-center flex-col w-full h-full bg-white">
-    <div class="text-3xl w-[400px] h-[40px] text-[#7E56DA]">Welcome! New friend!</div>
+    <div class="text-3xl w-[400px] h-[40px] text-[#7E56DA] font-bold">Welcome! New friend!</div>
 
     <el-form class="w-[400px] mt-5" ref="ruleFormRef" :model="ruleForm" :rules="rules">
       <div>Email:</div>

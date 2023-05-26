@@ -1,20 +1,20 @@
 <template>
   <div class=" flex justify-center items-center flex-col  w-full h-full bg-white">
-    <div class="text-3xl w-[400px] h-[40px] text-[#7E56DA]">Welcome back!</div>
+    <div class="text-3xl w-[400px] h-[40px] text-[#7E56DA] font-bold">Welcome back!</div>
     <!-- log in info input  -->
     <el-form class="w-[400px] mt-5" ref="ruleFormRef" :model="ruleForm" :rules="rules">
       <div>Email:</div>
 
       <el-form-item prop="email">
         <el-input v-model="ruleForm.email" type="text" placeholder="Enter your email" class="text-[#7E56DA]"
-          @input="ruleForm.email = disableInputSpace(ruleForm.email)" />
+          @input="ruleForm.email = disableInputSpace(ruleForm.email)" @keydown.enter="submitLogIn(ruleFormRef)" />
       </el-form-item>
 
       <div>Password:</div>
 
       <el-form-item prop="password">
         <el-input v-model="ruleForm.password" type="password" placeholder="Enter your password" class="text-[#7E56DA]"
-          @input="ruleForm.password = disableInputSpace(ruleForm.password)" />
+          @input="ruleForm.password = disableInputSpace(ruleForm.password)" @keydown.enter="submitLogIn(ruleFormRef)" />
       </el-form-item>
 
       <el-form-item>
