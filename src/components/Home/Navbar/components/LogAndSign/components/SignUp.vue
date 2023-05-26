@@ -61,8 +61,7 @@ const ruleForm = reactive({
   confirmPassword: "",
 });
 
-//@ts-ignore
-function emailCheck(rule: any, value: any, callback: any) {
+function emailCheck(_rule: any, value: any, callback: any) {
   if (value === "") {
     callback(new Error("Please input the email"));
   }
@@ -74,16 +73,14 @@ function emailCheck(rule: any, value: any, callback: any) {
 
   callback();
 }
-//@ts-ignore
-function userNameCheck(rule: any, value: any, callback: any) {
+function userNameCheck(_rule: any, value: any, callback: any) {
   if (value === "") {
     callback(new Error("Please input your user name"));
   }
 
   callback();
 }
-//@ts-ignore
-function passwordCheck(rule: any, value: any, callback: any) {
+function passwordCheck(_rule: any, value: any, callback: any) {
   if (value === "") {
     callback(new Error("Please input the password"));
   }
@@ -92,8 +89,7 @@ function passwordCheck(rule: any, value: any, callback: any) {
 
   callback();
 }
-//@ts-ignore
-function confirmPasswordCheck(rule: any, value: any, callback: any) {
+function confirmPasswordCheck(_rule: any, value: any, callback: any) {
   if (value === "") {
     callback(new Error("Please input password again to confirm"));
   }
@@ -114,6 +110,9 @@ const rules = reactive<FormRules>({
   confirmPassword: [{ validator: confirmPasswordCheck, trigger: "blur" }],
 });
 
+/**
+ * 转到登陆页面
+ */
 function toLogInPage(): void {
   emits("switchState")
 }

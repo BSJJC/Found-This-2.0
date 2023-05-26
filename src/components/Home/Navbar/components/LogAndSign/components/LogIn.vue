@@ -72,8 +72,7 @@ const ruleForm: Ref<{ email: string; password: string; }> = ref({
   password: "123",
 });
 
-//@ts-ignore
-function emailCheck(rule: any, value: any, callback: any): void {
+function emailCheck(_rule: any, value: any, callback: any): void {
   if (value === "") {
     callback(new Error("Please input the email"));
   }
@@ -89,8 +88,7 @@ function emailCheck(rule: any, value: any, callback: any): void {
 
   callback();
 };
-//@ts-ignore
-function passwordCheck(rule: any, value: any, callback: any): void {
+function passwordCheck(_rule: any, value: any, callback: any): void {
   if (value === "") {
     callback(new Error("Please input the password"));
   } else {
