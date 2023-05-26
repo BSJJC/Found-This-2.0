@@ -9,3 +9,9 @@ export enum MiddleAnimationStates {
   "Success",
   "Failed"
 }
+
+export enum MiddleAnimationSentences {
+  "please wait...",
+  "login success!",
+  "login failed..."
+}

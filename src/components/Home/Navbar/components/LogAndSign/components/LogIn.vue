@@ -123,17 +123,15 @@ async function submitLogIn(formEl: FormInstance | undefined) {
       password: ruleForm.password,
     });
 
-    if (user) {
-      middleAnimationState.value = MiddleAnimationStates.Success
-    }
-
-
+    setTimeout(() => {
+      if (user) {
+        middleAnimationState.value = MiddleAnimationStates.Success
+      }
+    }, 1000);
   } catch (error) {
-    console.error(error)
-
-
+    console.log(error);
+    middleAnimationState.value = MiddleAnimationStates.Failed
   }
-
 }
 
 /**

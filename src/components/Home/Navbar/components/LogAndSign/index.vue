@@ -15,16 +15,16 @@
     <div
       class="w-1/2 h-full flex justify-center items-center bg-[#ffffff80] relative transition-all duration-1000 ease-in-out z-10"
       :style="{ transform: `${state === States.LogIn ? 'translateX(0%)' : 'translateX(-100%)'}` }">
-      <TransitionGroup name="fade-up">
+      <transition-group name="fade-up">
         <lottie-animation v-if="state === States.LogIn" :off-line="animationData"
           class="w-[90%] absolute"></lottie-animation>
         <lottie-animation v-if="state === States.SignUp" :off-line="animationData"
           class="w-[90%] absolute"></lottie-animation>
-      </TransitionGroup>
+      </transition-group>
     </div>
 
     <!-- middel animation -->
-    <middel-animation class="w-full h-full z-[100] absolute transition-all duration-500 translate-y-[100%]"
+    <middel-animation
       :style="{ transform: `${middleAnimationState === MiddleAnimationStates.Pending ? 'translateY(100%)' : 'translateY(0%)'}` }"></middel-animation>
   </div>
 </template>
@@ -42,8 +42,8 @@ const SignUp = defineAsyncComponent(() => import("./components/SignUp.vue"))
 const MiddelAnimation = defineAsyncComponent(() => import("./components/MiddelAnimation.vue"))
 
 const animationData: Ref<object | undefined> = ref<object>();
-const { state } = storeToRefs(userLogAndSign())
-const { middleAnimationState } = storeToRefs(userLogAndSign())
+const { state } = storeToRefs(userLogAndSign()) as { state: Ref<States> }
+const { middleAnimationState } = storeToRefs(userLogAndSign()) as { middleAnimationState: Ref<MiddleAnimationStates> }
 
 /**
  * 加载本地登录页面lottie动画
@@ -70,6 +70,7 @@ function switchState(): void {
     : fetchLogInAnimationData();
 }
 
+// 默认开屏展示登录页面
 onBeforeMount(() => {
   fetchLogInAnimationData()
 })
