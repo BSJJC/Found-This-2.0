@@ -7,33 +7,35 @@
 
       <el-form-item prop="email">
         <el-input v-model="ruleForm.email" type="text" placeholder="Enter your email" class="text-[#7E56DA]"
-          @input="ruleForm.email = disableInputSpace(ruleForm.email)" />
+          @input="ruleForm.email = disableInputSpaceByRule(ruleForm.email, 0)" />
       </el-form-item>
 
       <div class="text-lg">User name:</div>
 
       <el-form-item prop="userName">
         <el-input v-model="ruleForm.userName" type="text" placeholder="Enter your user name" class="text-[#7E56DA]"
-          @input="ruleForm.email = disableInputSpace(ruleForm.email)" />
+          @input="ruleForm.userName = disableInputSpaceByRule(ruleForm.userName, 0)" />
       </el-form-item>
 
       <div>Password:</div>
 
       <el-form-item prop="password">
         <el-input v-model="ruleForm.password" type="password" placeholder="Enter your password" class="text-[#7E56DA]"
-          @input="ruleForm.password = disableInputSpace(ruleForm.password)" />
+          @input="ruleForm.password = disableInputSpaceByRule(ruleForm.password, 0)" />
       </el-form-item>
 
       <div>Confirm Password:</div>
 
       <el-form-item prop="confirmPassword">
         <el-input v-model="ruleForm.confirmPassword" type="password" placeholder="Enter your password again"
-          class="text-[#7E56DA]" @input="ruleForm.confirmPassword = disableInputSpace(ruleForm.confirmPassword)" />
+          class="text-[#7E56DA]"
+          @input="ruleForm.confirmPassword = disableInputSpaceByRule(ruleForm.confirmPassword, 0)" />
       </el-form-item>
     </el-form>
 
     <button
-      class="w-[400px] h-[45px] bg-[#7E56DA] text-white text-xl rounded-lg transition duration-200 my-3 hover:bg-[#a07bf7]">
+      class="w-[400px] h-[45px] bg-[#7E56DA] text-white text-xl rounded-lg transition duration-200 my-3 hover:bg-[#a07bf7]"
+      @click="submitSignUp(ruleFormRef)">
       Sign up!
     </button>
 
@@ -46,15 +48,31 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, reactive } from "vue";
+import { ref, Ref } from "vue";
+import { storeToRefs } from "pinia"
+import { AxiosResponse } from 'axios';
 //@ts-ignore
 import type { FormInstance, FormRules } from "element-plus";
-import disableInputSpace from "@/utils/disableInputSpace";
+import disableInputSpaceByRule from "@/utils/disableInputSpaceByRule";
+import block from "@/utils/block";
+
+import userSignUp from "@/api/User/userSignUp";
+
+import userLogAndSign from '@/stores/useLogAndSign';
+import { MiddleAnimationStates } from "@/types/LogAndSign"
+import useTrasnform from '@/stores/useTrasnform';
+import { TransformStates } from "@/types/Transform"
 
 const emits = defineEmits(["switchState"])
+const { middleAnimationState } = storeToRefs(userLogAndSign()) as { middleAnimationState: Ref<MiddleAnimationStates> }
 
 const ruleFormRef = ref<FormInstance>();
-const ruleForm = reactive({
+const ruleForm: Ref<{
+  email: string;
+  userName: string;
+  password: string;
+  confirmPassword: string;
+}> = ref({
   email: "",
   userName: "",
   password: "",
@@ -67,7 +85,7 @@ function emailCheck(_rule: any, value: any, callback: any) {
   }
 
   const reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-  if (!reg.test(ruleForm.email)) {
+  if (!reg.test(ruleForm.value.email)) {
     callback(new Error("Please input the right email"));
   }
 
@@ -94,7 +112,7 @@ function confirmPasswordCheck(_rule: any, value: any, callback: any) {
     callback(new Error("Please input password again to confirm"));
   }
 
-  if (ruleForm.confirmPassword !== ruleForm.password) {
+  if (ruleForm.value.confirmPassword !== ruleForm.value.password) {
     callback(new Error("The two entered passwords do not match"));
   }
 
@@ -103,12 +121,53 @@ function confirmPasswordCheck(_rule: any, value: any, callback: any) {
   callback();
 }
 
-const rules = reactive<FormRules>({
+const rules: Ref<FormRules> = ref<FormRules>({
   email: [{ validator: emailCheck, trigger: "blur" }],
   userName: [{ validator: userNameCheck, trigger: "blur" }],
   password: [{ validator: passwordCheck, trigger: "blur" }],
   confirmPassword: [{ validator: confirmPasswordCheck, trigger: "blur" }],
 });
+
+async function submitSignUp(formEl: FormInstance | undefined): Promise<void> {
+  if (!formEl) return;
+
+  // 验证表单
+  await formEl.validate((valid: any) => {
+    if (!valid) {
+      throw new Error("Form validation failed.")
+    }
+  });
+
+  // 尝试注册
+  try {
+    middleAnimationState.value = MiddleAnimationStates.Fulfilled
+
+    await block(1000);
+
+    const user: AxiosResponse<any, any> = await userSignUp({
+      email: ruleForm.value.email.trim(),
+      userName: ruleForm.value.userName.trim(),
+      password: ruleForm.value.password.trim(),
+    });
+
+    if (user) {
+      middleAnimationState.value = MiddleAnimationStates.Success
+    }
+
+    await block(1500);
+
+    const { transformSwitch } = storeToRefs(useTrasnform())
+    transformSwitch.value = TransformStates.off
+    middleAnimationState.value = MiddleAnimationStates.Pending
+
+    return;
+  } catch (error) {
+    console.log(error);
+    middleAnimationState.value = MiddleAnimationStates.Failed
+
+    return;
+  }
+}
 
 /**
  * 转到登陆页面

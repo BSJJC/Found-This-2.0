@@ -7,14 +7,16 @@
 
       <el-form-item prop="email">
         <el-input v-model="ruleForm.email" type="text" placeholder="Enter your email" class="text-[#7E56DA]"
-          @input="ruleForm.email = disableInputSpace(ruleForm.email)" @keydown.enter="submitLogIn(ruleFormRef)" />
+          @input="ruleForm.email = disableInputSpaceByRuleByRule(ruleForm.email, 0)"
+          @keydown.enter="submitLogIn(ruleFormRef)" />
       </el-form-item>
 
       <div>Password:</div>
 
       <el-form-item prop="password">
         <el-input v-model="ruleForm.password" type="password" placeholder="Enter your password" class="text-[#7E56DA]"
-          @input="ruleForm.password = disableInputSpace(ruleForm.password)" @keydown.enter="submitLogIn(ruleFormRef)" />
+          @input="ruleForm.password = disableInputSpaceByRuleByRule(ruleForm.password, 0)"
+          @keydown.enter="submitLogIn(ruleFormRef)" />
       </el-form-item>
 
       <el-form-item>
@@ -52,14 +54,16 @@ import { storeToRefs } from 'pinia';
 import { AxiosResponse } from 'axios';
 //@ts-ignore
 import type { FormInstance, FormRules } from "element-plus";
-import disableInputSpace from '@/utils/disableInputSpace';
+import disableInputSpaceByRuleByRule from "@/utils/disableInputSpaceByRule"
+import block from '@/utils/block';
+
+import userLogIn from "@/api/User/userLogIn.js"
 
 import userLogAndSign from '@/stores/useLogAndSign';
 import { MiddleAnimationStates } from "@/types/LogAndSign"
 import useTrasnform from '@/stores/useTrasnform';
 import { TransformStates } from "@/types/Transform"
 
-import userLogIn from "@/api/User/userLogIn.js"
 
 const emits = defineEmits(["switchState"]);
 
@@ -105,26 +109,16 @@ const rules: Ref<FormRules> = ref<FormRules>({
 });
 
 /**
- * 主动阻塞执行
- * 播放动画
- * @param time 需要阻塞的时间，单位为ms
- */
-function block(time: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
-
-/**
  * 提交表单
  * @param formEl 表单div
  */
-async function submitLogIn(formEl: FormInstance | undefined): Promise<boolean> {
-  if (!formEl) return false;
+async function submitLogIn(formEl: FormInstance | undefined): Promise<void> {
+  if (!formEl) return;
 
   // 验证表单
-  await formEl.validate(async (valid: any) => {
+  await formEl.validate((valid: any) => {
     if (!valid) {
-      console.log("error submit!");
-      return false;
+      throw new Error("Form validation failed.");
     }
   });
 
@@ -135,8 +129,8 @@ async function submitLogIn(formEl: FormInstance | undefined): Promise<boolean> {
     await block(1000);
 
     const user: AxiosResponse<any, any> = await userLogIn({
-      email: ruleForm.value.email,
-      password: ruleForm.value.password,
+      email: ruleForm.value.email.trim(),
+      password: ruleForm.value.password.trim(),
     });
 
     if (user) {
@@ -149,12 +143,12 @@ async function submitLogIn(formEl: FormInstance | undefined): Promise<boolean> {
     transformSwitch.value = TransformStates.off
     middleAnimationState.value = MiddleAnimationStates.Pending
 
-    return true;
+    return;
   } catch (error) {
     console.log(error);
     middleAnimationState.value = MiddleAnimationStates.Failed
 
-    return false
+    return;
   }
 }
 
