@@ -14,7 +14,7 @@
 
       <el-form-item prop="userName">
         <el-input v-model="ruleForm.userName" type="text" placeholder="Enter your user name" class="text-[#7E56DA]"
-          @input="ruleForm.userName = disableInputSpaceByRule(ruleForm.userName, 0)" />
+          @input="ruleForm.userName = disableInputSpaceByRule(ruleForm.userName, 1)" />
       </el-form-item>
 
       <div>Password:</div>
