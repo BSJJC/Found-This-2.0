@@ -38,8 +38,7 @@
           </div>
           <div class="w-full h-2/3 text-2xl text-[#5d5d5d] flex justify-center items-center flex-row">
             <div class="h-full w-[20%] flex justify-start items-center">
-              <Avater :src="`http://localhost:5000/api/userAvaters/get/`" alt="topic founder avatar"
-                loading-text="loading"></Avater>
+              
             </div>
             <div class="h-full w-[80%] text-[1.2rem] overflow-clip">
               Lorem ipsum, dolor sit amet consectetur consectetur consectetur consectetur
