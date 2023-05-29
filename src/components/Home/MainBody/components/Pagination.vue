@@ -48,7 +48,7 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, Ref, watch, onMounted } from "vue"
+import { ref, Ref, watch } from "vue"
 import IconArrowLeft from '@/assets/icons/IconArrowLeft.vue';
 import IconArrowRight from '@/assets/icons/IconArrowRight.vue';
 
@@ -66,6 +66,14 @@ const pageCounts: number = props.pageCounts
 const pages: Ref<number[]> = ref([])
 const currentPage: Ref<number> = ref(1)
 
+/**
+ * 计算需要展示的页码
+ * 具体为一个number类型的数组
+ * 
+ * 例如
+ * 当pageSize为3，pageCounts为10，currentPage为1时
+ * pages为[1，2，3，4，10]
+ */
 function calculatePages(): void {
   /**
    * 清空所展示的所有页码
@@ -196,18 +204,28 @@ function calculatePages(): void {
   pages.value = result
 }
 
+/**
+ * 前往下一页
+ */
 function toPrePage(): void {
   if (currentPage.value - 1 !== 0) {
     currentPage.value--
   }
 }
 
+/**
+ * 前往上一页
+ */
 function toNextPage(): void {
   if (currentPage.value + 1 !== pageCounts + 1) {
     currentPage.value++
   }
 }
 
+/**
+ * 前往指定页码
+ * @param index 所需要前往的具体页码
+ */
 function toSelectedPage(index: number): void {
   currentPage.value = index;
 }
@@ -216,12 +234,11 @@ watch(
   () => currentPage.value,
   () => {
     calculatePages()
+  },
+  {
+    immediate: true
   }
 )
-
-onMounted(() => {
-  calculatePages();
-})
 </script>
   
 <style lang="sass" scoped>

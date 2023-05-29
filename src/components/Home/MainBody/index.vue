@@ -4,7 +4,7 @@
       <Topics></Topics>
     </div>
 
-    <Pagination :page-size="5" :page-counts="10"></Pagination>
+    <Pagination :page-size="10" :page-counts="20"></Pagination>
   </el-scrollbar>
 </template>
   
