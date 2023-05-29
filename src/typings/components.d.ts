@@ -10,6 +10,9 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BgVideo: typeof import('./../components/Effects/BgVideo.vue')['default']
+    copy: typeof import('./../components/Home/MainBody/components/Topics copy.vue')['default']
+    ElBnutton: typeof import('element-plus/es')['ElBnutton']
+    ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
@@ -23,10 +26,12 @@ declare module '@vue/runtime-core' {
     MainBody: typeof import('./../components/Home/MainBody/index.vue')['default']
     MiddelAnimation: typeof import('./../components/Home/Navbar/components/LogAndSign/components/MiddelAnimation.vue')['default']
     Navbar: typeof import('./../components/Home/Navbar/index.vue')['default']
+    Pagination: typeof import('./../components/Home/MainBody/components/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./../components/Home/Navbar/components/Search/index.vue')['default']
     SignUp: typeof import('./../components/Home/Navbar/components/LogAndSign/components/SignUp.vue')['default']
+    Topics: typeof import('./../components/Home/MainBody/components/Topics.vue')['default']
     Transform: typeof import('./../components/Common/Transform.vue')['default']
     UserIcon: typeof import('./../components/Home/Navbar/components/UserIcon/index.vue')['default']
   }
