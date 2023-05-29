@@ -2,14 +2,15 @@
   <div class="w-full h-full flex justify-center items-center pb-10">
     <div class="flex justify-center items-center">
       <!-- start page -->
-      <div class="flex">
+      <div class="flex justify-end w-[150px]">
         <button @mouseenter="leftArrorColor = 'white'" @mouseleave="leftArrorColor = '#7e56da'" @click="toPrePage">
           <IconArrowLeft class="h-2/3 transition-all duration-300" :fill="leftArrorColor"></IconArrowLeft>
         </button>
 
         <button :id="`${currentPage === 1 ? 'selected' : ''}`" @click="toSelectedPage(1)">1</button>
 
-        <div class="flex justify-center items-center text-center text-[#7e56da] font-bold transition-all duration-300"
+        <div v-show="pages > 10"
+          class="flex justify-center items-center text-center text-[#7e56da] font-bold transition-all duration-300"
           :style="{ width: `${hideLeft ? '20px' : '0px'}`, opacity: `${hideLeft ? '100' : '0'}` }">
           ···
         </div>
@@ -25,16 +26,16 @@
       </div>
 
       <!-- end page -->
-      <div class="flex">
-        <div v-show="pages > 10 && hideRight === false"
+      <div class="flex justify-start w-[150px]">
+        <div v-show="pages > 10"
           class="flex justify-center items-center text-center text-[#7e56da] font-bold transition-all duration-300"
           :style="{ width: `${hideRight ? '0px' : '20px'} `, opacity: `${hideRight ? '0' : '100'} ` }">
           ···
         </div>
 
-        <button v-show="pages > 10" :id="`${currentPage === pages ? 'selected' : ''}`" @click="toSelectedPage(pages)">{{
-          pages
-        }}</button>
+        <button :id="`${currentPage === pages ? 'selected' : ''}`" @click="toSelectedPage(pages)">
+          {{ pages }}
+        </button>
 
         <button @mouseenter="rightArrorColor = 'white'" @mouseleave="rightArrorColor = '#7e56da'" @click="toNextPage">
           <IconArrowRight class="h-2/3" :fill="rightArrorColor"></IconArrowRight>
@@ -45,27 +46,61 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, Ref, ComputedRef } from "vue"
+import { ref, Ref, watch, onBeforeMount } from "vue"
 import IconArrowLeft from '@/assets/icons/IconArrowLeft.vue';
 import IconArrowRight from '@/assets/icons/IconArrowRight.vue';
-import { computed } from "vue";
 
 const leftArrorColor: Ref<string> = ref("#7e56da")
 const rightArrorColor: Ref<string> = ref("#7e56da")
-const pages: Ref<number> = ref(15)
+const pages: Ref<number> = ref(20)
+const middlePages: Ref<number[]> = ref([])
+const currentPage: Ref<number> = ref(1)
 const hideLeft: Ref<boolean> = ref(false)
 const hideRight: Ref<boolean> = ref(false)
-const currentPage: Ref<number> = ref(1)
 
-const middlePages: ComputedRef<number[]> = computed((): number[] => {
-  const arr = []
+function calculateMiddlePages(middleIndex: number): void {
+  middlePages.value = []
+  let startIndex;
+  let endIndex;
 
-  for (let i = 2; i < Math.min(pages.value, 11); i++) {
-    arr.push(i)
+  if (pages.value <= 10) {
+    // 当pages不足10页的时候
+    // 直接显示所有页码
+    startIndex = 2;
+    endIndex = pages.value
+  }
+  else if (middleIndex <= 6) {
+    // pages大于等于10页
+    // 不考虑第一页
+    // 目标页码左侧页数小于等于4页
+    // 左侧不存在被隐藏的页码
+    // 右侧存在被隐藏的页码
+    startIndex = 2;
+    endIndex = Math.min(pages.value, 11)
+  }
+  else if (middleIndex + 5 < pages.value) {
+    // pages大于等于10页
+    // 不考虑第一页
+    // 目标页码左侧页数大于4页
+    // 左侧存在被隐藏的页码
+    // 右侧存在隐藏的页码
+    startIndex = middleIndex - 4;
+    endIndex = Math.min(pages.value, middleIndex + 5)
+  }
+  else {
+    // pages大于等于10页
+    // 不考虑第一页
+    // 目标页码左侧页数大于4页
+    // 左侧存在被隐藏的页码
+    // 右侧不存在被隐藏的页码
+    startIndex = middleIndex - 4 - (middleIndex + 5 - pages.value);
+    endIndex = Math.min(pages.value, middleIndex + 5)
   }
 
-  return arr
-})
+  for (let i = startIndex; i < endIndex; i++) {
+    middlePages.value.push(i)
+  }
+}
 
 function toPrePage(): void {
   if (currentPage.value - 1 !== 0) {
@@ -82,6 +117,20 @@ function toNextPage(): void {
 function toSelectedPage(index: number): void {
   currentPage.value = index;
 }
+
+watch(
+  () => currentPage.value,
+  () => {
+    calculateMiddlePages(currentPage.value)
+
+    hideLeft.value = (currentPage.value > 6) ? true : false
+    hideRight.value = (currentPage.value + 5 >= pages.value) ? true : false
+  }
+)
+
+onBeforeMount(() => {
+  calculateMiddlePages(null)
+})
 </script>
   
 <style lang="sass" scoped>
