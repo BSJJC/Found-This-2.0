@@ -1,6 +1,6 @@
 <template>
   <el-scrollbar height="100%">
-    <div class="w-full h-full flex justify-start items-center px-5 py-10 flex-wrap flex-row">
+    <div class="w-full h-full flex justify-start items-center px-5 pt-10 flex-wrap flex-row">
       <Topics v-for="(i, index) in 3" :key="index"></Topics>
     </div>
 
