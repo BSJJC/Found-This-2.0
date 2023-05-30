@@ -6,9 +6,9 @@
   </div>
 
   <!-- main -->
-
   <NavBar></NavBar>
 
+  <EditArea></EditArea>
 
   <BgVideo :video-source="defaulBgLight"></BgVideo>
 </template>
@@ -18,6 +18,7 @@ import defaulBgLight from "@/assets/videos/default-bg-light.mp4";
 import BgVideo from '@/components/Effects/BgVideo.vue';
 
 import NavBar from "@/components/AddTopic/NavBar/index.vue"
+import EditArea from "@/components/AddTopic/EditArea/index.vue"
 </script>
   
 <style lang="scss" scoped>

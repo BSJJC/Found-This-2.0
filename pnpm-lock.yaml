@@ -21,6 +21,9 @@ dependencies:
     version: registry.npmmirror.com/vue-router@4.2.1(vue@3.2.47)
 
 devDependencies:
+  '@tinymce/tinymce-vue':
+    specifier: ^5.1.0
+    version: registry.npmmirror.com/@tinymce/tinymce-vue@5.1.0(vue@3.2.47)
   '@types/jsdom':
     specifier: ^21.1.1
     version: registry.npmmirror.com/@types/jsdom@21.1.1
@@ -481,6 +484,18 @@ packages:
     name: '@sxzz/popperjs-es'
     version: 2.11.7
     dev: false
+
+  registry.npmmirror.com/@tinymce/tinymce-vue@5.1.0(vue@3.2.47):
+    resolution: {integrity: sha512-Z4R8zaOKrAXBhHWsq+qUlwHY+rvze2RgxHDrZ5+qTYkGvRofW5880HLG9gvv6TRPVsNSQBNMdsaOjJ/eueccgA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@tinymce/tinymce-vue/-/tinymce-vue-5.1.0.tgz}
+    id: registry.npmmirror.com/@tinymce/tinymce-vue/5.1.0
+    name: '@tinymce/tinymce-vue'
+    version: 5.1.0
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      tinymce: registry.npmmirror.com/tinymce@6.4.2
+      vue: registry.npmmirror.com/vue@3.2.47
+    dev: true
 
   registry.npmmirror.com/@tootallnate/once@2.0.0:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@tootallnate/once/-/once-2.0.0.tgz}
@@ -2543,6 +2558,12 @@ packages:
     resolution: {integrity: sha512-kRwSG8Zx4tjF9ZiyH4bhaebu+EDz1BOx9hOigYHlUW4xxI/wKIUQUqo018UlU4ar6ATPBsaMrdbKZ+tmPdohFA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tinybench/-/tinybench-2.5.0.tgz}
     name: tinybench
     version: 2.5.0
+    dev: true
+
+  registry.npmmirror.com/tinymce@6.4.2:
+    resolution: {integrity: sha512-te+4c8PoAwTKPMBQtMQehnSZlOO9Ay5tDgaRFJKBehYb6SlX2PYZ0v3oe/cmiv5EfqdwZLkEMXk2MNOeApZZLg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tinymce/-/tinymce-6.4.2.tgz}
+    name: tinymce
+    version: 6.4.2
     dev: true
 
   registry.npmmirror.com/tinypool@0.5.0:

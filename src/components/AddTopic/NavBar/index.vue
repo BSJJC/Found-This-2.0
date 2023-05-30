@@ -5,13 +5,17 @@
     </div>
 
     <div class="col-span-3 flex justify-center items-center">
+      <TitleInput></TitleInput>
     </div>
 
     <div class="col-span-1 flex justify-end items-center">
+      <Submit></Submit>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import Logo from "@/components/Common/Logo.vue";
+import TitleInput from "./components/TitleInput.vue";
+import Submit from "./components/Submit.vue"
 </script>
