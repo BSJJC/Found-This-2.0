@@ -10,6 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BgVideo: typeof import('./../components/Home/Effects/BgVideo.vue')['default']
+    Control: typeof import('./../components/Home/MainBody/components/Control.vue')['default']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']

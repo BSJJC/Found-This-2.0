@@ -1,6 +1,8 @@
 <template>
   <el-scrollbar height="100%">
-    <div class="w-full h-full flex justify-start items-center px-5 pt-10 flex-wrap flex-row relative">
+    <div class="w-full h-full flex justify-start items-center px-5 flex-wrap flex-row relative">
+      <Control></Control>
+
       <Topics v-for="(i, index) in topicsInfo" :key="index" :data="i" :id="index" @click="zooIn(index)"></Topics>
 
       <template v-if="showTransform">
@@ -25,8 +27,10 @@
 import { ref, Ref, defineAsyncComponent, onBeforeMount } from "vue"
 import { useRouter } from "vue-router"
 
-const Topics = defineAsyncComponent(() => import("./components/Topics.vue"))
-const Pagination = defineAsyncComponent(() => import("./components/Pagination.vue"))
+import Topics from "./components/Topics.vue"
+import Pagination from "./components/Pagination.vue"
+import Control from "./components/Control.vue"
+
 const Transform = defineAsyncComponent(() => import("@/components/Common/Transform.vue"))
 
 interface Config {
