@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AddTopic: typeof import('./../components/AddTopic/index.vue')['default']
     BgVideo: typeof import('./../components/Home/Effects/BgVideo.vue')['default']
     Control: typeof import('./../components/Home/MainBody/components/Control.vue')['default']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
@@ -23,6 +24,7 @@ declare module '@vue/runtime-core' {
     MainBody: typeof import('./../components/Home/MainBody/index.vue')['default']
     MiddelAnimation: typeof import('./../components/Home/Navbar/components/LogAndSign/components/MiddelAnimation.vue')['default']
     Navbar: typeof import('./../components/Home/Navbar/index.vue')['default']
+    NavBar: typeof import('./../components/AddTopic/NavBar/index.vue')['default']
     Pagination: typeof import('./../components/Home/MainBody/components/Pagination.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

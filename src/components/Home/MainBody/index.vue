@@ -25,7 +25,6 @@
   
 <script setup lang='ts'>
 import { ref, Ref, defineAsyncComponent, onBeforeMount } from "vue"
-import { useRouter } from "vue-router"
 
 import Topics from "./components/Topics.vue"
 import Pagination from "./components/Pagination.vue"
@@ -61,8 +60,6 @@ const states = ref({
   endHeight: 0
 })
 
-const router = useRouter();
-
 function getTopicInfo() {
   topicsInfo.value = JSON.parse(sessionStorage.getItem("topicsInfo")!)
 }
@@ -86,10 +83,6 @@ function zooIn(index: number) {
   states.value.endHeight = 70
 
   showTransform.value = true
-
-  setTimeout(() => {
-    router.push("addTopic")
-  }, 700);
 }
 
 onBeforeMount(() => {

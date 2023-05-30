@@ -72,7 +72,7 @@ function transform() {
 
   setTimeout(() => {
     router.push("addTopic")
-  }, 700);
+  }, 500);
 }
 </script>
   
