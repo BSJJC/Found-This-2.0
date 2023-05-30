@@ -135,6 +135,8 @@ async function submitLogIn(formEl: FormInstance | undefined): Promise<void> {
 
     if (user) {
       middleAnimationState.value = MiddleAnimationStates.Success
+
+      sessionStorage.setItem("userInfo", JSON.stringify(user.data))
     }
 
     await block(1500);

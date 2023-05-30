@@ -1,9 +1,16 @@
 <template>
-  <div v-if="!showTransform" ref="logInBtnRef"
+  <div v-if="!showTransform && !userAvaterUrl" ref="logInBtnRef"
     class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-[#7E56DA] text-white rounded-3xl cursor-pointer transition-all duration-500 ease-in-out"
     @click="showLogAndSign">
     Log In
   </div>
+
+  <Transition name="user-avater">
+    <div v-if="userAvaterUrl"
+      class="w-[50px] h-[50px] text-[20px] bg-[#7E56DA] text-white rounded-3xl cursor-pointer transition-all duration-500 ease-in-out">
+      <img :src="`http://localhost:5000/api/userAvaters/get/${userAvaterUrl}`" alt="user avater">
+    </div>
+  </Transition>
 
   <template v-if="showTransform">
     <Transform @hide="hidedTransform" :randomIDs="randomIDs" :states="states" :detailChanges="detailChanges">
@@ -26,6 +33,8 @@ import { ref, Ref, defineAsyncComponent } from "vue"
 
 import Transform from '@/components/Common/Transform.vue';
 const LogAndSign = defineAsyncComponent(() => import("../LogAndSign/index.vue"))
+
+const userAvaterUrl: Ref<string | null> = ref(null)
 
 const showTransform: Ref<boolean> = ref(false)
 const logInBtnRef: Ref<HTMLElement | undefined> = ref()
@@ -73,6 +82,8 @@ function showLogAndSign(): void {
  * 隐藏Transform
  */
 function hidedTransform(): void {
+  const data = JSON.parse(sessionStorage.getItem("userInfo")!)
+  userAvaterUrl.value = data.userAvaterID;
   showTransform.value = false
 };
 </script>
@@ -81,5 +92,15 @@ function hidedTransform(): void {
 * {
   user-select: none;
   -webkit-user-select: none;
+}
+
+.user-avater-leave-active,
+.user-avater-enter-active {
+  transition: all .3s ease-in-out;
+}
+
+.user-avater-enter-from,
+.user-avater-leave-to {
+  opacity: 0;
 }
 </style>
