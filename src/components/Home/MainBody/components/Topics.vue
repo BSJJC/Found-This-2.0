@@ -4,12 +4,10 @@
       class="w-[90%]  h-[100%]  rounded-xl overflow-hidden p-[30px] bg-white shadow-lg shadow-[#d5d5d5] transition duration-300 cursor-pointer hover:shadow-xl hover:shadow-[#7e56da] hover:scale-105">
       <!-- title -->
       <div class="w-full h-1/3  overflow-hidden relative">
-        <div class="absolute w-full h-full flex justify-start items-center z-20 text-white text-4xl p-10">
+        <div class="absolute w-full h-full flex justify-start items-center text-white text-4xl p-10 rounded-lg bg-red-300"
+          :style="{ background: `url(http://localhost:5000/api/topic/bg/download/${props.data.bgID})`, backgroundSize: 'cover' }">
           {{ props.data.title }}
         </div>
-
-        <img :src="`http://localhost:5000/api/topic/bg/download/${props.data.bgID}`" alt="topic background"
-          class="absolute w-full h-full z-10 rounded-xl">
       </div>
 
       <!-- info -->
@@ -72,4 +70,9 @@ interface Config {
 const props = defineProps<{ data: Config }>()
 </script>
   
-<style></style>
+<style>
+.dasdsa {
+  background: url();
+  background-size: contain;
+}
+</style>

@@ -7,7 +7,12 @@ const router = createRouter({
       path: "/",
       name: "/",
       component: () => import("@/pages/Home.vue"),
-    }
+    },
+    {
+      path: "/addTopic",
+      name: "addTopic",
+      component: () => import("@/pages/AddTopic.vue"),
+    },
   ],
 });
 

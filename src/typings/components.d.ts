@@ -10,9 +10,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BgVideo: typeof import('./../components/Effects/BgVideo.vue')['default']
-    copy: typeof import('./../components/Home/MainBody/components/Topics copy.vue')['default']
-    ElBnutton: typeof import('element-plus/es')['ElBnutton']
-    ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
@@ -22,7 +19,6 @@ declare module '@vue/runtime-core' {
     LogIn: typeof import('./../components/Home/Navbar/components/LogAndSign/components/LogIn.vue')['default']
     Logo: typeof import('./../components/Common/Logo.vue')['default']
     LottieAnimation: typeof import('./../components/Common/LottieAnimation.vue')['default']
-    Main: typeof import('./../components/Home/Main/index.vue')['default']
     MainBody: typeof import('./../components/Home/MainBody/index.vue')['default']
     MiddelAnimation: typeof import('./../components/Home/Navbar/components/LogAndSign/components/MiddelAnimation.vue')['default']
     Navbar: typeof import('./../components/Home/Navbar/index.vue')['default']
