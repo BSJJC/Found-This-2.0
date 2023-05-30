@@ -10,7 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AddTopic: typeof import('./../components/AddTopic/index.vue')['default']
-    BgVideo: typeof import('./../components/Home/Effects/BgVideo.vue')['default']
+    BgVideo: typeof import('./../components/Effects/BgVideo.vue')['default']
     Control: typeof import('./../components/Home/MainBody/components/Control.vue')['default']
     EditArea: typeof import('./../components/AddTopic/EditArea/index.vue')['default']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
