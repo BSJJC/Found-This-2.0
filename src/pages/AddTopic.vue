@@ -6,9 +6,9 @@
   </div>
 
   <!-- main -->
-  <NavBar></NavBar>
+  <NavBar class="h-[100px]"></NavBar>
 
-  <EditArea></EditArea>
+  <EditArea class="h-[calc(100vh)-100px]"></EditArea>
 
   <BgVideo :video-source="defaulBgLight"></BgVideo>
 </template>

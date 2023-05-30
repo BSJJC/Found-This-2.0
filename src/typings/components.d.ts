@@ -9,7 +9,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AddTopic: typeof import('./../components/AddTopic/index.vue')['default']
     BgVideo: typeof import('./../components/Effects/BgVideo.vue')['default']
     Control: typeof import('./../components/Home/MainBody/components/Control.vue')['default']
     EditArea: typeof import('./../components/AddTopic/EditArea/index.vue')['default']
@@ -36,5 +35,8 @@ declare module '@vue/runtime-core' {
     Topics: typeof import('./../components/Home/MainBody/components/Topics.vue')['default']
     Transform: typeof import('./../components/Common/Transform.vue')['default']
     UserIcon: typeof import('./../components/Home/Navbar/components/UserIcon/index.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
