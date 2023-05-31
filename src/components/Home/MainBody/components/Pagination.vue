@@ -7,17 +7,17 @@
           <IconArrowLeft class="h-2/3 transition-all duration-300" :fill="leftArrorColor"></IconArrowLeft>
         </button>
 
-        <button :id="`${currentPage === 1 ? 'selected' : ''}`" @click="toSelectedPage(1)">{{ pages[0] }}</button>
+        <button :id="`${currentPage === 1 ? 'selected' : ''}`" @click="toSelectedPage(1)">{{ displayedPages[0] }}</button>
 
         <div class="flex justify-center items-center text-center text-[#7e56da] font-bold transition-all duration-300"
-          :style="{ width: `${pages[1] !== 2 ? '20px' : '0px'}`, opacity: `${pages[1] !== 2 ? '100' : '0'}` }">
+          :style="{ width: `${displayedPages[1] !== 2 ? '20px' : '0px'}`, opacity: `${displayedPages[1] !== 2 ? '100' : '0'}` }">
           ···
         </div>
       </div>
 
-      <!-- middle pages -->
+      <!-- middle displayedPages -->
       <div class="flex">
-        <div v-for="(i, index) in pages.slice(1, pages.length - 1)" :key="index">
+        <div v-for="(i, index) in displayedPages.slice(1, displayedPages.length - 1)" :key="index">
           <button :id="`${i === currentPage ? 'selected' : ''}`" @click="toSelectedPage(i)">
             {{ i }}
           </button>
@@ -28,15 +28,15 @@
       <div class="flex justify-start w-[150px]">
         <div class="flex justify-center items-center text-center text-[#7e56da] font-bold transition-all duration-300"
           :style="{
-            width: `${pages[pages.length - 2] !== pages[pages.length - 1] - 1 ? '20px' : '0px'} `,
-            opacity: `${pages[pages.length - 2] !== pages[pages.length - 1] - 1 ? '100' : '0'} `
+            width: `${displayedPages[displayedPages.length - 2] !== displayedPages[displayedPages.length - 1] - 1 ? '20px' : '0px'} `,
+            opacity: `${displayedPages[displayedPages.length - 2] !== displayedPages[displayedPages.length - 1] - 1 ? '100' : '0'} `
           }">
           ···
         </div>
 
         <button v-if="pageCounts > 1" :id="`${currentPage === pageCounts ? 'selected' : ''}`"
           @click="toSelectedPage(pageCounts)">
-          {{ pages[pages.length - 1] }}
+          {{ displayedPages[displayedPages.length - 1] }}
         </button>
 
         <button @mouseenter="rightArrorColor = 'white'" @mouseleave="rightArrorColor = '#7e56da'" @click="toNextPage">
@@ -63,7 +63,7 @@ const leftArrorColor: Ref<string> = ref("#7e56da")
 const rightArrorColor: Ref<string> = ref("#7e56da")
 const pageSize: number = props.pageSize;
 const pageCounts: number = props.pageCounts
-const pages: Ref<number[]> = ref([])
+const displayedPages: Ref<number[]> = ref([])
 const currentPage: Ref<number> = ref(1)
 
 /**
@@ -78,7 +78,7 @@ function calculatePages(): void {
   /**
    * 清空所展示的所有页码
    */
-  pages.value = []
+  displayedPages.value = []
 
 
   /**
@@ -92,7 +92,7 @@ function calculatePages(): void {
       arr.push(i)
     }
 
-    pages.value = arr;
+    displayedPages.value = arr;
     return
   }
 
@@ -194,7 +194,7 @@ function calculatePages(): void {
     result[result.length - 1] = pageCounts
   }
 
-  pages.value = result
+  displayedPages.value = result
 }
 
 /**

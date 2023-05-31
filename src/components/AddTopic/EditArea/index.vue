@@ -1,5 +1,9 @@
 <template>
   <div class="w-full h-full  p-8">
+
+    <el-button @click="drawer = !drawer">switch</el-button>
+    <el-drawer v-model="drawer"></el-drawer>
+
     <Editor v-model="text" v-loading="true" api-key="tup1hjjciyq9wo6uus67ng0eemkjua5dprzb71dqrucrqh8y" class="h-[90%]"
       :init="{
         toolbar:
@@ -19,4 +23,5 @@ import { ref, Ref } from "vue"
 import Editor from "@tinymce/tinymce-vue";
 
 const text: Ref<string> = ref("")
+const drawer: Ref<boolean> = ref(false)
 </script>
