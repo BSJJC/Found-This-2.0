@@ -19,7 +19,7 @@
       </template>
     </div>
 
-    <Pagination :page-size="5" :page-counts="10"></Pagination>
+    <Pagination :page-size="4" :page-counts="10"></Pagination>
   </el-scrollbar>
 </template>
   

@@ -82,37 +82,19 @@ function calculatePages(): void {
 
 
   /**
-   * 将pageCounts转换为数字类型的数组
-   * 例如
-   * pageCounts为10时
-   * 将其转化为[1,2,3,4,5,6,7,8,9,10]
-   * 方便后面取值
-   */
-  let pageCountsArr: number[] = [];
-  for (let i = 1; i < pageCounts + 1; i++) {
-    pageCountsArr.push(i)
-  }
-
-
-  /**
    * 当可以一次性展示所有页码的时候
    * 无需多余的计算
    * 直接返回所有页码
    */
   if (pageCounts <= pageSize) {
-    pages.value = pageCountsArr;
+    const arr: number[] = [];
+    for (let i = 1; i < pageCounts; i++) {
+      arr.push(i)
+    }
 
+    pages.value = arr;
     return
   }
-
-
-  /**
-   * 因为currenPage是页面上实际展示的页码
-   * 最小为1
-   * 而这里需要将其作为下标访问数组使用
-   * 所以需要-1
-   */
-  const _currentPage = currentPage.value - 1;
 
 
   /**
@@ -137,11 +119,16 @@ function calculatePages(): void {
   let direction: 'left' | "right" = "left"
   let rounds: number = 1
 
+  /**
+   * 使用双指针找出currentPage左右符合条件的数
+   * 并转入leftArr和rightArr中
+   * 默认当 pageSize为双数时左侧显示的页码更多
+   */
   while (lastSize > 0) {
     if (direction === 'left') {
-      const el = pageCountsArr[_currentPage - rounds]
+      const el = currentPage.value - rounds
 
-      if (el === undefined) {
+      if (el < 1) {
         direction = 'right'
         continue;
       }
@@ -153,9 +140,9 @@ function calculatePages(): void {
     }
 
     if (direction === 'right') {
-      const el = pageCountsArr[_currentPage + rounds]
+      const el = currentPage.value + rounds
 
-      if (el === undefined) {
+      if (el > pageCounts) {
         direction = 'left';
         rounds++
         continue
@@ -169,8 +156,7 @@ function calculatePages(): void {
     }
   }
 
-  result = [...leftArr, pageCountsArr[_currentPage], ...rightArr]
-
+  result = [...leftArr, currentPage.value, ...rightArr]
 
   /**
    * 当pageSize为偶数时
@@ -181,6 +167,13 @@ function calculatePages(): void {
     result.pop()
   }
 
+  /**
+   * typescript中
+   * 给出数组arr [1,2,3,4,5,6,7,8,9,10]
+   * 以及targetIndex
+   * 要求以数组格式返回targetIndex本身以及左右两侧各两个数
+   * 不能越界
+   */
 
   /**
    * 无论如何第一个页码必须为1
