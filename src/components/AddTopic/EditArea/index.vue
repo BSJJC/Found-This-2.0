@@ -6,12 +6,10 @@
       <Drawer></Drawer>
     </div>
 
-
     <!-- Editor -->
     <div class="w-[90%] h-[90%] p-8">
       <Editor class="h-full"></Editor>
     </div>
-
 
   </div>
 </template>
