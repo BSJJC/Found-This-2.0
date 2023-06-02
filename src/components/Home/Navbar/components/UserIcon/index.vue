@@ -83,7 +83,9 @@ function showLogAndSign(): void {
  */
 function hidedTransform(): void {
   const data = JSON.parse(sessionStorage.getItem("userInfo")!)
-  userAvaterUrl.value = data.userAvaterID;
+  if (data) {
+    userAvaterUrl.value = data.userAvaterID;
+  }
   showTransform.value = false
 };
 </script>
