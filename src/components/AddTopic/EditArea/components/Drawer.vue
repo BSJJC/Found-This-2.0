@@ -10,7 +10,22 @@
     class=" fixed top-0 left-0 w-1/2 h-screen flex justify-start items-start p-10 bg-white shadow-[#7e56da] shadow-2xl z-[100] transition-all duration-500"
     :style="{ left: `${showDrawer ? '' : '-50%'}` }">
 
-    <h1 class="text-3xl">Upload Attachment</h1>
+
+    <div class="w-full h-full flex justify-center items-center flex-col">
+
+      <div class="w-full h-[10%] bg-blue-300 text-3xl">Upload Attachment</div>
+
+      <el-scrollbar height="100%" class="w-full">
+        <div class="w-full h-[90%] flex justify-start items-center flex-wrap py-5 pr-4">
+          <div v-for="(i, index) in 20" :key="index"
+            class="w-full h-[100px] flex justify-center items-center p-4 mb-4 border-[2px] rounded-xl">
+            <div class="w-full h-full bg-red-300">{{ i }}</div>
+          </div>
+        </div>
+      </el-scrollbar>
+
+    </div>
+
 
     <!-- switch button -->
     <div
