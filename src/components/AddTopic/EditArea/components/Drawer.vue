@@ -18,8 +18,16 @@
       <el-scrollbar height="100%" class="w-full">
         <div class="w-full h-[90%] flex justify-start items-center flex-wrap py-5 pr-4">
           <div v-for="(i, index) in 20" :key="index"
-            class="w-full h-[100px] flex justify-center items-center p-4 mb-4 border-[2px] rounded-xl">
-            <div class="w-full h-full bg-red-300">{{ i }}</div>
+            class="w-full h-[100px] flex justify-center items-center p-2 mb-4 border-[2px] rounded-xl">
+            <div class="w-full h-full bg-red-300 flex justify-center items-center rounded-xl overflow-hidden">
+
+              <div class="h-full w-[10%] bg-blue-300 flex justify-center items-center">
+                <img src="http://localhost:5000/api/topic/bg/download/645589c244675dbcf239c359" alt="img preview">
+              </div>
+
+              <div class="h-full w-[90%] bg-purple-300">1</div>
+
+            </div>
           </div>
         </div>
       </el-scrollbar>
@@ -47,7 +55,7 @@
 <script setup lang='ts'>
 import { ref, Ref, watch } from "vue"
 
-const showDrawer: Ref<boolean> = ref(false)
+const showDrawer: Ref<boolean> = ref(true)
 const sentence: Ref<string> = ref("Attachment")
 
 function show(): void {
