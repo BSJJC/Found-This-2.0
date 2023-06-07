@@ -17,7 +17,7 @@
 
       <el-scrollbar height="100%" class="w-full">
         <div class="w-full h-[90%] flex justify-start items-center flex-wrap py-5 pr-4">
-          <div v-for="(i, index) in 20" :key="index"
+          <div v-for="(i, index) in 0" :key="index"
             class="w-full h-[100px] flex justify-center items-center p-2 my-2 border-[2px] rounded-xl relative overflow-hidden transition-all duration-300 group hover:-translate-y-2 hover:border-[#7e56da] hover:shadow-[#7e56da] hover:shadow-lg">
             <div class="w-full h-full flex justify-center items-center">
 
@@ -35,11 +35,17 @@
 
               <div
                 class="w-[20%] h-full right-0 absolute translate-x-[100%] space-x-4 flex justify-center items-center transition-all duration-300 group-hover:translate-x-[0%]">
-                <component :is="Zoom" class="w-[40px] hover:cursor-pointer"></component>
-                <component :is="Delete" class="w-[40px] hover:cursor-pointer"></component>
+                <component :is="Zoom" class="w-[30px] hover:cursor-pointer"></component>
+                <component :is="Delete" class="w-[30px] hover:cursor-pointer"></component>
               </div>
             </div>
           </div>
+
+          <div
+            class="w-full h-[100px] flex justify-center items-center p-2 my-2 border-[#7e56da] border-[2px] opacity-30 cursor-pointer rounded-xl transition-all duration-300 hover:shadow-[#7e56da] hover:shadow-lg hover:opacity-100">
+            <component :is="Plus" class="w-[50px]" fill="#7e56da"></component>
+          </div>
+
         </div>
       </el-scrollbar>
 
@@ -66,10 +72,11 @@
 <script setup lang='ts'>
 import { ref, Ref, watch, defineAsyncComponent } from "vue"
 
+const Plus = defineAsyncComponent(() => import("@/assets/icons/IconPlus.vue"))
 const Zoom = defineAsyncComponent(() => import("@/assets/icons/IconZoomIn.vue"))
 const Delete = defineAsyncComponent(() => import("@/assets/icons/IconDelete.vue"))
 
-const showDrawer: Ref<boolean> = ref(true)
+const showDrawer: Ref<boolean> = ref(false)
 const sentence: Ref<string> = ref("Attachment")
 
 function show(): void {
