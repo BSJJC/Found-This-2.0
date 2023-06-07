@@ -10,7 +10,6 @@
     class=" fixed top-0 left-0 w-1/2 h-screen flex justify-start items-start p-10 bg-white shadow-[#7e56da] shadow-2xl z-[100] transition-all duration-500"
     :style="{ left: `${showDrawer ? '' : '-50%'}` }">
 
-
     <div class="w-full h-full flex justify-center items-center flex-col">
 
       <div class="w-full h-[10%] flex justify-start items-center text-4xl text-[#7e56da]">Upload Attachment</div>
@@ -35,10 +34,15 @@
                   {{ i.name }}
                 </div>
 
+                <!-- file control area -->
                 <div
                   class="w-[20%] h-full right-0 absolute translate-x-[100%] space-x-4 flex justify-center items-center transition-all duration-300 group-hover:translate-x-[0%]">
-                  <component :is="Zoom" class="w-[30px] hover:cursor-pointer"></component>
-                  <component :is="Delete" class="w-[30px] hover:cursor-pointer" @click="deleteRenderedFile(index)">
+                  <component :is="Zoom" class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[40px]"
+                    :fill="zoomColor" @mouseenter="zoomColor = '#409efe'" @mouseleave="zoomColor = '#7e56da'"></component>
+
+                  <component :is="Delete" class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[40px]"
+                    :fill="deleteColor" @click="deleteRenderedFile(index)" @mouseenter="deleteColor = '#f56c6c'"
+                    @mouseleave="deleteColor = '#7e56da'">
                   </component>
                 </div>
               </div>
@@ -51,14 +55,11 @@
             @click="() => { fileInput?.click() }">
             <component :is="Plus" class="w-[50px]" fill="#7e56da"></component>
 
-            <input type="file" ref="fileInput" style="display: none;" multiple @input="getFile">
+            <input type="file" ref="fileInput" style="display: none;" multiple @input="getFiles">
           </div>
-
         </div>
       </el-scrollbar>
-
     </div>
-
 
     <!-- switch button -->
     <div
@@ -91,14 +92,19 @@ interface renderedFileType extends File {
 
 const fileInput: Ref<HTMLElement | undefined> = ref();
 const renderedFiles: Ref<renderedFileType[]> = ref([])
-const showDrawer: Ref<boolean> = ref(true)
+const showDrawer: Ref<boolean> = ref(false)
 const sentence: Ref<string> = ref("Attachment")
+const zoomColor = ref("#7e56da")
+const deleteColor = ref("#7e56da")
 
+/**
+ * 展示drawer
+ */
 function show(): void {
   showDrawer.value = !showDrawer.value
 }
 
-function getFile(): void {
+function getFiles(): void {
   const files: FileList | null = (fileInput.value! as HTMLInputElement).files
 
   if (!files) return
@@ -113,6 +119,10 @@ function getFile(): void {
   fileInput.value.value = null
 }
 
+/**
+ * 从RenderedFiles中删除选中项
+ * @param index 所选中项的index
+ */
 function deleteRenderedFile(index: number) {
   renderedFiles.value.splice(index, 1)
 }
