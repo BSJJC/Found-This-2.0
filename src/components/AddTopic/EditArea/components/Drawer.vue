@@ -13,20 +13,31 @@
 
     <div class="w-full h-full flex justify-center items-center flex-col">
 
-      <div class="w-full h-[10%] bg-blue-300 text-3xl">Upload Attachment</div>
+      <div class="w-full h-[10%] flex justify-start items-center text-4xl text-[#7e56da]">Upload Attachment</div>
 
       <el-scrollbar height="100%" class="w-full">
         <div class="w-full h-[90%] flex justify-start items-center flex-wrap py-5 pr-4">
           <div v-for="(i, index) in 20" :key="index"
-            class="w-full h-[100px] flex justify-center items-center p-2 mb-4 border-[2px] rounded-xl">
-            <div class="w-full h-full bg-red-300 flex justify-center items-center rounded-xl overflow-hidden">
+            class="w-full h-[100px] flex justify-center items-center p-2 my-2 border-[2px] rounded-xl relative overflow-hidden transition-all duration-300 group hover:-translate-y-2 hover:border-[#7e56da] hover:shadow-[#7e56da] hover:shadow-lg">
+            <div class="w-full h-full flex justify-center items-center">
 
-              <div class="h-full w-[10%] bg-blue-300 flex justify-center items-center">
-                <img src="http://localhost:5000/api/topic/bg/download/645589c244675dbcf239c359" alt="img preview">
+              <!-- file preview, if it can be -->
+              <div class="h-full w-[10%]">
+                <img src="http://localhost:5000/api/topic/bg/download/645589c244675dbcf239c359" alt="img preview"
+                  class="h-full rounded-lg">
               </div>
 
-              <div class="h-full w-[90%] bg-purple-300">1</div>
+              <!-- file name, with extension -->
+              <div
+                class="h-full w-[90%] flex justify-start items-center p-4 text-2xl text-black transition-all duration-100 hover:cursor-pointer group-hover:text-[#7e56da]">
+                {{ i }}
+              </div>
 
+              <div
+                class="w-[20%] h-full right-0 absolute translate-x-[100%] space-x-4 flex justify-center items-center transition-all duration-300 group-hover:translate-x-[0%]">
+                <component :is="Zoom" class="w-[40px] hover:cursor-pointer"></component>
+                <component :is="Delete" class="w-[40px] hover:cursor-pointer"></component>
+              </div>
             </div>
           </div>
         </div>
@@ -37,7 +48,7 @@
 
     <!-- switch button -->
     <div
-      class="absolute flex flex-col justify-center items-center bg-[#7e56da]  rounded-r-lg text-xl text-white cursor-pointer overflow-hidden transition-all duration-500 left-full p-4 hover:pl-[40px] top-[30%]"
+      class="absolute flex flex-col justify-center items-center bg-[#7e56da]  rounded-r-lg text-xl text-white overflow-hidden transition-all duration-500 left-full p-4 hover:pl-[40px] top-[30%]"
       :style="{
         top: `${showDrawer ? '0px' : ''}`, height: `${showDrawer ? '50px' : '300px'}`
       }" @click="show">
@@ -53,7 +64,10 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, Ref, watch } from "vue"
+import { ref, Ref, watch, defineAsyncComponent } from "vue"
+
+const Zoom = defineAsyncComponent(() => import("@/assets/icons/IconZoomIn.vue"))
+const Delete = defineAsyncComponent(() => import("@/assets/icons/IconDelete.vue"))
 
 const showDrawer: Ref<boolean> = ref(true)
 const sentence: Ref<string> = ref("Attachment")
