@@ -19,7 +19,7 @@
         <div class="w-full h-[90%] flex justify-start items-center flex-wrap py-5 pr-4">
           <!-- rendered files -->
           <TransitionGroup name="rendered-files">
-            <div v-for="(i, index) in renderedFiles" :key="index"
+            <div v-for="(i, index) in renderedFiles" :key="renderedFiles[index].uuid"
               class="w-full h-[100px] flex justify-center items-center p-2 my-2 border-[2px] rounded-xl overflow-hidden transition-all duration-300 group hover:-translate-y-2 hover:border-[#7e56da] hover:shadow-[#7e56da] hover:shadow-lg">
               <div class="w-full h-full flex justify-center items-center">
 
@@ -79,13 +79,18 @@
   
 <script setup lang='ts'>
 import { ref, Ref, watch, defineAsyncComponent } from "vue"
+import gennerateUUID from "@/utils/generateUUID"
 
 const Plus = defineAsyncComponent(() => import("@/assets/icons/IconPlus.vue"))
 const Zoom = defineAsyncComponent(() => import("@/assets/icons/IconZoomIn.vue"))
 const Delete = defineAsyncComponent(() => import("@/assets/icons/IconDelete.vue"))
 
+interface renderedFileType extends File {
+  uuid?: string
+}
+
 const fileInput: Ref<HTMLElement | undefined> = ref();
-const renderedFiles: Ref<File[]> = ref([])
+const renderedFiles: Ref<renderedFileType[]> = ref([])
 const showDrawer: Ref<boolean> = ref(true)
 const sentence: Ref<string> = ref("Attachment")
 
@@ -99,7 +104,8 @@ function getFile(): void {
   if (!files) return
 
   for (let i = 0; i < files.length; i++) {
-    const file = files[i];
+    const file: renderedFileType = files[i];
+    file.uuid = gennerateUUID()
     renderedFiles.value.push(file)
   }
 

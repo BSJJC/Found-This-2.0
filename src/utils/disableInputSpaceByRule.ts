@@ -9,9 +9,9 @@ function disableInputSpaceByRule(str: string, allowedSpacesLength: number): stri
     return str = str.slice(0, str.length - 1)
   }
 
-  const spaceCount = str.length - str.trimEnd().length
-  const excessSpaces = Math.max(spaceCount - allowedSpacesLength, 0);
-  const regex = new RegExp(`\\s{${excessSpaces}}$`);
+  const spaceCount: number = str.length - str.trimEnd().length
+  const excessSpaces: number = Math.max(spaceCount - allowedSpacesLength, 0);
+  const regex: RegExp = new RegExp(`\\s{${excessSpaces}}$`);
 
   return str.replace(regex, "");
 }
