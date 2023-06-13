@@ -72,7 +72,7 @@
     </div>
 
     <Transition>
-      <div v-if="showTransform" id="op"
+      <div v-if="showTransform" id="preview-img-container"
         class=" absolute top-0 left-0 w-screen h-screen flex justify-center items-center bg-[#00000050] z-[50] overscroll-auto"
         @click.self="hideImgPreview">
         <img ref="previewImgRef" :src="previewImgUrl" class="absolute transition-all duration-500 rounded-lg">
@@ -125,7 +125,7 @@ const sentence: ComputedRef<"X" | "Attachment"> = computed(() => {
 })
 const zoomColor: Ref<string> = ref("#7e56da")
 const deleteColor: Ref<string> = ref("#7e56da")
-const compressedImages: Ref<{ file?: File; url?: string; }[]> = ref([]) // 保存压缩后用于展示的图片，如果不是图片文件，则是空对象
+const compressedImages: Ref<{ file?: File; url?: string; }[]> = ref([]) // 保存压缩后用于展示的图片，如果不是图片文件，则保存为空对象
 
 const showTransform: Ref<boolean> = ref(false)
 const playingAnimation: Ref<boolean> = ref(false)
@@ -161,8 +161,8 @@ async function getFiles(): Promise<void> {
     try {
       // 如果是图片文件，则可以被压缩
       // 并加压缩后的图片加入compressedImages
-      const compressedFile = await compressImage(files[i], 100, 100);
-      const compressedImageUrl = URL.createObjectURL(compressedFile);
+      const compressedFile: File = await compressImage(files[i], 100, 100);
+      const compressedImageUrl: string = URL.createObjectURL(compressedFile);
       const compressedImage = {
         file: compressedFile,
         url: compressedImageUrl,
@@ -315,7 +315,8 @@ function deleteRenderedFile(index: number) {
   position: absolute;
 }
 
-#op {
+// 隐藏preview-img的竖向滚动条
+#preview-img-container {
   -ms-overflow-style: none !important;
   /* for Internet Explorer, Edge */
   scrollbar-width: none !important;
@@ -323,7 +324,8 @@ function deleteRenderedFile(index: number) {
   overflow-y: scroll !important;
 }
 
-#op::-webkit-scrollbar {
+// 隐藏preview-img的竖向滚动条
+#preview-img-container::-webkit-scrollbar {
   display: none !important;
   /* for Chrome, Safari, and Opera */
 }
