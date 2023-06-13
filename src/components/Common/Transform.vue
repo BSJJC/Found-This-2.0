@@ -3,7 +3,7 @@
     <div ref="containerRef" class="w-screen h-screen flex justify-center items-center absolute top-0 left-0">
       <Transition>
         <template v-if="!showTargetRef">
-          <slot name="origin"></slot>
+          <slot name="original"></slot>
         </template>
       </Transition>
 

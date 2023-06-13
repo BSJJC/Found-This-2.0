@@ -8,7 +8,7 @@
       <template v-if="showTransform">
         <Transform :randomIDs="randomIDs" :states="states">
 
-          <template #origin>
+          <template #original>
             <Topics :data="topicsInfo![selectedTopicId]" :id="randomIDs[0]"
               class="transition-all duration-500 ease-in-out z-[100]"></Topics>
           </template>

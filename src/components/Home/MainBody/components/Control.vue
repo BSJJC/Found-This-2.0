@@ -18,7 +18,7 @@
 
       <template v-if="showTransform">
         <Trasnform :randomIDs="randomIDs" :states="states" :detailChanges="detailChanges">
-          <template #origin>
+          <template #original>
             <div :id="randomIDs[0]"
               class="px-8 py-5 bg-[#7E56DA] text-white text-xl transition-all duration-500 cursor-pointer hover:shadow-[#7E56DA] z-[100] flex justify-center items-center">
               ADD NEW TOPIC

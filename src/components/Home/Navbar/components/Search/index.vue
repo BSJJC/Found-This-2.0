@@ -15,7 +15,7 @@
 
     <template v-if="showTransform">
       <Transform @hide="hidedTransformZoomIn" :randomIDs="randomIDs" :states="states" :detailChanges="[]">
-        <template #origin>
+        <template #original>
           <div :id="randomIDs[0]"
             class="flex justify-center items-center flex-row w-[700px] h-[50px] rounded-3xl border shadow-md bg-white z-[100] transition-all duration-500 ease-in-out absolute">
             <div class="w-[calc(100%-100px)] flex justify-center items-center rounded-l-3xl">

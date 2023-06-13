@@ -16,5 +16,5 @@
   
 <script setup lang='ts'>
 import Editor from "./components/Editor.vue"
-import Drawer from "./components/drawer.vue";
+import Drawer from "./components/Drawer.vue";
 </script>
