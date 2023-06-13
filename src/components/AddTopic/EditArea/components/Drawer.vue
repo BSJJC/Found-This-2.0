@@ -28,7 +28,7 @@
                   <img v-if="compressedImages[index].url" :id="i.uuid" :src="compressedImages[index].url" :alt="i.name">
                   <!-- 如果不是图片文件，则显示文件后缀名 -->
                   <div v-else
-                    class="flex justify-center items-center bg-reed-300 w-full h-full flex-col text-2xl text-white rounded-lg bg-[#7e56da90]">
+                    class="flex justify-center items-center bg-reed-300 w-full h-full flex-col text-2xl text-white bg-[#7e56da90]">
                     <span>{{ i.name.toString().split(".")[i.name.toString().split(".").length - 1] }}</span>
                     <span>文件</span>
                   </div>
@@ -71,21 +71,13 @@
       </el-scrollbar>
     </div>
 
-
-    <template v-if="showTransform">
-      <Transform @hide="hidedTransform" :randomIDs="randomIDs" :states="states">
-
-        <template #original>
-          <img :src="imgPreUrl" :id="randomIDs[0]">
-        </template>
-
-
-        <template #target>
-          <img :src="imgPreUrl" :id="randomIDs[1]">
-        </template>
-
-      </Transform>
-    </template>
+    <Transition>
+      <div v-if="showTransform" id="op"
+        class=" absolute top-0 left-0 w-screen h-screen flex justify-center items-center bg-[#00000050] z-[50] overscroll-auto"
+        @click.self="hideImgPreview">
+        <img ref="imgPreviewRef" :src="imgPreviewUrl" class="absolute transition-all duration-500 rounded-lg">
+      </div>
+    </Transition>
 
     <!-- switch button -->
     <div
@@ -105,11 +97,9 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, Ref, computed, ComputedRef, defineAsyncComponent } from "vue"
+import { ref, Ref, computed, ComputedRef, nextTick, defineAsyncComponent } from "vue"
 import gennerateUUID from "@/utils/generateUUID"
 import compressImage from "@/utils/compressImage"
-
-import Transform from "@/components/Common/Transform.vue";
 
 const Plus = defineAsyncComponent(() => import("@/assets/icons/IconPlus.vue"))
 const Zoom = defineAsyncComponent(() => import("@/assets/icons/IconZoomIn.vue"))
@@ -134,18 +124,10 @@ const zoomColor: Ref<string> = ref("#7e56da")
 const deleteColor: Ref<string> = ref("#7e56da")
 
 const showTransform: Ref<boolean> = ref(false)
+const imgPreviewRef: Ref<HTMLImageElement | undefined> = ref()
 const compressedImages: Ref<{ file?: File; url?: string; }[]> = ref([]) // 保存压缩后用于展示的图片，如果不是图片文件，则是空对象
-const randomIDs: string[] = [Math.random().toString(), Math.random().toString()]
-const states = ref({
-  startWidth: 0,
-  startHeight: 0,
-  startTop: 0,
-  startLeft: 0,
-  endWidth: 0,
-  endHeight: 0
-})
-const imgPreUrl = ref("")
 
+const imgPreviewUrl = ref("")
 
 /**
  * 展示drawer
@@ -165,7 +147,7 @@ async function getFiles(): Promise<void> {
     try {
       // 如果是图片文件，则可以被压缩
       // 并加压缩后的图片加入compressedImages
-      const compressedFile = await compressImage(files[i], 200, 200);
+      const compressedFile = await compressImage(files[i], 100, 100);
       const compressedImageUrl = URL.createObjectURL(compressedFile);
       const compressedImage = {
         file: compressedFile,
@@ -186,14 +168,12 @@ async function getFiles(): Promise<void> {
   fileInputRef.value.value = null // 清空fileInput，以便重复选择同样的文件
 }
 
-function hidedTransform(): void {
+function hideImgPreview() {
   showTransform.value = false
 }
 
-
-function zoomInImg(imgIndex: number) {
-
-
+async function zoomInImg(imgIndex: number) {
+  showTransform.value = true
 
   const imgRef = document.getElementById(renderedFiles.value[imgIndex].uuid as string)
   const rect: DOMRect = imgRef!.getBoundingClientRect();
@@ -202,21 +182,30 @@ function zoomInImg(imgIndex: number) {
     width: number, height: number, top: number, left: number
   }
 
-  states.value.startWidth = width
-  states.value.startHeight = height
-  states.value.startTop = top
-  states.value.startLeft = left
+  await nextTick()
 
-  console.log(width);
-  console.log(height);
-  console.log(top);
-  console.log(left);
+  imgPreviewRef.value!.style.width = width.toString() + "px"
+  imgPreviewRef.value!.style.top = (top + 8).toString() + "px"
+  // 因为原本的样式设定中，hover后会向上translate 8px，所有这里需要 +8px，以免动画衔接不够顺滑
+  imgPreviewRef.value!.style.left = left.toString() + "px"
 
-  imgPreUrl.value = URL.createObjectURL(renderedFiles.value[imgIndex])
+  imgPreviewUrl.value = URL.createObjectURL(renderedFiles.value[imgIndex])
 
-  showTransform.value = true
+  setTimeout(() => {
+    if (width / height <= 1) {
+      // 长宽比小于等于1的图片
+      imgPreviewRef.value!.style.width = "50vw"
+      imgPreviewRef.value!.style.top = "0px"
+      imgPreviewRef.value!.style.left = `25vw`
+    }
+    else {
+      // 长宽比大于1的图片
+      imgPreviewRef.value!.style.width = "80vw"
+      imgPreviewRef.value!.style.top = "10vh"
+      imgPreviewRef.value!.style.left = `10vw`
+    }
+  }, 300);
 }
-
 
 /**
  * 从RenderedFiles中删除选中项
@@ -263,5 +252,18 @@ function deleteRenderedFile(index: number) {
 
 .endered-files-leave-active {
   position: absolute;
+}
+
+#op {
+  -ms-overflow-style: none !important;
+  /* for Internet Explorer, Edge */
+  scrollbar-width: none !important;
+  /* for Firefox */
+  overflow-y: scroll !important;
+}
+
+#op::-webkit-scrollbar {
+  display: none !important;
+  /* for Chrome, Safari, and Opera */
 }
 </style>

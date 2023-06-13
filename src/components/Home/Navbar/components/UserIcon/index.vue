@@ -14,7 +14,7 @@
 
   <template v-if="showTransform">
     <Transform @hide="hidedTransform" :randomIDs="randomIDs" :states="states" :detailChanges="detailChanges">
-      <template #origin>
+      <template #original>
         <div :id="randomIDs[0]"
           class="flex justify-center items-center w-[50px] h-[50px] text-[20px] bg-[#7E56DA] text-white rounded-3xl cursor-pointer transition-all duration-500 overflow-hidden z-[200]">
           Log In
