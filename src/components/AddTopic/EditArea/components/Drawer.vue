@@ -22,13 +22,19 @@
               class="w-full h-[100px] flex justify-center items-center p-2 my-2 border-[2px] rounded-xl overflow-hidden transition-all duration-300 group hover:-translate-y-2 hover:border-[#7e56da] hover:shadow-[#7e56da] hover:shadow-lg">
               <div class="w-full h-full flex justify-center items-center">
 
-                <!-- file preview, if it can be -->
+                <!-- 文件预览 -->
                 <div class="h-full w-[10%]">
-                  <img src="http://localhost:5000/api/topic/bg/download/645589c244675dbcf239c359" alt="img preview"
-                    class="h-full rounded-lg">
+                  <!-- 如果是图片文件，则显示压缩后的图片 -->
+                  <img v-if="compressedImages[index].url" :src="compressedImages[index].url" :alt="i.name">
+                  <!-- 如果不是图片文件，则显示文件后缀名 -->
+                  <div v-else
+                    class="flex justify-center items-center bg-reed-300 w-full h-full flex-col text-2xl text-white rounded-lg bg-[#7e56da90]">
+                    <span>{{ i.name.toString().split(".")[i.name.toString().split(".").length - 1] }}</span>
+                    <span>文件</span>
+                  </div>
                 </div>
 
-                <!-- file name, with extension -->
+                <!-- 文件名，包括后缀名 -->
                 <div
                   class="h-full w-[90%] flex justify-start items-center p-4 text-2xl text-black transition-all duration-100 hover:cursor-pointer group-hover:text-[#7e56da]">
                   {{ i.name }}
@@ -37,9 +43,12 @@
                 <!-- file control area -->
                 <div
                   class="w-[20%] h-full right-0 absolute translate-x-[100%] space-x-4 flex justify-center items-center transition-all duration-300 group-hover:translate-x-[0%]">
-                  <component :is="Zoom" class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[40px]"
-                    :fill="zoomColor" @mouseenter="zoomColor = '#409efe'" @mouseleave="zoomColor = '#7e56da'"></component>
+                  <!-- 放大预览，仅支持图片文件 -->
+                  <component v-if="compressedImages[index].url" :is="Zoom"
+                    class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[40px]" :fill="zoomColor"
+                    @mouseenter="zoomColor = '#409efe'" @mouseleave="zoomColor = '#7e56da'"></component>
 
+                  <!-- 删除 -->
                   <component :is="Delete" class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[40px]"
                     :fill="deleteColor" @click="deleteRenderedFile(index)" @mouseenter="deleteColor = '#f56c6c'"
                     @mouseleave="deleteColor = '#7e56da'">
@@ -60,8 +69,6 @@
         </div>
       </el-scrollbar>
     </div>
-
-    <img v-for="(i, index) in compressedImages" :src="i.url" :alt="index.toString()">
 
     <!-- switch button -->
     <div
@@ -89,8 +96,6 @@ const Plus = defineAsyncComponent(() => import("@/assets/icons/IconPlus.vue"))
 const Zoom = defineAsyncComponent(() => import("@/assets/icons/IconZoomIn.vue"))
 const Delete = defineAsyncComponent(() => import("@/assets/icons/IconDelete.vue"))
 
-const compressedImages: Ref<{ file: File; url: string; }[]> = ref([])
-
 interface renderedFileType extends File {
   uuid?: string
 }
@@ -108,6 +113,7 @@ const sentence: ComputedRef<"X" | "Attachment"> = computed(() => {
 })
 const zoomColor = ref("#7e56da")
 const deleteColor = ref("#7e56da")
+const compressedImages: Ref<{ file?: File; url?: string; }[]> = ref([]) // 保存压缩后用于展示的图片，如果不是图片文件，则是空对象
 
 /**
  * 展示drawer
@@ -124,25 +130,24 @@ async function getFiles(): Promise<void> {
   for (let i = 0; i < files.length; i++) {
     const file: renderedFileType = files[i];
 
-    const compressedFile = await compressImage(files[i], 200, 200);
-    const compressedImageUrl = URL.createObjectURL(compressedFile);
-    const compressedImage = {
-      file: compressedFile,
-      url: compressedImageUrl,
-    };
-
-    compressedImages.value.push(compressedImage)
-
-    console.log(compressedImages.value);
-
-
-
+    try {
+      // 如果是图片文件，则可以被压缩
+      // 并加压缩后的图片加入compressedImages
+      const compressedFile = await compressImage(files[i], 200, 200);
+      const compressedImageUrl = URL.createObjectURL(compressedFile);
+      const compressedImage = {
+        file: compressedFile,
+        url: compressedImageUrl,
+      };
+      compressedImages.value.push(compressedImage)
+    } catch (error) {
+      // 无法被压缩的则不是图片文件
+      // compressedImages加入空对象
+      compressedImages.value.push({})
+    }
 
     file.uuid = gennerateUUID()
     renderedFiles.value.push(file)
-
-
-
   }
 
   //@ts-ignore
@@ -155,6 +160,7 @@ async function getFiles(): Promise<void> {
  */
 function deleteRenderedFile(index: number) {
   renderedFiles.value.splice(index, 1)
+  compressedImages.value.splice(index, 1)
 }
 </script>
 
