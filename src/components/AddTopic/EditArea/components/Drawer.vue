@@ -61,6 +61,8 @@
       </el-scrollbar>
     </div>
 
+    <img v-for="(i, index) in compressedImages" :src="i.url" :alt="index.toString()">
+
     <!-- switch button -->
     <div
       class="absolute flex flex-col justify-center items-center bg-[#7e56da] cursor-pointer rounded-r-lg text-xl text-white overflow-hidden transition-all duration-500 left-full p-4 hover:pl-[40px] top-[30%]"
@@ -79,12 +81,15 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, Ref, watch, defineAsyncComponent } from "vue"
+import { ref, Ref, computed, ComputedRef, defineAsyncComponent } from "vue"
 import gennerateUUID from "@/utils/generateUUID"
+import compressImage from "@/utils/compressImage"
 
 const Plus = defineAsyncComponent(() => import("@/assets/icons/IconPlus.vue"))
 const Zoom = defineAsyncComponent(() => import("@/assets/icons/IconZoomIn.vue"))
 const Delete = defineAsyncComponent(() => import("@/assets/icons/IconDelete.vue"))
+
+const compressedImages: Ref<{ file: File; url: string; }[]> = ref([])
 
 interface renderedFileType extends File {
   uuid?: string
@@ -93,7 +98,14 @@ interface renderedFileType extends File {
 const fileInput: Ref<HTMLElement | undefined> = ref();
 const renderedFiles: Ref<renderedFileType[]> = ref([])
 const showDrawer: Ref<boolean> = ref(false)
-const sentence: Ref<string> = ref("Attachment")
+const sentence: ComputedRef<"X" | "Attachment"> = computed(() => {
+  if (showDrawer.value) {
+    return "X"
+  }
+  else {
+    return "Attachment"
+  }
+})
 const zoomColor = ref("#7e56da")
 const deleteColor = ref("#7e56da")
 
@@ -104,19 +116,37 @@ function show(): void {
   showDrawer.value = !showDrawer.value
 }
 
-function getFiles(): void {
+async function getFiles(): Promise<void> {
   const files: FileList | null = (fileInput.value! as HTMLInputElement).files
 
   if (!files) return
 
   for (let i = 0; i < files.length; i++) {
     const file: renderedFileType = files[i];
+
+    const compressedFile = await compressImage(files[i], 200, 200);
+    const compressedImageUrl = URL.createObjectURL(compressedFile);
+    const compressedImage = {
+      file: compressedFile,
+      url: compressedImageUrl,
+    };
+
+    compressedImages.value.push(compressedImage)
+
+    console.log(compressedImages.value);
+
+
+
+
     file.uuid = gennerateUUID()
     renderedFiles.value.push(file)
+
+
+
   }
 
   //@ts-ignore
-  fileInput.value.value = null
+  fileInput.value.value = null // 清空fileInput，以便重复选择同样的文件
 }
 
 /**
@@ -126,15 +156,6 @@ function getFiles(): void {
 function deleteRenderedFile(index: number) {
   renderedFiles.value.splice(index, 1)
 }
-
-watch(
-  () => showDrawer.value,
-  () => {
-    sentence.value === "Attachment"
-      ? sentence.value = "X"
-      : sentence.value = "Attachment"
-  }
-)
 </script>
 
 <style lang="scss" scoped>
