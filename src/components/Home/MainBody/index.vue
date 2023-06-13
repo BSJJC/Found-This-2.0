@@ -3,7 +3,7 @@
     <div class="w-full h-full flex justify-start items-center px-5 flex-wrap flex-row relative">
       <Control></Control>
 
-      <Topics v-for="(i, index) in topicsInfo" :key="index" :data="i" :id="index" @click="zooIn(index)"></Topics>
+      <Topics v-for="(i, index) in topicsInfo" :key="index" :data="i" :id="index" @click="zoomIn(index)"></Topics>
 
       <template v-if="showTransform">
         <Transform :randomIDs="randomIDs" :states="states">
@@ -24,7 +24,7 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, Ref, defineAsyncComponent, onBeforeMount } from "vue"
+import { ref, Ref, defineAsyncComponent, onMounted } from "vue"
 
 import Topics from "./components/Topics.vue"
 import Pagination from "./components/Pagination.vue"
@@ -60,11 +60,20 @@ const states = ref({
   endHeight: 0
 })
 
+/**
+ * 获取保存在本地的topicinfo
+ */
 function getTopicInfo() {
-  topicsInfo.value = JSON.parse(sessionStorage.getItem("topicsInfo")!)
+  setTimeout(() => {
+    topicsInfo.value = JSON.parse(sessionStorage.getItem("topicsInfo")!)
+  }, 500);
 }
 
-function zooIn(index: number) {
+/**
+ * 
+ * @param index d
+ */
+function zoomIn(index: number) {
   selectedTopicId.value = index
 
   selectedTopicElement.value = document.getElementById(index.toString()) as HTMLElement
@@ -85,7 +94,7 @@ function zooIn(index: number) {
   showTransform.value = true
 }
 
-onBeforeMount(() => {
+onMounted(() => {
   getTopicInfo()
 })
 </script>

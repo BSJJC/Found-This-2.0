@@ -69,10 +69,3 @@ interface Config {
 
 const props = defineProps<{ data: Config }>()
 </script>
-  
-<style>
-.dasdsa {
-  background: url();
-  background-size: contain;
-}
-</style>

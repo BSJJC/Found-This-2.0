@@ -3,9 +3,3 @@
     <input class="w-full outline-none text-xl text-[#7E56DA]" placeholder="Topic Title" />
   </div>
 </template>
-  
-<script setup lang='ts'>
-
-</script>
-  
-<style></style>
