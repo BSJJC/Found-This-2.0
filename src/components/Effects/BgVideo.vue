@@ -1,6 +1,6 @@
 <template>
-  <div class="video-background">
-    <video ref="videoRef" autoplay loop muted>
+  <div class="fixed top-0 left-0 w-full h-full z-[-1] opacity-[75]">
+    <video ref="videoRef" autoplay loop muted class=" object-cover w-full h-full">
       <source :src="porps.videoSource" type="video/mp4" />
     </video>
   </div>
@@ -24,21 +24,3 @@ onMounted(() => {
   }
 });
 </script>
-
-<style scoped>
-.video-background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  opacity: 0.75;
-}
-
-.video-background video {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-}
-</style>
