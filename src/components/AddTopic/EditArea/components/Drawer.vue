@@ -11,14 +11,25 @@
     :style="{ left: `${showDrawer ? '' : '-50%'}` }">
 
     <div class="w-full h-full flex justify-center items-center flex-col">
+      <!-- title -->
+      <div class="w-full h-[10%] flex justify-center items-center">
+        <div class="w-1/2 text-4xl text-[#7e56da]">
+          Upload Attachment
+        </div>
 
-      <div class="w-full h-[10%] flex justify-start items-center text-4xl text-[#7e56da]">Upload Attachment</div>
+        <!-- uploadd status -->
+        <div class="w-1/2">
+          {{ uploadFileStatus.length }}
+        </div>
 
+      </div>
+
+      <!-- selected rendered files -->
       <el-scrollbar height="100%" class="w-full">
         <div class="w-full h-[90%] flex justify-start items-center flex-wrap py-5 pr-4">
           <!-- rendered files -->
           <TransitionGroup name="rendered-files">
-            <div v-for="(i, index) in renderedFiles" :key="renderedFiles[index].uuid"
+            <div v-for="(i, index) in renderedFiles" :key="renderedFiles[index].uuid" :id="i.uuid"
               class="w-full h-[100px] flex justify-center items-center p-2 my-2 border-[2px] rounded-xl overflow-hidden transition-all duration-300 group hover:-translate-y-2 hover:border-[#7e56da] hover:shadow-[#7e56da] hover:shadow-lg">
               <div class="w-full h-full flex justify-center items-center">
 
@@ -71,6 +82,7 @@
       </el-scrollbar>
     </div>
 
+    <!-- pewview img area -->
     <Transition>
       <div v-if="showTransform" id="preview-img-container"
         class=" absolute top-0 left-0 w-screen h-screen flex justify-center items-center bg-[#00000050] z-[50] overscroll-auto"
@@ -99,6 +111,7 @@
 <script setup lang='ts'>
 import { ref, Ref, computed, ComputedRef, nextTick, defineAsyncComponent } from "vue"
 import gennerateUUID from "@/utils/generateUUID"
+import uploadAppendix from "@/api/Topic/UploadAppendix"
 import compressImage from "@/utils/compressImage"
 //@ts-ignore
 import { ElMessage } from 'element-plus'
@@ -109,12 +122,14 @@ const Zoom = defineAsyncComponent(() => import("@/assets/icons/IconZoomIn.vue"))
 const Delete = defineAsyncComponent(() => import("@/assets/icons/IconDelete.vue"))
 
 interface renderedFileType extends File {
-  uuid?: string
+  uuid?: string,
+  uploadSccussed?: boolean
 }
 
 const fileInputRef: Ref<HTMLElement | undefined> = ref();
 const renderedFiles: Ref<renderedFileType[]> = ref([])
-const showDrawer: Ref<boolean> = ref(false)
+const uploadFileStatus = ref([])
+const showDrawer: Ref<boolean> = ref(true)
 const sentence: ComputedRef<"X" | "Attachment"> = computed(() => {
   if (showDrawer.value) {
     return "X"
@@ -145,6 +160,23 @@ function show(): void {
   showDrawer.value = !showDrawer.value
 }
 
+
+async function upload(file: File): Promise<boolean> {
+  const formData = new FormData()
+  formData.append("topicAppendix", file, encodeURIComponent(file.name))
+
+  const result = await uploadAppendix(formData)
+
+  if (result) {
+    console.log("appendix upload OK");
+    return true
+  }
+  else {
+    console.warn("appendix upload error")
+    return false
+  }
+}
+
 /**
  * 获取选中的文件
  * 并将图片文件压缩后存入compressedImages
@@ -156,7 +188,7 @@ async function getFiles(): Promise<void> {
   if (!files) return
 
   for (let i = 0; i < files.length; i++) {
-    const file: renderedFileType = files[i];
+    const file: File = files[i];
 
     try {
       // 如果是图片文件，则可以被压缩
@@ -174,8 +206,27 @@ async function getFiles(): Promise<void> {
       compressedImages.value.push({})
     }
 
-    file.uuid = gennerateUUID()
+    // put file into list for showing
+    const _file: renderedFileType = file
+    _file.uuid = gennerateUUID()
     renderedFiles.value.push(file)
+
+    // upload file
+    // change style by upload result
+    const uploadResult = await upload(file)
+    console.log(uploadResult);
+
+    if (uploadResult) {
+      // uplaod successed
+
+    }
+    else {
+      // upload filed
+
+    }
+
+
+
   }
 
   //@ts-ignore
