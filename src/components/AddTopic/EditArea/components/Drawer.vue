@@ -29,11 +29,11 @@
         <div class="w-full h-[90%] flex justify-start items-center flex-wrap py-5 pr-4">
           <!-- rendered files -->
           <TransitionGroup name="rendered-files">
-            <div v-for="(i, index) in renderedFiles" :key="renderedFiles[index].uuid" :id="i.uuid"
+            <div v-for="(i, index) in renderedFiles" :key="renderedFiles[index].uuid"
               class="w-full h-[100px] flex justify-center items-center p-2 my-2 border-[2px] rounded-xl overflow-hidden transition-all duration-300 group hover:-translate-y-2 hover:border-[#7e56da] hover:shadow-[#7e56da] hover:shadow-lg">
-              <div class="w-full h-full flex justify-center items-center">
+              <div class="w-full h-full flex justify-center items-center relative">
 
-                <!-- 文件预览 -->
+                <!-- file preview -->
                 <div class="h-full w-[10%] overflow-hidden rounded-lg">
                   <!-- 如果是图片文件，则显示压缩后的图片 -->
                   <img v-if="compressedImages[index].url" :id="i.uuid" :src="compressedImages[index].url" :alt="i.name">
@@ -45,26 +45,31 @@
                   </div>
                 </div>
 
-                <!-- 文件名，包括后缀名 -->
+                <!-- file name -->
                 <div
                   class="h-full w-[90%] flex justify-start items-center p-4 text-2xl text-black transition-all duration-100 hover:cursor-pointer group-hover:text-[#7e56da]">
                   {{ i.name }}
                 </div>
 
-                <!-- 文件控制 -->
+                <!-- file control -->
                 <div
                   class="w-[20%] h-full right-0 absolute translate-x-[100%] space-x-4 flex justify-center items-center transition-all duration-300 group-hover:translate-x-[0%]">
-                  <!-- 放大预览，仅支持图片文件 -->
                   <component v-if="compressedImages[index].url" :is="Zoom"
                     class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[40px]" :fill="zoomColor"
                     @click="zoomInImg(index)" @mouseenter="zoomColor = '#409efe'" @mouseleave="zoomColor = '#7e56da'">
                   </component>
 
-                  <!-- 删除 -->
                   <component :is="Delete" class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[40px]"
                     :fill="deleteColor" @click="deleteRenderedFile(index)" @mouseenter="deleteColor = '#f56c6c'"
                     @mouseleave="deleteColor = '#7e56da'">
                   </component>
+                </div>
+
+                <div class="w-[30px] absolute top-0 right-0">
+                  <Transition>
+                    <component v-if="i.uploadState === uploadStates.pendding" :is="Upload"></component>
+                    <component v-else-if="i.uploadState === uploadStates.success" :is="Check"></component>
+                  </Transition>
                 </div>
               </div>
             </div>
@@ -109,7 +114,7 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, Ref, computed, ComputedRef, nextTick, defineAsyncComponent } from "vue"
+import { ref, Ref, reactive, computed, ComputedRef, nextTick, defineAsyncComponent } from "vue"
 import gennerateUUID from "@/utils/generateUUID"
 import uploadAppendix from "@/api/Topic/UploadAppendix"
 import compressImage from "@/utils/compressImage"
@@ -120,15 +125,24 @@ import 'element-plus/es/components/message/style/css'
 const Plus = defineAsyncComponent(() => import("@/assets/icons/IconPlus.vue"))
 const Zoom = defineAsyncComponent(() => import("@/assets/icons/IconZoomIn.vue"))
 const Delete = defineAsyncComponent(() => import("@/assets/icons/IconDelete.vue"))
+const Upload = defineAsyncComponent(() => import("@/assets/icons/IconUpload.vue"))
+const Check = defineAsyncComponent(() => import("@/assets/icons/IconCheck.vue"))
+const Warning = defineAsyncComponent(() => import("@/assets/icons/IconWarning.vue"))
+
+enum uploadStates {
+  "pendding",
+  "success",
+  "fail"
+}
 
 interface renderedFileType extends File {
   uuid?: string,
-  uploadSccussed?: boolean
+  uploadState?: uploadStates
 }
 
 const fileInputRef: Ref<HTMLElement | undefined> = ref();
-const renderedFiles: Ref<renderedFileType[]> = ref([])
-const uploadFileStatus = ref([])
+const renderedFiles: renderedFileType[] = reactive([])
+const uploadFileStatus = reactive([])
 const showDrawer: Ref<boolean> = ref(true)
 const sentence: ComputedRef<"X" | "Attachment"> = computed(() => {
   if (showDrawer.value) {
@@ -140,7 +154,7 @@ const sentence: ComputedRef<"X" | "Attachment"> = computed(() => {
 })
 const zoomColor: Ref<string> = ref("#7e56da")
 const deleteColor: Ref<string> = ref("#7e56da")
-const compressedImages: Ref<{ file?: File; url?: string; }[]> = ref([]) // 保存压缩后用于展示的图片，如果不是图片文件，则保存为空对象
+const compressedImages: { file?: File; url?: string; }[] = reactive([]) // 保存压缩后用于展示的图片，如果不是图片文件，则保存为空对象
 
 const showTransform: Ref<boolean> = ref(false)
 const playingAnimation: Ref<boolean> = ref(false)
@@ -160,20 +174,24 @@ function show(): void {
   showDrawer.value = !showDrawer.value
 }
 
+async function upload(file: File): Promise<void> {
+  const _file = ref(file as renderedFileType)
+  _file.value.uuid = gennerateUUID()
+  _file.value.uploadState = uploadStates.pendding
+  const index = renderedFiles.push(_file.value)
 
-async function upload(file: File): Promise<boolean> {
   const formData = new FormData()
   formData.append("topicAppendix", file, encodeURIComponent(file.name))
-
   const result = await uploadAppendix(formData)
 
   if (result) {
-    console.log("appendix upload OK");
-    return true
+    const temp = renderedFiles[index - 1]
+    temp.uploadState = uploadStates.success;
+
+    renderedFiles.splice(index - 1, 1, temp)
   }
   else {
-    console.warn("appendix upload error")
-    return false
+    renderedFiles[index - 1].uploadState = uploadStates.fail
   }
 }
 
@@ -199,34 +217,16 @@ async function getFiles(): Promise<void> {
         file: compressedFile,
         url: compressedImageUrl,
       };
-      compressedImages.value.push(compressedImage)
+      compressedImages.push(compressedImage)
     } catch (error) {
       // 无法被压缩的则不是图片文件
       // compressedImages加入空对象
-      compressedImages.value.push({})
+      compressedImages.push({})
     }
-
-    // put file into list for showing
-    const _file: renderedFileType = file
-    _file.uuid = gennerateUUID()
-    renderedFiles.value.push(file)
 
     // upload file
     // change style by upload result
-    const uploadResult = await upload(file)
-    console.log(uploadResult);
-
-    if (uploadResult) {
-      // uplaod successed
-
-    }
-    else {
-      // upload filed
-
-    }
-
-
-
+    upload(file)
   }
 
   //@ts-ignore
@@ -262,7 +262,7 @@ async function zoomInImg(imgIndex: number): Promise<void> {
   showTransform.value = true
   playingAnimation.value = true
 
-  originalImgRef.value = document.getElementById(renderedFiles.value[imgIndex].uuid as string) as HTMLImageElement
+  originalImgRef.value = document.getElementById(renderedFiles[imgIndex].uuid as string) as HTMLImageElement
   const rect: DOMRect = originalImgRef.value.getBoundingClientRect();
 
   const { width, height, top, left } = rect as {
@@ -280,7 +280,7 @@ async function zoomInImg(imgIndex: number): Promise<void> {
   // 因为原本的样式设定中，hover后会向上translate 8px，所有这里需要 +8px，以免动画衔接不够顺滑
   previewImgRef.value!.style.left = left.toString() + "px"
 
-  let file: File = renderedFiles.value[imgIndex]
+  let file: File = renderedFiles[imgIndex]
 
   // 文件大于1Mb，压缩后展示
   if (file.size / 1024 > 1024) {
@@ -323,9 +323,9 @@ async function zoomInImg(imgIndex: number): Promise<void> {
  * 从RenderedFiles中删除选中项
  * @param index 所选中项的index
  */
-function deleteRenderedFile(index: number) {
-  renderedFiles.value.splice(index, 1)
-  compressedImages.value.splice(index, 1)
+function deleteRenderedFile(index: number): void {
+  renderedFiles.splice(index, 1)
+  compressedImages.splice(index, 1)
 }
 </script>
 
@@ -338,6 +338,10 @@ function deleteRenderedFile(index: number) {
 .v-enter-active,
 .v-leave-active {
   transition: all 0.3s ease-in-out;
+}
+
+.v-leave-active {
+  position: absolute;
 }
 
 .v-enter-from,
