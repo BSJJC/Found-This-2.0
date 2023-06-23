@@ -65,12 +65,13 @@
                   </component>
                 </div>
 
+                <!-- upload state -->
                 <div class="w-[30px] absolute top-0 right-0">
-                  <Transition>
-                    <component v-if="i.uploadState === uploadStates.pendding" :is="Upload"></component>
-                    <component v-else-if="i.uploadState === uploadStates.success" :is="Check"></component>
-                  </Transition>
+
+                  <component :is="test"></component>
+
                 </div>
+
               </div>
             </div>
           </TransitionGroup>
@@ -140,6 +141,8 @@ interface renderedFileType extends File {
   uploadState?: uploadStates
 }
 
+const test = ref()
+
 const fileInputRef: Ref<HTMLElement | undefined> = ref();
 const renderedFiles: renderedFileType[] = reactive([])
 const uploadFileStatus = reactive([])
@@ -175,20 +178,23 @@ function show(): void {
 }
 
 async function upload(file: File): Promise<void> {
-  const _file = ref(file as renderedFileType)
-  _file.value.uuid = gennerateUUID()
-  _file.value.uploadState = uploadStates.pendding
-  const index = renderedFiles.push(_file.value)
+  const _file = (file as renderedFileType)
+  _file.uuid = gennerateUUID()
+  _file.uploadState = uploadStates.pendding
+  const index = renderedFiles.push(_file)
+
+  test.value = Upload;
 
   const formData = new FormData()
   formData.append("topicAppendix", file, encodeURIComponent(file.name))
   const result = await uploadAppendix(formData)
+  await nextTick()
 
   if (result) {
     const temp = renderedFiles[index - 1]
     temp.uploadState = uploadStates.success;
 
-    renderedFiles.splice(index - 1, 1, temp)
+    test.value = Check
   }
   else {
     renderedFiles[index - 1].uploadState = uploadStates.fail
