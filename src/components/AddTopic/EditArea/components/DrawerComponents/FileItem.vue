@@ -41,7 +41,7 @@
 
             <!-- upload state -->
             <div class="w-[30px] absolute top-0 right-0">
-              // TODOS
+              <UploadState></UploadState>
             </div>
 
           </div>
@@ -74,6 +74,7 @@ import compressImage from "@/utils/compressImage"
 import { uploadStates, fileItemType, compressedImagesType } from './Types/index.ts'
 
 const Preview = defineAsyncComponent(() => import("./FileItemComponents/Preview.vue"))
+const UploadState = defineAsyncComponent(() => import("./FileItemComponents/UploadState.vue"))
 
 const Plus = defineAsyncComponent(() => import("@/assets/icons/IconPlus.vue"))
 const Zoom = defineAsyncComponent(() => import("@/assets/icons/IconZoomIn.vue"))
@@ -131,12 +132,12 @@ async function upload(file: File): Promise<void> {
   const formData = new FormData()
   formData.append("topicFile", file, encodeURIComponent(file.name))
   const result = await uploadFile(formData)
+
   await nextTick()
 
   if (result) {
     const temp = fileList.value[index - 1]
     temp.uploadState = uploadStates.success;
-
   }
   else {
     fileList.value[index - 1].uploadState = uploadStates.fail

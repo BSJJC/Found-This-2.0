@@ -41,6 +41,7 @@ declare module '@vue/runtime-core' {
     TitleInput: typeof import('./../components/AddTopic/NavBar/components/TitleInput.vue')['default']
     Topics: typeof import('./../components/Home/MainBody/components/Topics.vue')['default']
     Transform: typeof import('./../components/Common/Transform.vue')['default']
+    UploadState: typeof import('./../components/AddTopic/EditArea/components/DrawerComponents/FileItemComponents/UploadState.vue')['default']
     UserIcon: typeof import('./../components/Home/Navbar/components/UserIcon/index.vue')['default']
   }
   export interface ComponentCustomProperties {
