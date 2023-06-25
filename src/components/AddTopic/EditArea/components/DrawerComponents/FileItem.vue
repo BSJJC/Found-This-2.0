@@ -30,20 +30,18 @@
               class="w-[20%] h-full right-0 absolute translate-x-[100%] space-x-4 flex justify-center items-center transition-all duration-300 group-hover:translate-x-[0%]">
               <Zoom v-if="compressedImages[index].url"
                 class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[35px]" :fill="zoomColor"
-                @click="zoomInImg(index)" @mouseenter="zoomColor = '#409efe'" @mouseleave="zoomColor = '#7e56da'">
+                @click="showPreview(i.uuid as string, index as number)" @mouseenter="zoomColor = '#409efe'"
+                @mouseleave="zoomColor = '#7e56da'">
               </Zoom>
 
               <Delete class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[35px]" :fill="deleteColor"
-                @click="deleteRenderedFile(index)" @mouseenter="deleteColor = '#f56c6c'"
-                @mouseleave="deleteColor = '#7e56da'">
+                @click="deleteFile(index)" @mouseenter="deleteColor = '#f56c6c'" @mouseleave="deleteColor = '#7e56da'">
               </Delete>
             </div>
 
             <!-- upload state -->
             <div class="w-[30px] absolute top-0 right-0">
-
-              123
-
+              // TODOS
             </div>
 
           </div>
@@ -54,12 +52,16 @@
       <div
         class="w-full h-[100px] flex justify-center items-center p-2 my-2 border-[#7e56da] border-[2px] opacity-30 cursor-pointer rounded-xl transition-all duration-300 hover:shadow-[#7e56da] hover:shadow-lg hover:opacity-100"
         @click="() => { fileInputRef?.click() }">
-        <component :is="Plus" class="w-[50px]" fill="#7e56da"></component>
+        <Plus class="w-[50px]" fill="#7e56da"></Plus>
 
         <input type="file" ref="fileInputRef" style="display: none;" multiple @input="getFiles">
       </div>
     </div>
   </el-scrollbar>
+
+  <!-- img preview -->
+  <Preview v-if="ifShowPreview" :uuid="previewUUID" :index="previewIndex" :file-list="fileList"
+    :compress-images="compressedImages" @destroyPreview="destroyPreview"></Preview>
 </template>
   
 <script setup lang='ts'>
@@ -69,24 +71,17 @@ import uploadFile from "@/api/Topic/UploadFile"
 import gennerateUUID from "@/utils/generateUUID"
 import compressImage from "@/utils/compressImage"
 
+import { uploadStates, fileItemType, compressedImagesType } from './Types/index.ts'
+
+const Preview = defineAsyncComponent(() => import("./FileItemComponents/Preview.vue"))
+
 const Plus = defineAsyncComponent(() => import("@/assets/icons/IconPlus.vue"))
 const Zoom = defineAsyncComponent(() => import("@/assets/icons/IconZoomIn.vue"))
 const Delete = defineAsyncComponent(() => import("@/assets/icons/IconDelete.vue"))
 
-enum uploadStates {
-  "pendding",
-  "success",
-  "fail"
-}
-
-interface fileItemType extends File {
-  uuid?: string,
-  uploadState?: uploadStates
-}
-
 const fileInputRef: Ref<HTMLElement | undefined> = ref();
 const fileList: Ref<fileItemType[]> = ref([]) // 保存所有选择了的文件
-const compressedImages: Ref<{ file?: File; url?: string; }[]> = ref([]) // 保存压缩后用于展示的图片，如果不是图片文件，则保存为空对象
+const compressedImages: Ref<compressedImagesType[]> = ref([]) // 保存压缩后用于展示的图片，如果不是图片文件，则保存为空对象
 
 const zoomColor: Ref<string> = ref("#7e56da")
 const deleteColor: Ref<string> = ref("#7e56da")
@@ -127,83 +122,6 @@ async function getFiles(): Promise<void> {
   fileInputRef.value.value = null // 清空fileInput，以便重复选择同样的文件
 }
 
-
-/**
- * 显示图片预览
- * @param imgIndex 需要显示的图片的index
- */
-async function zoomInImg(imgIndex: number): Promise<void> {
-  showTransform.value = true
-  playingAnimation.value = true
-
-  originalImgRef.value = document.getElementById(fileList.value[imgIndex].uuid as string) as HTMLImageElement
-  const rect: DOMRect = originalImgRef.value.getBoundingClientRect();
-
-  const { width, height, top, left } = rect as {
-    width: number, height: number, top: number, left: number
-  }
-
-  previewImgStates.value.startWidth = width
-  previewImgStates.value.startTop = top
-  previewImgStates.value.startLeft = left
-
-  await nextTick()
-
-  previewImgRef.value!.style.width = width.toString() + "px"
-  previewImgRef.value!.style.top = (top + 8).toString() + "px"
-  // 因为原本的样式设定中，hover后会向上translate 8px，所有这里需要 +8px，以免动画衔接不够顺滑
-  previewImgRef.value!.style.left = left.toString() + "px"
-
-  let file: File = fileList.value[imgIndex]
-
-  // 文件大于1Mb，压缩后展示
-  if (file.size / 1024 > 1024) {
-    await compressImage(file, 1280, 720)
-      .then(_file => {
-        file = _file
-      })
-
-    ElMessage({
-      message: '图片过大，展示压缩后图片',
-      type: 'warning',
-    })
-  }
-
-  previewImgUrl.value = URL.createObjectURL(file)
-
-  setTimeout(() => {
-    originalImgRef.value!.style.opacity = "0"
-
-    if (width / height <= 1) {
-      // 长宽比小于等于1的图片
-      previewImgRef.value!.style.width = "50vw"
-      previewImgRef.value!.style.top = "0px"
-      previewImgRef.value!.style.left = `25vw`
-    }
-    else {
-      // 长宽比大于1的图片
-      previewImgRef.value!.style.width = "80vw"
-      previewImgRef.value!.style.top = "10vh"
-      previewImgRef.value!.style.left = `10vw`
-    }
-  }, 300);
-
-  setTimeout(() => {
-    playingAnimation.value = false
-  }, 800);
-}
-
-/**
- * 从RenderedFiles中删除选中项
- * @param index 所选中项的index
- */
-function deleteRenderedFile(index: number): void {
-  fileList.value.splice(index, 1)
-  compressedImages.value.splice(index, 1)
-}
-
-
-
 async function upload(file: File): Promise<void> {
   const _file = (file as fileItemType)
   _file.uuid = gennerateUUID()
@@ -223,6 +141,28 @@ async function upload(file: File): Promise<void> {
   else {
     fileList.value[index - 1].uploadState = uploadStates.fail
   }
+}
+
+/**
+ * 从RenderedFiles中删除选中项
+ * @param index 所选中项的index
+ */
+function deleteFile(index: number): void {
+  fileList.value.splice(index, 1)
+  compressedImages.value.splice(index, 1)
+}
+
+// Preview组件所需的参数
+const ifShowPreview = ref(false)
+const previewUUID = ref("")
+const previewIndex = ref(0)
+function showPreview(uuid: string, index: number): void {
+  previewUUID.value = uuid;
+  previewIndex.value = index
+  ifShowPreview.value = true
+}
+function destroyPreview(): void {
+  ifShowPreview.value = false
 }
 </script>
 

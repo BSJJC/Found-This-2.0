@@ -31,6 +31,7 @@ declare module '@vue/runtime-core' {
     Navbar: typeof import('./../components/Home/Navbar/index.vue')['default']
     NavBar: typeof import('./../components/AddTopic/NavBar/index.vue')['default']
     Pagination: typeof import('./../components/Home/MainBody/components/Pagination.vue')['default']
+    Preview: typeof import('./../components/AddTopic/EditArea/components/DrawerComponents/FileItemComponents/Preview.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./../components/Home/Navbar/components/Search/index.vue')['default']

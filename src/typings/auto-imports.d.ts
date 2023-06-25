@@ -10,11 +10,11 @@ declare global {
 import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface ComponentCustomProperties {
-    readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
+
   }
 }
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
-    readonly ElMessage: UnwrapRef<typeof import('element-plus/es')['ElMessage']>
+
   }
 }
