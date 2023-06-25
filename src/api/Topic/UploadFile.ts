@@ -1,15 +1,15 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:5000/api/topic/appendix/upload",
+  baseURL: "http://localhost:5000/api/topic/file/upload",
   method: "POST",
   timeout: 3000,
 });
 
-const uploadAppendix = async (data: FormData) => {
+const uploadFile = async (data: FormData) => {
   return await instance.request({
     data,
   });
 };
 
-export default uploadAppendix;
+export default uploadFile;
