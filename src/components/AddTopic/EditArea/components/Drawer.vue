@@ -40,12 +40,12 @@ const Title = defineAsyncComponent(() => import("./DrawerComponents/Title.vue"))
 const FileItem = defineAsyncComponent(() => import("./DrawerComponents/FileItem.vue"))
 
 const showDrawer: Ref<boolean> = ref(true)
-const sentence: ComputedRef<"X" | "Attachment"> = computed(() => {
+const sentence: ComputedRef<"X" | "FILE"> = computed(() => {
   if (showDrawer.value) {
     return "X"
   }
   else {
-    return "Attachment"
+    return "FILE"
   }
 })
 

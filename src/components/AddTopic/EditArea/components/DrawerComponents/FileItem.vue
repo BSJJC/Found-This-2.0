@@ -41,7 +41,7 @@
 
             <!-- upload state -->
             <div class="w-[30px] absolute top-0 right-0">
-              <UploadState></UploadState>
+              <UploadState :upload-state="uploadStateArr[index]"></UploadState>
             </div>
 
           </div>
@@ -65,7 +65,7 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, Ref, defineAsyncComponent, nextTick } from "vue"
+import { ref, Ref, defineAsyncComponent } from "vue"
 
 import uploadFile from "@/api/Topic/UploadFile"
 import gennerateUUID from "@/utils/generateUUID"
@@ -89,8 +89,6 @@ const deleteColor: Ref<string> = ref("#7e56da")
 
 /**
  * 获取选中的文件
- * 并将图片文件压缩后存入compressedImages
- * 若不是图片文件，则存入空对象
  */
 async function getFiles(): Promise<void> {
   const files: FileList | null = (fileInputRef.value! as HTMLInputElement).files
@@ -100,21 +98,8 @@ async function getFiles(): Promise<void> {
   for (let i = 0; i < files.length; i++) {
     const file: File = files[i];
 
-    try {
-      // 如果是图片文件，则可以被压缩
-      // 并加压缩后的图片加入compressedImages
-      const compressedFile: File = await compressImage(files[i], 100, 100);
-      const compressedImageUrl: string = URL.createObjectURL(compressedFile);
-      const compressedImage = {
-        file: compressedFile,
-        url: compressedImageUrl,
-      };
-      compressedImages.value.push(compressedImage)
-    } catch (error) {
-      // 无法被压缩的则不是图片文件
-      // compressedImages加入空对象
-      compressedImages.value.push({})
-    }
+
+    await tryCompressFile(file)
 
     upload(file)
   }
@@ -123,48 +108,86 @@ async function getFiles(): Promise<void> {
   fileInputRef.value.value = null // 清空fileInput，以便重复选择同样的文件
 }
 
-async function upload(file: File): Promise<void> {
-  const _file = (file as fileItemType)
-  _file.uuid = gennerateUUID()
-  _file.uploadState = uploadStates.pendding
-  const index = fileList.value.push(_file)
-
-  const formData = new FormData()
-  formData.append("topicFile", file, encodeURIComponent(file.name))
-  const result = await uploadFile(formData)
-
-  await nextTick()
-
-  if (result) {
-    const temp = fileList.value[index - 1]
-    temp.uploadState = uploadStates.success;
-  }
-  else {
-    fileList.value[index - 1].uploadState = uploadStates.fail
+/**
+ *  尝试压缩图片文件
+ * 如果是图片文件则压缩并将压缩后的文件compressedImages
+ * 如果不是图片文件则在compressedImages中假如空对象
+ * @param file 需要尝试压缩的文件
+ */
+async function tryCompressFile(file: File): Promise<void> {
+  try {
+    // 如果是图片文件，则可以被压缩
+    // 并加压缩后的图片加入compressedImages
+    const compressedFile: File = await compressImage(file, 100, 100);
+    const compressedImageUrl: string = URL.createObjectURL(compressedFile);
+    const compressedImage = {
+      file: compressedFile,
+      url: compressedImageUrl,
+    };
+    compressedImages.value.push(compressedImage)
+  } catch (error) {
+    // 无法被压缩的则不是图片文件
+    // compressedImages加入空对象
+    compressedImages.value.push({})
   }
 }
 
 /**
- * 从RenderedFiles中删除选中项
+ * 上传所选文件
+ * 根据上传成功与否修改updateStateArr
+ * @param file 所需的上传的文件
+ */
+async function upload(file: File): Promise<void> {
+  const _file = (file as fileItemType)
+  _file.uuid = gennerateUUID()
+  fileList.value.push(_file)
+
+  const formData = new FormData()
+  formData.append("topicFile", file, encodeURIComponent(file.name))
+
+  try {
+    await uploadFile(formData)
+    uploadStateArr.value.push(uploadStates.success)
+  } catch (error) {
+    uploadStateArr.value.push(uploadStates.fail)
+  }
+}
+
+/**
+ * 删除文件
  * @param index 所选中项的index
  */
 function deleteFile(index: number): void {
   fileList.value.splice(index, 1)
   compressedImages.value.splice(index, 1)
+  uploadStateArr.value.splice(index, 1)
 }
 
 // Preview组件所需的参数
 const ifShowPreview = ref(false)
 const previewUUID = ref("")
 const previewIndex = ref(0)
+/**
+ * 显示Preview组件，并传入Preview组件所需参数
+ * @param uuid 所要预览的图片文件Ref的uuid
+ * @param index  所要预览的图片文件再fileList中的index，将根据这个值和传入的fileList获得文件具体内容
+ */
 function showPreview(uuid: string, index: number): void {
   previewUUID.value = uuid;
   previewIndex.value = index
   ifShowPreview.value = true
 }
+/**
+ * 销毁Preview组件
+ */
 function destroyPreview(): void {
   ifShowPreview.value = false
 }
+// Preview组件所需参数end
+
+// UpdateState组件所需参数
+const uploadStateArr: Ref<uploadStates[]> = ref([]) // 用于保存所有文件的上传状态
+// UpdateState组件所需参数end
 </script>
 
 <style lang="scss" scoped>
