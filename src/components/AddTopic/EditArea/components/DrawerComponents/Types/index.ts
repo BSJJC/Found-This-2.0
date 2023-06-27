@@ -1,5 +1,5 @@
 export enum uploadStates {
-  "pendding",
+  "pending",
   "success",
   "fail"
 }

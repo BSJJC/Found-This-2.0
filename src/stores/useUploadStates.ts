@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
 enum uploadStates {
-  "pendding",
+  "pending",
   "success",
   "fail"
 }

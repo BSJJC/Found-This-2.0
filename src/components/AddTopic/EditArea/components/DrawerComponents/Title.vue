@@ -8,14 +8,32 @@
     <!-- 文件上传状态 -->
     <div class="w-1/2 flex justify-end items-center bg-red-300">
       {{ uploadStateArr.length }}
+      {{ OK }}
     </div>
 
   </div>
 </template>
   
 <script setup lang='ts'>
-import { useUploadStates } from "@/stores/useUploadStates"
+import { computed } from "vue"
 import { storeToRefs } from "pinia";
+import { useUploadStates } from "@/stores/useUploadStates"
+
+enum uploadStates {
+  "pending",
+  "success",
+  "fail"
+}
 
 const { uploadStateArr } = storeToRefs(useUploadStates())
+
+const OK = computed(() => {
+  uploadStateArr.value.map(state => {
+    if (state === uploadStates.success) {
+      return state
+    }
+  })
+})
+
+
 </script>
