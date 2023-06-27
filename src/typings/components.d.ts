@@ -14,9 +14,7 @@ declare module '@vue/runtime-core' {
     Drawer: typeof import('./../components/AddTopic/EditArea/components/Drawer.vue')['default']
     EditArea: typeof import('./../components/AddTopic/EditArea/index.vue')['default']
     Editor: typeof import('./../components/AddTopic/EditArea/components/Editor.vue')['default']
-    ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
-    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
@@ -43,8 +41,5 @@ declare module '@vue/runtime-core' {
     Transform: typeof import('./../components/Common/Transform.vue')['default']
     UploadState: typeof import('./../components/AddTopic/EditArea/components/DrawerComponents/FileItemComponents/UploadState.vue')['default']
     UserIcon: typeof import('./../components/Home/Navbar/components/UserIcon/index.vue')['default']
-  }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
