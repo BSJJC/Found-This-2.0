@@ -142,16 +142,17 @@ async function tryCompressFile(file: File): Promise<void> {
 async function upload(file: File): Promise<void> {
   const _file = (file as fileItemType)
   _file.uuid = gennerateUUID()
-  fileList.value.push(_file)
+  const index = fileList.value.push(_file)
+  uploadStateArr.value[index - 1] = uploadStates.Pending
 
   const formData = new FormData()
   formData.append("topicFile", file, encodeURIComponent(file.name))
 
   try {
     await uploadFile(formData)
-    uploadStateArr.value.push(uploadStates.Success)
+    uploadStateArr.value[index - 1] = uploadStates.Success
   } catch (error) {
-    uploadStateArr.value.push(uploadStates.Fail)
+    uploadStateArr.value[index - 1] = uploadStates.Fail
   }
 }
 
