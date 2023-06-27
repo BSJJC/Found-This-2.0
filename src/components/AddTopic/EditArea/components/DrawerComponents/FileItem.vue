@@ -72,6 +72,8 @@ import gennerateUUID from "@/utils/generateUUID"
 import compressImage from "@/utils/compressImage"
 
 import { uploadStates, fileItemType, compressedImagesType } from './Types/index.ts'
+import { useUploadStates } from "@/stores/useUploadStates"
+import { storeToRefs } from "pinia"
 
 const Preview = defineAsyncComponent(() => import("./FileItemComponents/Preview.vue"))
 const UploadState = defineAsyncComponent(() => import("./FileItemComponents/UploadState.vue"))
@@ -186,7 +188,7 @@ function destroyPreview(): void {
 // Preview组件所需参数end
 
 // UpdateState组件所需参数
-const uploadStateArr: Ref<uploadStates[]> = ref([]) // 用于保存所有文件的上传状态
+const { uploadStateArr } = storeToRefs(useUploadStates()) // 用于保存所有文件的上传状态
 // UpdateState组件所需参数end
 </script>
 
