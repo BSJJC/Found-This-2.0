@@ -3,8 +3,8 @@
     <Transition>
       <Uploading v-if="!props.uploadState" color="#7e56da" class="animate-bounce">
       </Uploading>
-      <Success v-else-if="props.uploadState === uploadStates.success" color="#85ce61"></Success>
-      <Warning v-else-if="props.uploadState === uploadStates.fail" color="#f78989"></Warning>
+      <Success v-else-if="props.uploadState === uploadStates.Success" color="#85ce61"></Success>
+      <Warning v-else-if="props.uploadState === uploadStates.Fail" color="#f78989"></Warning>
     </Transition>
   </div>
 </template>

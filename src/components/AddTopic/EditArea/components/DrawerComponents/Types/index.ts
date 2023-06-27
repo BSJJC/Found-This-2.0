@@ -1,7 +1,7 @@
 export enum uploadStates {
-  "pending",
-  "success",
-  "fail"
+  Pending = "pending",
+  Success = "success",
+  Fail = "fail"
 }
 
 export interface fileItemType extends File {

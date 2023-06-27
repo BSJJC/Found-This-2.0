@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 
 enum uploadStates {
-  "pending",
-  "success",
-  "fail"
+  Pending = "pending",
+  Success = "success",
+  Fail = "fail"
 }
 
 export const useUploadStates = defineStore({

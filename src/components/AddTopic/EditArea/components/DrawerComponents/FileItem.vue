@@ -149,9 +149,9 @@ async function upload(file: File): Promise<void> {
 
   try {
     await uploadFile(formData)
-    uploadStateArr.value.push(uploadStates.success)
+    uploadStateArr.value.push(uploadStates.Success)
   } catch (error) {
-    uploadStateArr.value.push(uploadStates.fail)
+    uploadStateArr.value.push(uploadStates.Fail)
   }
 }
 
