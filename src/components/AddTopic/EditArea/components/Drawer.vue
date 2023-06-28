@@ -20,15 +20,13 @@
 
     <!-- 切换显示drawer -->
     <div
-      class="absolute flex flex-col justify-center items-center bg-[#7e56da] cursor-pointer rounded-r-lg text-xl text-white overflow-hidden transition-all duration-500 left-full p-4 hover:pl-[40px] top-[30%]"
-      :style="{
-        top: `${showDrawer ? '0px' : ''}`, height: `${showDrawer ? '50px' : '300px'}`
-      }" @click="show">
-      <TransitionGroup>
-        <span v-for="(char, index) in sentence" :key="index">
-          {{ char }}
-        </span>
-      </TransitionGroup>
+      class="absolute flex flex-col justify-center items-center bg-[#7e56da] cursor-pointer rounded-r-lg text-xl text-white overflow-hidden left-full p-4 hover:pl-[30px] top-[30%]"
+      :style="sentenceClass" @click="show">
+
+      <div style="writing-mode: vertical-lr; text-orientation: upright" class=" overflow-hidden">
+        {{ sentence }}
+      </div>
+
     </div>
   </div>
 </template>
@@ -39,13 +37,36 @@ import { ref, Ref, computed, ComputedRef, defineAsyncComponent } from "vue"
 const Title = defineAsyncComponent(() => import("./DrawerComponents/Title.vue"))
 const FileItem = defineAsyncComponent(() => import("./DrawerComponents/FileItem.vue"))
 
-const showDrawer: Ref<boolean> = ref(true)
-const sentence: ComputedRef<"X" | "FILE"> = computed(() => {
+const showDrawer: Ref<boolean> = ref(false)
+const sentence: ComputedRef<"X" | "UPLOAD FILE"> = computed(() => {
   if (showDrawer.value) {
     return "X"
   }
   else {
-    return "FILE"
+    return "UPLOAD FILE"
+  }
+})
+const sentenceClass: ComputedRef<{
+  top: string;
+  height: string;
+  transition: string;
+  transitionDuration: string;
+}> = computed(() => {
+  if (showDrawer.value) {
+    return {
+      top: "0px",
+      height: "50px",
+      transition: "all",
+      transitionDuration: "500ms"
+    }
+  }
+  else {
+    return {
+      top: "",
+      height: "300px",
+      transition: "all",
+      transitionDuration: "500ms"
+    }
   }
 })
 
@@ -61,15 +82,5 @@ function show(): void {
 * {
   user-select: none;
   -webkit-user-select: none;
-}
-
-.v-enter-active,
-.v-leave-active {
-  transition: all 0.3s ease-in-out;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
 }
 </style>
