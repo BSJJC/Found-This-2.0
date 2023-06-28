@@ -1,7 +1,7 @@
 <template>
   <div>
     <Transition>
-      <Uploading v-if="!props.uploadState" color="#7e56da" class="animate-bounce">
+      <Uploading v-if="props.uploadState === uploadStates.Pending" color="#7e56da" class="animate-bounce">
       </Uploading>
       <Success v-else-if="props.uploadState === uploadStates.Success" color="#85ce61"></Success>
       <Warning v-else-if="props.uploadState === uploadStates.Fail" color="#f78989"></Warning>
