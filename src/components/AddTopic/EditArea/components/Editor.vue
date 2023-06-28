@@ -11,10 +11,11 @@
 </template>
   
 <script setup lang='ts'>
-import { ref, Ref } from "vue"
 import Editor from "@tinymce/tinymce-vue";
+import { useNewTopicInfo } from "@/stores/useNewTopicInfo"
+import { storeToRefs } from "pinia";
 
-const text: Ref<string> = ref("dsadsa")
+const { text } = storeToRefs(useNewTopicInfo())
 </script>
   
 <style></style>

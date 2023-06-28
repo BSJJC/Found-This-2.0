@@ -70,6 +70,7 @@ const sentenceClass: ComputedRef<{
   }
 })
 
+
 /**
  * 展示drawer
  */
@@ -82,5 +83,15 @@ function show(): void {
 * {
   user-select: none;
   -webkit-user-select: none;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

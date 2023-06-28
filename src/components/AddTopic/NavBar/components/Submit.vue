@@ -6,6 +6,12 @@
 </template>
   
 <script setup lang='ts'>
+// import { useNewTopicInfo } from "@/stores/useNewTopicInfo"
+// import { storeToRefs } from "pinia";
+
+
+// const { title, text } = storeToRefs(useNewTopicInfo())
+
 
 </script>
   
