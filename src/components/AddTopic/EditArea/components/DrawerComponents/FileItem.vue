@@ -71,7 +71,7 @@ import uploadFile from "@/api/Topic/UploadFile"
 import gennerateUUID from "@/utils/generateUUID"
 import compressImage from "@/utils/compressImage"
 
-import { uploadStates, fileItemType, compressedImagesType } from './Types/index.ts'
+import { uploadStates, fileItemType, compressedImagesType } from "@/types/Drawer"
 import { useUploadStates } from "@/stores/useUploadStates"
 import { storeToRefs } from "pinia"
 

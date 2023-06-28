@@ -11,7 +11,7 @@
   
 <script setup lang='ts'>
 import { defineAsyncComponent } from "vue"
-import { uploadStates } from "../Types/index.ts"
+import { uploadStates } from "@/types/Drawer"
 
 const Uploading = defineAsyncComponent(() => import("@/assets/icons/IconUpload.vue"))
 const Success = defineAsyncComponent(() => import("@/assets/icons/IconCheck.vue"))
