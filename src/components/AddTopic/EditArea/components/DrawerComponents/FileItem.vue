@@ -28,15 +28,20 @@
             <!-- file control -->
             <div
               class="w-[20%] h-full right-0 absolute translate-x-[100%] space-x-4 flex justify-center items-center transition-all duration-300 group-hover:translate-x-[0%]">
-              <Zoom v-if="compressedImages[index].url"
-                class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[35px]" :fill="zoomColor"
-                @click="showPreview(i.uuid as string, index as number)" @mouseenter="zoomColor = '#409efe'"
-                @mouseleave="zoomColor = '#7e56da'">
-              </Zoom>
+              <Transition>
+                <Zoom v-if="compressedImages[index].url"
+                  class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[35px]" :fill="zoomColor"
+                  @click="showPreview(i.uuid as string, index as number)" @mouseenter="zoomColor = '#409efe'"
+                  @mouseleave="zoomColor = '#7e56da'">
+                </Zoom>
+              </Transition>
 
-              <Delete class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[35px]" :fill="deleteColor"
-                @click="deleteFile(index)" @mouseenter="deleteColor = '#f56c6c'" @mouseleave="deleteColor = '#7e56da'">
-              </Delete>
+              <Transition>
+                <Delete v-show="uploadStateArr[index] !== uploadStates.Pending"
+                  class="w-[30px] transition-all duration-300 hover:cursor-pointer hover:w-[35px]" :fill="deleteColor"
+                  @click="deleteFile(index)" @mouseenter="deleteColor = '#f56c6c'" @mouseleave="deleteColor = '#7e56da'">
+                </Delete>
+              </Transition>
             </div>
 
             <!-- upload state -->
@@ -164,6 +169,7 @@ function deleteFile(index: number): void {
   fileList.value.splice(index, 1)
   compressedImages.value.splice(index, 1)
   uploadStateArr.value.splice(index, 1)
+
 }
 
 // Preview组件所需的参数
@@ -194,6 +200,16 @@ const { uploadStateArr } = storeToRefs(useUploadStates()) // 用于保存所有�
 </script>
 
 <style lang="scss" scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 .file-item-move,
 .file-item-enter-active,
 .file-item-leave-active {
