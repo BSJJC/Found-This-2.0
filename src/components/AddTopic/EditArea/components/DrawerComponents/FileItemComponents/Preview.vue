@@ -15,7 +15,7 @@ import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
 
 import compressImage from "@/utils/compressImage"
-import { fileItemType, compressedImagesType } from "../Types/index"
+import { fileItemType, compressedImagesType } from "@/types/Drawer"
 
 interface Config {
   uuid: string,

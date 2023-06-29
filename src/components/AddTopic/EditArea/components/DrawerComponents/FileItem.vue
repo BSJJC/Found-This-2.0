@@ -78,6 +78,7 @@ import compressImage from "@/utils/compressImage"
 
 import { uploadStates, fileItemType, compressedImagesType } from "@/types/Drawer"
 import { useUploadStates } from "@/stores/useUploadStates"
+import { useNewTopicInfo } from "@/stores/useNewTopicInfo"
 import { storeToRefs } from "pinia"
 
 const Preview = defineAsyncComponent(() => import("./FileItemComponents/Preview.vue"))
@@ -93,6 +94,12 @@ const compressedImages: Ref<compressedImagesType[]> = ref([]) // 保存压缩后
 
 const zoomColor: Ref<string> = ref("#7e56da")
 const deleteColor: Ref<string> = ref("#7e56da")
+
+// UpdateState组件所需参数
+const { uploadStateArr } = storeToRefs(useUploadStates()) // 用于保存所有文件的上传状态
+// UpdateState组件所需参数end
+
+const { fileIDs } = storeToRefs(useNewTopicInfo())
 
 /**
  * 获取选中的文件
@@ -154,7 +161,9 @@ async function upload(file: File): Promise<void> {
   formData.append("topicFile", file, encodeURIComponent(file.name))
 
   try {
-    await uploadFile(formData)
+    const response = await uploadFile(formData)
+    fileIDs.value.push(response.data)
+
     uploadStateArr.value[index - 1] = uploadStates.Success
   } catch (error) {
     uploadStateArr.value[index - 1] = uploadStates.Fail
@@ -169,7 +178,7 @@ function deleteFile(index: number): void {
   fileList.value.splice(index, 1)
   compressedImages.value.splice(index, 1)
   uploadStateArr.value.splice(index, 1)
-
+  fileIDs.value.splice(index, 1)
 }
 
 // Preview组件所需的参数
@@ -194,9 +203,7 @@ function destroyPreview(): void {
 }
 // Preview组件所需参数end
 
-// UpdateState组件所需参数
-const { uploadStateArr } = storeToRefs(useUploadStates()) // 用于保存所有文件的上传状态
-// UpdateState组件所需参数end
+
 </script>
 
 <style lang="scss" scoped>

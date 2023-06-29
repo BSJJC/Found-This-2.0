@@ -55,12 +55,7 @@
 import { computed, ComputedRef } from "vue"
 import { storeToRefs } from "pinia";
 import { useUploadStates } from "@/stores/useUploadStates"
-
-enum uploadStates {
-  Pending = "pending",
-  Success = "success",
-  Fail = "fail"
-}
+import { uploadStates } from "@/types/Drawer"
 
 const { uploadStateArr } = storeToRefs(useUploadStates())
 

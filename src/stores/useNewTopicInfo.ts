@@ -4,7 +4,8 @@ export const useNewTopicInfo = defineStore({
   id: "NewTopicInfo",
   state: () => ({
     title: "" as string,
-    text: "" as string
+    text: "" as string,
+    fileIDs: [] as Array<string>
   }),
 });
 
