@@ -70,7 +70,6 @@ const uploadFails: ComputedRef<number> = computed(() => {
 const uploading: ComputedRef<number> = computed(() => {
   return uploadStateArr.value.length - uploadSuccess.value - uploadFails.value;
 })
-
 </script>
 
 <style lang="scss" scoped>
