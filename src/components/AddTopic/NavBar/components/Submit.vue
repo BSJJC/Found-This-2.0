@@ -4,9 +4,21 @@
     @click="submit">
     SUBMIT
   </div>
+
+  <Teleport to="body">
+    <Transition name="submit">
+      <div v-if="submiting"
+        class="z-[500] absolute top-0 left-0 w-screen h-screen bg-[#fff33350] flex justify-center items-center">
+        <div class="inner w-2/3 h-2/3 bg-red-300">
+          123
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
   
 <script setup lang='ts'>
+import { ref, Ref } from "vue"
 import { useNewTopicInfo } from "@/stores/useNewTopicInfo"
 import { storeToRefs } from "pinia";
 // @ts-ignore
@@ -15,11 +27,15 @@ import 'element-plus/es/components/message/style/css'
 import createNewTopic from "@/api/Topic/CreateNewTopic";
 
 const { title, text, fileIDs } = storeToRefs(useNewTopicInfo())
+const submiting: Ref<boolean> = ref(false)
 
 /**
  * 发布话题
  */
 async function submit(): Promise<void> {
+
+  submiting.value = true
+
   if (!title.value) {
     ElMessage({
       showClose: true,
@@ -75,5 +91,15 @@ async function submit(): Promise<void> {
 * {
   user-select: none;
   -webkit-user-select: none;
+}
+
+.submit-enter-active,
+.submit-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.submit-enter-from,
+.submit-leave-to {
+  opacity: 0;
 }
 </style>
