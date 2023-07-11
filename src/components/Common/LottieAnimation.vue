@@ -1,3 +1,7 @@
+<template>
+  <div ref="lottieContainer"></div>
+</template>
+
 <script lang="ts" setup>
 import { ref, Ref, onMounted, watch } from "vue";
 import lottie, { AnimationItem } from "lottie-web";
@@ -52,7 +56,3 @@ onMounted(() => {
   load();
 });
 </script>
-
-<template>
-  <div ref="lottieContainer"></div>
-</template>

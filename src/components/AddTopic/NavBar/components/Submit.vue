@@ -7,10 +7,12 @@
 
   <Teleport to="body">
     <Transition name="submit">
-      <div v-show="submiting"
-        class="z-[500] absolute top-0 left-0 w-screen h-screen bg-[#fff33350] flex justify-center items-center">
-        <div class="inner w-2/3 h-2/3 bg-red-300">
-          123
+      <div v-if="submiting"
+        class="z-[500] absolute top-0 left-0 w-screen h-screen bg-[#d3d3d390] flex justify-center items-center">
+        <div id="inner" class="w-2/3 h-2/3 rounded-lg overflow-hidden">
+
+          <UploadingAnimation :state="submitState" sentence="abc"></UploadingAnimation>
+
         </div>
       </div>
     </Transition>
@@ -24,16 +26,20 @@ import { storeToRefs } from "pinia";
 // @ts-ignore
 import { ElMessage } from 'element-plus'
 import 'element-plus/es/components/message/style/css'
+
+import UploadingAnimation from "@/components/Common/UploadingAnimation.vue";
 import createNewTopic from "@/api/Topic/CreateNewTopic";
+import block from "@/utils/block";
+
 
 const { title, text, fileIDs } = storeToRefs(useNewTopicInfo())
 const submiting: Ref<boolean> = ref(false)
+const submitState: Ref<"pending" | "success" | "failed"> = ref("pending")
 
 /**
  * 发布话题
  */
 async function submit(): Promise<void> {
-
   submiting.value = true
 
   if (!title.value) {
@@ -68,6 +74,8 @@ async function submit(): Promise<void> {
       fileIDs: fileIDs.value
     }
 
+    await block(1000)
+
     const response = await createNewTopic(info);
 
     if (response.data) {
@@ -75,6 +83,8 @@ async function submit(): Promise<void> {
         message: 'Topic released successfully!',
         type: 'success',
       })
+
+      submitState.value = "success"
     }
   } catch (e) {
     console.log(e);
@@ -83,6 +93,8 @@ async function submit(): Promise<void> {
       message: 'Topic released failed...',
       type: 'error',
     })
+
+    submitState.value = "failed"
   }
 }
 </script>
@@ -103,13 +115,13 @@ async function submit(): Promise<void> {
   opacity: 0;
 }
 
-.submit-enter-active .inner,
-.submit-leave-active .inner {
+.submit-enter-active #inner,
+.submit-leave-active #inner {
   transition: all 0.3s ease-in-out;
 }
 
-.submit-enter-from .inner,
-.submit-leave-to .inner {
+.submit-enter-from #inner,
+.submit-leave-to #inner {
   transform: translateY(100%);
 }
 </style>
