@@ -7,7 +7,7 @@
 
   <Teleport to="body">
     <Transition name="submit">
-      <div v-if="submiting"
+      <div v-show="submiting"
         class="z-[500] absolute top-0 left-0 w-screen h-screen bg-[#fff33350] flex justify-center items-center">
         <div class="inner w-2/3 h-2/3 bg-red-300">
           123
@@ -101,5 +101,15 @@ async function submit(): Promise<void> {
 .submit-enter-from,
 .submit-leave-to {
   opacity: 0;
+}
+
+.submit-enter-active .inner,
+.submit-leave-active .inner {
+  transition: all 0.3s ease-in-out;
+}
+
+.submit-enter-from .inner,
+.submit-leave-to .inner {
+  transform: translateY(100%);
 }
 </style>
