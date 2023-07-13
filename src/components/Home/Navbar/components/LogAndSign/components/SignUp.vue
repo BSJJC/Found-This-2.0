@@ -59,12 +59,12 @@ import block from "@/utils/block";
 import userSignUp from "@/api/User/userSignUp";
 
 import userLogAndSign from '@/stores/useLogAndSign';
-import { MiddleAnimationStates } from "@/types/LogAndSign"
+import { RequestStates } from "@/types/LogAndSign"
 import useTrasnform from '@/stores/useTrasnform';
 import { TransformStates } from "@/types/Transform"
 
 const emits = defineEmits(["switchState"])
-const { middleAnimationState } = storeToRefs(userLogAndSign()) as { middleAnimationState: Ref<MiddleAnimationStates> }
+const { RequestState } = storeToRefs(userLogAndSign()) as { RequestState: Ref<RequestStates> }
 
 const ruleFormRef = ref<FormInstance>();
 const ruleForm: Ref<{
@@ -140,7 +140,7 @@ async function submitSignUp(formEl: FormInstance | undefined): Promise<void> {
 
   // 尝试注册
   try {
-    middleAnimationState.value = MiddleAnimationStates.Fulfilled
+    RequestState.value = RequestStates.Fulfilled
 
     await block(1000);
 
@@ -151,19 +151,19 @@ async function submitSignUp(formEl: FormInstance | undefined): Promise<void> {
     });
 
     if (user) {
-      middleAnimationState.value = MiddleAnimationStates.Success
+      RequestState.value = RequestStates.Success
     }
 
     await block(1500);
 
     const { transformSwitch } = storeToRefs(useTrasnform())
     transformSwitch.value = TransformStates.off
-    middleAnimationState.value = MiddleAnimationStates.Pending
+    RequestState.value = RequestStates.Pending
 
     return;
   } catch (error) {
     console.log(error);
-    middleAnimationState.value = MiddleAnimationStates.Failed
+    RequestState.value = RequestStates.Failed
 
     return;
   }

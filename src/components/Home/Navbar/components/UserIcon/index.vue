@@ -30,9 +30,14 @@
   
 <script setup lang='ts'>
 import { ref, Ref, defineAsyncComponent } from "vue"
+import { storeToRefs } from 'pinia';
+import userLogAndSign from '@/stores/useLogAndSign';
+import { RequestingSentences, RequestStates } from "@/types/LogAndSign"
 
 import Transform from '@/components/Common/Transform.vue';
 const LogAndSign = defineAsyncComponent(() => import("../LogAndSign/index.vue"))
+
+const { RequestState, RequestingSentence } = storeToRefs(userLogAndSign())
 
 const userAvaterUrl: Ref<string | null> = ref(null)
 
@@ -82,6 +87,9 @@ function showLogAndSign(): void {
  * 隐藏Transform
  */
 function hidedTransform(): void {
+  RequestState.value = RequestStates.Pending;
+  RequestingSentence.value = RequestingSentences["Please wait...."]
+
   const data = JSON.parse(sessionStorage.getItem("userInfo")!)
   if (data) {
     userAvaterUrl.value = data.userAvaterID;

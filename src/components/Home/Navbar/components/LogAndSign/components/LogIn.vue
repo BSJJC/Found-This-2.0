@@ -60,14 +60,13 @@ import block from '@/utils/block';
 import userLogIn from "@/api/User/userLogIn.js"
 
 import userLogAndSign from '@/stores/useLogAndSign';
-import { MiddleAnimationStates } from "@/types/LogAndSign"
+import { RequestingSentences, RequestStates } from "@/types/LogAndSign"
 import useTrasnform from '@/stores/useTrasnform';
 import { TransformStates } from "@/types/Transform"
 
-
 const emits = defineEmits(["switchState"]);
 
-const { middleAnimationState } = storeToRefs(userLogAndSign()) as { middleAnimationState: Ref<MiddleAnimationStates> }
+const { RequestState, RequestingSentence } = storeToRefs(userLogAndSign())
 
 const ruleFormRef: Ref<FormInstance> = ref<FormInstance>()
 
@@ -124,7 +123,7 @@ async function submitLogIn(formEl: FormInstance | undefined): Promise<void> {
 
   // 尝试登录
   try {
-    middleAnimationState.value = MiddleAnimationStates.Fulfilled
+    RequestState.value = RequestStates.Fulfilled
 
     await block(1000);
 
@@ -134,7 +133,8 @@ async function submitLogIn(formEl: FormInstance | undefined): Promise<void> {
     });
 
     if (user) {
-      middleAnimationState.value = MiddleAnimationStates.Success
+      RequestState.value = RequestStates.Success
+      RequestingSentence.value = RequestingSentences['Success!']
 
       sessionStorage.setItem("userInfo", JSON.stringify(user.data))
     }
@@ -143,12 +143,13 @@ async function submitLogIn(formEl: FormInstance | undefined): Promise<void> {
 
     const { transformSwitch } = storeToRefs(useTrasnform())
     transformSwitch.value = TransformStates.off
-    middleAnimationState.value = MiddleAnimationStates.Pending
+    RequestState.value = RequestStates.Pending
 
     return;
   } catch (error) {
     console.log(error);
-    middleAnimationState.value = MiddleAnimationStates.Failed
+    RequestState.value = RequestStates.Failed
+    RequestingSentence.value = RequestingSentences['Failed....']
 
     return;
   }

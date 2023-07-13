@@ -1,11 +1,12 @@
 import { defineStore } from "pinia";
-import { States, MiddleAnimationStates } from "@/types/LogAndSign"
+import { States, RequestStates, RequestingSentences } from "@/types/LogAndSign"
 
 export const userLogAndSign = defineStore({
   id: "LogAndSign",
   state: () => ({
     state: States.LogIn,
-    middleAnimationState: MiddleAnimationStates.Pending
+    RequestState: RequestStates.Pending,
+    RequestingSentence: RequestingSentences["Please wait...."]
   }),
 });
 

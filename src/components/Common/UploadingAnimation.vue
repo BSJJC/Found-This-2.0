@@ -1,27 +1,29 @@
 <template>
-  <div class="w-full h-1/2 flex justify-center items-center bg-white">
-    <Transition name="lottie" mode="out-in">
-      <!-- lottie animations -->
-      <LottieAnimation v-if="props.state === 'pending'" :off-line="loading"></LottieAnimation>
-      <LottieAnimation v-else-if="props.state === 'success'" :off-line="success" class=" scale-50">
-      </LottieAnimation>
-      <LottieAnimation v-else-if="props.state === 'failed'" :off-line="failed"></LottieAnimation>
-    </Transition>
-  </div>
-
-  <div class="w-full h-1/2 flex justify-center items-center bg-[#7e56da] text-[3rem] font-bold text-white relative">
-    <!-- sentence -->
-    <div v-for="(i, index) in sentence" :key="index" :id="props.state" class="text-[3rem] text-white mr-[10px] uppercase"
-      :style="{ animationDelay: `${index * 0.1}s` }">
-      {{ i }}
+  <div class="w-full h-1/2 transition-all duration-300 ease">
+    <div class="w-full h-1/2 flex justify-center items-center bg-white">
+      <Transition name="lottie" mode="out-in">
+        <!-- lottie animations -->
+        <LottieAnimation v-if="props.state === 'Success'" :off-line="Success" class=" scale-50">
+        </LottieAnimation>
+        <LottieAnimation v-else-if="props.state === 'Failed'" :off-line="Failed"></LottieAnimation>
+        <LottieAnimation v-else :off-line="loading"></LottieAnimation>
+      </Transition>
     </div>
 
-    <!-- back button when failed -->
-    <Transition>
-      <iconArrowDown v-if="props.state === 'failed'" class="animate-bounce absolute bottom-10 w-[50px] cursor-pointer"
-        fill="white">
-      </iconArrowDown>
-    </Transition>
+    <div class="w-full h-1/2 flex justify-center items-center bg-[#7e56da] text-[3rem] font-bold text-white relative">
+      <!-- sentence -->
+      <div v-for="(i, index) in sentence" :key="index" :id="props.state"
+        class="text-[3rem] text-white mr-[10px] uppercase" :style="{ animationDelay: `${index * 0.1}s` }">
+        {{ i }}
+      </div>
+
+      <!-- back button when Failed -->
+      <Transition>
+        <iconArrowDown v-if="props.state === 'Failed'" class="animate-bounce absolute bottom-10 w-[50px] cursor-pointer"
+          fill="white">
+        </iconArrowDown>
+      </Transition>
+    </div>
   </div>
 </template>
   
@@ -29,8 +31,8 @@
 import { defineAsyncComponent } from "vue"
 import LottieAnimation from "@/components/Common/LottieAnimation.vue";
 import loading from "@/assets/lottie/LoadingLottie.json"
-import success from "@/assets/lottie/SuccessLottie.json"
-import failed from "@/assets/lottie/FailedLottie.json"
+import Success from "@/assets/lottie/SuccessLottie.json"
+import Failed from "@/assets/lottie/FailedLottie.json"
 const iconArrowDown = defineAsyncComponent(() => import("@/assets/icons/IconArrowDown.vue"))
 
 interface Config {
@@ -67,11 +69,15 @@ const props = defineProps<Config>()
   opacity: 0;
 }
 
-#pending {
-  animation: pending 1s ease-in-out infinite;
+#Pending {
+  animation: Pending 1s ease-in-out infinite;
 }
 
-@keyframes pending {
+#Fulfilled {
+  animation: Pending 1s ease-in-out infinite;
+}
+
+@keyframes Pending {
   0% {
     transform: translateY(0);
   }
@@ -85,22 +91,22 @@ const props = defineProps<Config>()
   }
 }
 
-#success {
-  animation: success 0.3s ease-in-out forwards;
+#Success {
+  animation: Success 0.3s ease-in-out forwards;
 }
 
-@keyframes success {
+@keyframes Success {
   to {
     transform: translateY(-20px);
   }
 }
 
-#failed {
-  animation: failed 1.5s ease-in-out forwards;
+#Failed {
+  animation: Failed 1.5s ease-in-out forwards;
   animation-delay: 0s !important;
 }
 
-@keyframes failed {
+@keyframes Failed {
   0% {
     transform: translateY(0px);
   }

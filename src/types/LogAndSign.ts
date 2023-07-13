@@ -3,15 +3,15 @@ export enum States {
   "SignUp"
 }
 
-export enum MiddleAnimationStates {
+export enum RequestStates {
   "Pending",
   "Fulfilled",
   "Success",
   "Failed"
 }
 
-export enum MiddleAnimationSentences {
-  "please wait...",
-  "login success!",
-  "login failed..."
+export enum RequestingSentences {
+  "Please wait....",
+  "Success!",
+  "Failed...."
 }
