@@ -121,7 +121,7 @@ function calculatePages(): void {
 
   /**
    * 使用双指针找出currentPage左右符合条件的数
-   * 并转入leftArr和rightArr中
+   * 并传入leftArr和rightArr中
    * 默认当 pageSize为双数时左侧显示的页码更多
    */
   while (lastSize > 0) {
@@ -160,20 +160,12 @@ function calculatePages(): void {
 
   /**
    * 当pageSize为偶数时
-   * result的length会币pageSize+1还要大1
+   * result的length会比pageSize+1还要大1
    * 所以pop掉最后一个元素
    */
   if (result.length > pageSize + 2) {
     result.pop()
   }
-
-  /**
-   * typescript中
-   * 给出数组arr [1,2,3,4,5,6,7,8,9,10]
-   * 以及targetIndex
-   * 要求以数组格式返回targetIndex本身以及左右两侧各两个数
-   * 不能越界
-   */
 
   /**
    * 无论如何第一个页码必须为1
@@ -183,7 +175,6 @@ function calculatePages(): void {
   if (result[0] !== 1) {
     result[0] = 1
   }
-
 
   /**
    * 无论如何最后一个元素必须为pageCounts
