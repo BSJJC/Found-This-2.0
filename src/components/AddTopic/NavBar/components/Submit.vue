@@ -8,10 +8,11 @@
   <Teleport to="body">
     <Transition name="submit">
       <div v-if="submiting"
-        class="z-[500] absolute top-0 left-0 w-screen h-screen bg-[#d3d3d390] flex justify-center items-center">
+        class="z-[500] absolute top-0 left-0 w-screen h-screen bg-[#d3d3d390] flex justify-center items-center"
+        @click.self="close">
         <div id="inner" class="w-2/3 h-2/3 rounded-lg overflow-hidden">
 
-          <UploadingAnimation :state="submitState" sentence="abc"></UploadingAnimation>
+          <UploadingAnimation v-if="submiting" :state="submitState" sentence="abc"></UploadingAnimation>
 
         </div>
       </div>
@@ -30,11 +31,21 @@ import 'element-plus/es/components/message/style/css'
 import UploadingAnimation from "@/components/Common/UploadingAnimation.vue";
 import createNewTopic from "@/api/Topic/CreateNewTopic";
 import block from "@/utils/block";
-
+import { AxiosResponse } from "axios";
 
 const { title, text, fileIDs } = storeToRefs(useNewTopicInfo())
 const submiting: Ref<boolean> = ref(false)
 const submitState: Ref<"pending" | "success" | "failed"> = ref("pending")
+let response: Ref<AxiosResponse<any, any> | null> = ref(null);
+
+/**
+ * 关闭“上传中”窗口
+ */
+function close() {
+  if (!response.value) return
+
+  submiting.value = false
+}
 
 /**
  * 发布话题
@@ -76,9 +87,9 @@ async function submit(): Promise<void> {
 
     await block(1000)
 
-    const response = await createNewTopic(info);
+    response.value = await createNewTopic(info);
 
-    if (response.data) {
+    if (response.value.data) {
       ElMessage({
         message: 'Topic released successfully!',
         type: 'success',

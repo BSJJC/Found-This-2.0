@@ -27,6 +27,7 @@
     <middel-animation
       :style="{ transform: `${middleAnimationState === MiddleAnimationStates.Pending ? 'translateY(100%)' : 'translateY(0%)'}` }"></middel-animation>
   </div>
+
 </template>
 
 <script lang="ts" setup>
