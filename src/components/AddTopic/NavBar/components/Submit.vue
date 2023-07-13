@@ -23,6 +23,7 @@
   
 <script setup lang='ts'>
 import { ref, Ref } from "vue"
+import { useRouter } from "vue-router"
 import { useNewTopicInfo } from "@/stores/useNewTopicInfo"
 import { storeToRefs } from "pinia";
 // @ts-ignore
@@ -39,6 +40,7 @@ const submiting: Ref<boolean> = ref(false)
 const submitState: Ref<"Pending" | "Success" | "Failed"> = ref("Pending")
 const response: Ref<AxiosResponse<any, any> | null> = ref(null);
 const sentence: Ref<"Please wait...." | "Success!" | "Failed...."> = ref("Please wait....")
+const router = useRouter();
 
 /**
  * 关闭“上传中”窗口
@@ -105,6 +107,8 @@ async function submit(): Promise<void> {
     await block(2000)
 
     submiting.value = false
+
+    router.push("/")
 
   } catch (e) {
     console.log(e);
