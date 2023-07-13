@@ -17,7 +17,7 @@
     <!-- dark background -->
     <Transition>
       <div v-show="showDarkBackground"
-        class=" flex justify-center items-center w-screen h-screen bg-gray-500 opacity-70 absolute top-0 left-0 text-white z-5"
+        class=" flex justify-center items-center w-screen h-screen bg-[#6b728070] absolute top-0 left-0 text-white z-5"
         @click.self="hide">
       </div>
     </Transition>

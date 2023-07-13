@@ -8,7 +8,7 @@
   <Teleport to="body">
     <Transition name="submit">
       <div v-if="submiting"
-        class="z-[500] absolute top-0 left-0 w-screen h-screen bg-[#d3d3d390] flex justify-center items-center"
+        class="z-[500] absolute top-0 left-0 w-screen h-screen bg-[#6b728070] flex justify-center items-center"
         @click.self="close">
         <div id="inner" class="w-2/3 h-2/3 rounded-lg overflow-hidden">
 
@@ -53,8 +53,6 @@ function close(): void {
  * 发布话题
  */
 async function submit(): Promise<void> {
-  submiting.value = true
-
   if (!title.value) {
     ElMessage({
       showClose: true,
@@ -74,6 +72,9 @@ async function submit(): Promise<void> {
 
     return
   }
+
+  submiting.value = true
+
 
   try {
     const founderName = JSON.parse(sessionStorage.getItem("userInfo")!).userName;
@@ -100,6 +101,11 @@ async function submit(): Promise<void> {
       submitState.value = "Success"
       sentence.value = "Success!"
     }
+
+    await block(2000)
+
+    submiting.value = false
+
   } catch (e) {
     console.log(e);
 

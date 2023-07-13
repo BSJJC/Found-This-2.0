@@ -16,24 +16,15 @@
         class="text-[3rem] text-white mr-[10px] uppercase" :style="{ animationDelay: `${index * 0.1}s` }">
         {{ i }}
       </div>
-
-      <!-- back button when Failed -->
-      <Transition>
-        <iconArrowDown v-if="props.state === 'Failed'" class="animate-bounce absolute bottom-10 w-[50px] cursor-pointer"
-          fill="white">
-        </iconArrowDown>
-      </Transition>
     </div>
   </div>
 </template>
   
 <script setup lang='ts'>
-import { defineAsyncComponent } from "vue"
 import LottieAnimation from "@/components/Common/LottieAnimation.vue";
 import loading from "@/assets/lottie/LoadingLottie.json"
 import Success from "@/assets/lottie/SuccessLottie.json"
 import Failed from "@/assets/lottie/FailedLottie.json"
-const iconArrowDown = defineAsyncComponent(() => import("@/assets/icons/IconArrowDown.vue"))
 
 interface Config {
   state: string,
