@@ -12,7 +12,8 @@
         @click.self="close">
         <div id="inner" class="w-2/3 h-2/3 rounded-lg overflow-hidden">
 
-          <UploadingAnimation v-if="submiting" :state="submitState" sentence="abc"></UploadingAnimation>
+          <UploadingAnimation v-if="submiting" :state="submitState" :sentence="sentence" class="w-full h-full">
+          </UploadingAnimation>
 
         </div>
       </div>
@@ -35,13 +36,14 @@ import { AxiosResponse } from "axios";
 
 const { title, text, fileIDs } = storeToRefs(useNewTopicInfo())
 const submiting: Ref<boolean> = ref(false)
-const submitState: Ref<"pending" | "success" | "failed"> = ref("pending")
-let response: Ref<AxiosResponse<any, any> | null> = ref(null);
+const submitState: Ref<"Pending" | "Success" | "Failed"> = ref("Pending")
+const response: Ref<AxiosResponse<any, any> | null> = ref(null);
+const sentence: Ref<"Please wait...." | "Success!" | "Failed...."> = ref("Please wait....")
 
 /**
  * 关闭“上传中”窗口
  */
-function close() {
+function close(): void {
   if (!response.value) return
 
   submiting.value = false
@@ -95,7 +97,8 @@ async function submit(): Promise<void> {
         type: 'success',
       })
 
-      submitState.value = "success"
+      submitState.value = "Success"
+      sentence.value = "Success!"
     }
   } catch (e) {
     console.log(e);
@@ -105,7 +108,8 @@ async function submit(): Promise<void> {
       type: 'error',
     })
 
-    submitState.value = "failed"
+    submitState.value = "Failed"
+    sentence.value = "Failed...."
   }
 }
 </script>
