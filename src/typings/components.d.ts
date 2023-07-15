@@ -37,6 +37,7 @@ declare module '@vue/runtime-core' {
     Submit: typeof import('./../components/AddTopic/NavBar/components/Submit.vue')['default']
     Title: typeof import('./../components/AddTopic/EditArea/components/DrawerComponents/Title.vue')['default']
     TitleInput: typeof import('./../components/AddTopic/NavBar/components/TitleInput.vue')['default']
+    Topic: typeof import('./../components/Home/MainBody/components/Topic.vue')['default']
     Topics: typeof import('./../components/Home/MainBody/components/Topics.vue')['default']
     Transform: typeof import('./../components/Common/Transform.vue')['default']
     UploadingAnimation: typeof import('./../components/Common/UploadingAnimation.vue')['default']

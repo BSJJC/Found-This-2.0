@@ -59,12 +59,12 @@ import block from "@/utils/block";
 import userSignUp from "@/api/User/userSignUp";
 
 import userLogAndSign from '@/stores/useLogAndSign';
-import { RequestStates } from "@/types/LogAndSign"
+import { RequestingSentences, RequestStates } from "@/types/LogAndSign"
 import useTrasnform from '@/stores/useTrasnform';
 import { TransformStates } from "@/types/Transform"
 
 const emits = defineEmits(["switchState"])
-const { RequestState } = storeToRefs(userLogAndSign()) as { RequestState: Ref<RequestStates> }
+const { RequestState, RequestingSentence } = storeToRefs(userLogAndSign())
 
 const ruleFormRef = ref<FormInstance>();
 const ruleForm: Ref<{
@@ -152,6 +152,7 @@ async function submitSignUp(formEl: FormInstance | undefined): Promise<void> {
 
     if (user) {
       RequestState.value = RequestStates.Success
+      RequestingSentence.value = RequestingSentences['Success!']
     }
 
     await block(1500);
@@ -164,6 +165,7 @@ async function submitSignUp(formEl: FormInstance | undefined): Promise<void> {
   } catch (error) {
     console.log(error);
     RequestState.value = RequestStates.Failed
+    RequestingSentence.value = RequestingSentences['Failed....']
 
     return;
   }
