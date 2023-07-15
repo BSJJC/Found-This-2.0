@@ -4,6 +4,9 @@
 
     <main-body class="max-h-[90%]"></main-body>
 
+    <!-- <div class=" w-screen h-screen flex justify-center items-center absolute top-0 left-0 z-[-1]">
+      <img src="../assets/2023-06-26 031.jpg" alt="" class="h-full">
+    </div> -->
     <BgVideo :video-source="defaulBgLight"></BgVideo>
   </div>
 </template>
