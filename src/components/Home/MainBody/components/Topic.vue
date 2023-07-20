@@ -32,34 +32,43 @@
 </template>
   
 <script setup lang='ts'>
-import { onBeforeMount, ref, defineAsyncComponent } from "vue"
+import { onBeforeMount, ref, Ref, defineAsyncComponent } from "vue"
 import getTopicInfo from '@/api/Topic/GetTopicInfo';
 import Like from "@/assets/icons/iconLike.vue"
 const Preview = defineAsyncComponent(() => import("./TopicComponents/Preview.vue"))
 
 const info = ref()
 
-const top = ref(0)
-const left = ref(0)
-const showPreview = ref(false)
+const top: Ref<number> = ref(0)
+const left: Ref<number> = ref(0)
+const showPreview: Ref<Boolean> = ref(false)
 const timer = ref()
 
-function activePreview() {
-  timer.value = setTimeout(() => {
-    showPreview.value = true
-  }, 500);
+/**
+ * 显示 Preview 组件
+ */
+function activePreview(): void {
+  if (showPreview.value) return
+
+  showPreview.value = true
 }
 
-function closePreview() {
+/**
+ * 关闭 Preview 组件
+ */
+function closePreview(): void {
   clearTimeout(timer.value)
   showPreview.value = false
 }
 
-function caclPreviewLocation(e: MouseEvent) {
-  top.value = e.y
-  left.value = e.x
+/**
+ * 根据鼠标移动位置修改 Preview 组件位置
+ * @param e 鼠标移动事件
+ */
+function caclPreviewLocation(e: MouseEvent): void {
+  top.value = e.y + 10
+  left.value = e.x - 100
 }
-
 
 document.addEventListener("mousemove", caclPreviewLocation)
 
