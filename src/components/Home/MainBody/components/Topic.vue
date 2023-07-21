@@ -68,8 +68,15 @@ function closePreview(): void {
 function caclPreviewLocation(e: MouseEvent): void {
   // 如果直接使用 e.y、e.x 的话
   // 鼠标可能会移动到 Preview 组件上，导致触发 closePreview
-  top.value = e.y + 10
-  left.value = e.x - 100 // 已知 Preview组件宽度为 200px ，要让鼠标处于中间则需要减去 100px
+
+  left.value = e.x - 150 // 已知 Preview组件宽度为 300px ，要让鼠标处于中间则需要减去 100px
+
+  if (e.y + 350 > window.innerHeight) {
+    top.value = e.y - 360
+  }
+  else {
+    top.value = e.y + 10
+  }
 }
 
 document.addEventListener("mousemove", caclPreviewLocation)

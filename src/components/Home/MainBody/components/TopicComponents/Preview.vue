@@ -22,12 +22,12 @@
   }
 
   20% {
-    width: 200px;
+    width: 300px;
     height: 0px;
   }
 
   100% {
-    width: 200px;
+    width: 300px;
     height: 350px;
   }
 }
