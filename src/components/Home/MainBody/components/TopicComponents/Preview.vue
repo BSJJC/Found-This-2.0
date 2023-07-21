@@ -12,7 +12,6 @@
 <style lang="scss" scoped>
 #container {
   animation: container-in .25s ease-in-out forwards;
-  overflow: hidden !important;
 }
 
 @keyframes container-in {
