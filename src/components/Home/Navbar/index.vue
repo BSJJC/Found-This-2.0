@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between items-center h-[100px] px-[5%] shadow-lg shadow-[#7e56da4d] bg-white">
+  <div class="flex justify-between items-center px-[5%] shadow-lg shadow-[#7e56da4d] bg-white">
 
     <Logo :enable-go-to-home-page="false" class="text-4xl"></Logo>
 

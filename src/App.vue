@@ -26,15 +26,3 @@ window.addEventListener("wheel", () => {
   checkElementVisibility(fadeInComponents.value, "component-out", "component-in")
 })
 </script>
-
-<style lang="scss">
-.component-out {
-  opacity: 0;
-  transform: translateY(50px);
-}
-
-.component-in {
-  opacity: 1;
-  transform: translateY(0px);
-}
-</style>

@@ -1,14 +1,22 @@
 <template>
-  <el-scrollbar height="100%">
-    <div class="w-full h-full flex justify-start items-center flex-col px-[10%]">
-      <span v-for="(i, index) in 30" :key="index"
-        class="fade-in-component component-out text-[4rem] transition-all duration-300 ease-linear">
-        {{ i }}
-      </span>
-    </div>
-  </el-scrollbar>
+  <div class="w-full flex flex-col justify-start items-center">
+    <el-scrollbar class="w-full">
+
+      <asd></asd>
+
+      <bsd></bsd>
+
+    </el-scrollbar>
+  </div>
 </template>
 
 <script setup lang="ts">
+import asd from "./components/partOne.vue"
+import bsd from "./components/b.vue"
 </script>
 
+<style lang="scss" scoped>
+:deep(.el-scrollbar__bar) {
+  opacity: 0;
+}
+</style>

@@ -11,6 +11,16 @@ body {
   overflow: hidden;
 }
 
+.component-out {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.component-in {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
 .dsaddasdq3wdwsadas {
   color: #673bcc;
   color: #7e56da;

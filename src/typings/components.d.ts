@@ -9,6 +9,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    A: typeof import('./../components/Home/MainBody/components/a.vue')['default']
+    B: typeof import('./../components/Home/MainBody/components/b.vue')['default']
     BgVideo: typeof import('./../components/Effects/BgVideo.vue')['default']
     Control: typeof import('./../components/TEMP/TOPIC/Control.vue')['default']
     Drawer: typeof import('./../components/AddTopic/EditArea/components/Drawer.vue')['default']
@@ -28,6 +30,7 @@ declare module '@vue/runtime-core' {
     Navbar: typeof import('./../components/Home/Navbar/index.vue')['default']
     NavBar: typeof import('./../components/AddTopic/NavBar/index.vue')['default']
     Pagination: typeof import('./../components/TEMP/TOPIC/Pagination.vue')['default']
+    PartOne: typeof import('./../components/Home/MainBody/components/partOne.vue')['default']
     Preview: typeof import('./../components/TEMP/TOPIC/TopicComponents/Preview.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

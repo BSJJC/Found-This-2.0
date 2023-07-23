@@ -1,8 +1,8 @@
 <template>
   <div class="w-screen h-screen">
-    <nav-bar class="max-h-[10%]"></nav-bar>
+    <nav-bar class="h-[10vh]"></nav-bar>
 
-    <main-body class="max-h-[90%]"></main-body>
+    <main-body class="h-[90vh]"></main-body>
   </div>
 </template>
 
