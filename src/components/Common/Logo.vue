@@ -17,9 +17,7 @@ function goToHomePage() {
 
 <template>
   <div class="h-full flex justify-center items-center select-none drop-shadow-lg" @click="goToHomePage">
-    <div class="text-[#7e56da81]">Found</div>
-    <div class="text-[#7E56DA] font-bold mx-2">this</div>
-    <div class="text-[#7e56da81]">!</div>
+    <div class="text-[#7E56DA] font-bold uppercase">beyond the horizon</div>
   </div>
 </template>
 

@@ -1,21 +1,15 @@
 <template>
-  <div class="h-[100px] grid grid-cols-5 px-[5%] shadow-lg shadow-[#7e56da4d] bg-white">
-    <div class="col-span-1 flex justify-left items-center">
-      <Logo :enable-go-to-home-page="false" class="text-4xl"></Logo>
-    </div>
+  <div class="flex justify-between items-center h-[100px] px-[5%] shadow-lg shadow-[#7e56da4d] bg-white">
 
-    <div class="col-span-3 flex justify-center items-center">
-      <search></search>
-    </div>
+    <Logo :enable-go-to-home-page="false" class="text-4xl"></Logo>
 
-    <div class="col-span-1 flex justify-end items-center">
-      <user-icon></user-icon>
-    </div>
+    <!-- TODO -->
+
+    <user-icon></user-icon>
   </div>
 </template>
 
 <script lang="ts" setup>
 import Logo from "@/components/Common/Logo.vue";
-import Search from "./components/Search/index.vue";
 import UserIcon from "./components/UserIcon/index.vue"
 </script>
