@@ -2,7 +2,7 @@
   <div class="w-screen h-screen">
     <nav-bar class="h-[10vh]"></nav-bar>
 
-    <main-body class="h-[90vh]"></main-body>
+    <main-body class="h-[100vh]"></main-body>
   </div>
 </template>
 

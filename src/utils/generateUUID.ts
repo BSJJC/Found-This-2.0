@@ -2,7 +2,7 @@
  *  创建 UUID
  * @returns UUID
  */
-function generateUUID(): string {
+export default function generateUUID(): string {
   let uuid: string = "";
   const possibleChars: string = "abcdef0123456789";
 
@@ -18,5 +18,3 @@ function generateUUID(): string {
 
   return uuid;
 }
-
-export default generateUUID;

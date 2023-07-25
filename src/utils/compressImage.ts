@@ -5,7 +5,11 @@
  * @param maxHeight 压缩后的最大高度
  * @returns 压缩后的文件
  */
-function compressImage(file: File, maxWidth: number, maxHeight: number): Promise<File> {
+export default function compressImage(
+  file: File,
+  maxWidth: number,
+  maxHeight: number
+): Promise<File> {
   return new Promise<File>((resolve, reject) => {
     const reader: FileReader = new FileReader();
 
@@ -70,5 +74,3 @@ function compressImage(file: File, maxWidth: number, maxHeight: number): Promise
     reader.readAsDataURL(file);
   });
 }
-
-export default compressImage;

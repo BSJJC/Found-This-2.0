@@ -4,7 +4,10 @@
  * @param allowedSpacesLength 最多允许字符串以多少个空格结尾
  * @returns 按要求修改后的字符串
  */
-function disableInputSpaceByRule(str: string, allowedSpacesLength: number): string {
+export default function disableInputSpaceByRule(
+  str: string,
+  allowedSpacesLength: number
+): string {
   if (str.startsWith(" ")) {
     return str = str.slice(0, str.length - 1)
   }
@@ -15,5 +18,3 @@ function disableInputSpaceByRule(str: string, allowedSpacesLength: number): stri
 
   return str.replace(regex, "");
 }
-
-export default disableInputSpaceByRule;

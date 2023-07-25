@@ -2,14 +2,16 @@
   <div class="w-full flex flex-col justify-start items-center">
     <el-scrollbar class="w-full">
 
-      <asd></asd>
+      <one></one>
+
+      <div class="w-full h-[100vh] bg-pink-300"></div>
 
     </el-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts">
-import asd from "./components/partOne.vue"
+import one from "./components/partOne.vue"
 </script>
 
 <style lang="scss" scoped>
