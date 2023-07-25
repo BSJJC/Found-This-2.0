@@ -1,15 +1,17 @@
 <template>
-  <div class="w-full h-[90vh] flex justify-center items-center flex-col relative bg-red-300">
+  <div class="w-full h-[100vh] flex justify-center items-center flex-col relative overflow-hidden bg-red-200">
 
     <!-- 背景遮挡 -->
-    <div ref="backBlock" class=" absolute w-full h-full flex justify-between items-center">
-      <div class="h-full bg-blue-300 transition-all duration-75 ease-linear"
-        :style="{ width: `${backBlockWidth > 40 ? 40 : backBlockWidth}vw` }"></div>
-      <div class="h-full bg-blue-300 transition-all duration-75 ease-linear"
-        :style="{ width: `${backBlockWidth > 40 ? 40 : backBlockWidth}vw` }"></div>
+    <div ref="backBlock" class=" absolute w-full h-full flex justify-between items-center ">
+      <div class="h-full bg-white transition-all duration-75 ease-linear" :style="{ width: `${backBlockWidth}vw` }">
+      </div>
+      <div class="h-full bg-white transition-all duration-75 ease-linear" :style="{ width: `${backBlockWidth}vw` }">
+      </div>
     </div>
 
-    <div>12</div>
+    123
+
+    <img src="../../../../assets/2023-02-27 083.jpg">
 
   </div>
 </template>

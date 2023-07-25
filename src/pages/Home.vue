@@ -1,8 +1,8 @@
 <template>
-  <div class="w-screen h-screen">
-    <nav-bar class="h-[10vh]"></nav-bar>
+  <div class="w-screen h-screen relative">
+    <nav-bar class="h-[10vh] absolute z-[100]"></nav-bar>
 
-    <main-body class="h-[100vh]"></main-body>
+    <main-body class="h-[100vh] absolute"></main-body>
   </div>
 </template>
 
