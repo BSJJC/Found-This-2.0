@@ -23,8 +23,6 @@ const backBlockWidth: Ref<number> = ref(40)
 
 // 为backBlock添加事件，使其随着页面向下的滚动，backBlockWidth逐渐减少
 window.addEventListener("wheel", () => { changeWhenWheel(backBlock.value as HTMLElement, backBlockWidth, 40) })
-
-
 </script>
   
 <style></style>
