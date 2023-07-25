@@ -4,15 +4,12 @@
 
       <asd></asd>
 
-      <bsd></bsd>
-
     </el-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts">
 import asd from "./components/partOne.vue"
-import bsd from "./components/b.vue"
 </script>
 
 <style lang="scss" scoped>
